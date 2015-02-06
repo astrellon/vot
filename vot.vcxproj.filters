@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="vot\bullet.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\circle.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\font_manager.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\game_system.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\player.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\texture_manager.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="vot">
+      <UniqueIdentifier>{82e2ea4a-9eb9-4429-a989-62a5be8d9ace}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="vot\bullet.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\circle.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\font_manager.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\game_system.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\player.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\texture_manager.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

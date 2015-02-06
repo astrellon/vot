@@ -8,7 +8,7 @@ namespace vot
     Bullet::Bullet(const sf::Texture &texture, float damage) :
         sf::Sprite(texture),
         _damage(damage),
-        _index(-1u)
+        _index(UINT_MAX)
     {
         auto size = texture.getSize();
         setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -16,7 +16,7 @@ namespace vot
     Bullet::Bullet(const Bullet &clone) :
         sf::Sprite(clone),
         _damage(clone._damage),
-        _index(-1u)
+        _index(UINT_MAX)
     {
 
     }
@@ -104,7 +104,7 @@ namespace vot
     PatternBullet *BulletManager::spawn_pattern_bullet(sf::Texture &texture, float damage)
     {
         auto index = find_empty_bullet();
-        if (index == -1u)
+        if (index == UINT_MAX)
         {
             return nullptr;
         }
@@ -122,7 +122,7 @@ namespace vot
         }
 
         auto index = find_empty_bullet();
-        if (index == -1u)
+        if (index == UINT_MAX)
         {
             return NULL;
         }
@@ -176,7 +176,7 @@ namespace vot
             }
         }
 
-        return -1u;
+        return UINT_MAX;
     }
     // }}}
 }

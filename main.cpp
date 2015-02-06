@@ -59,6 +59,8 @@ int main()
     
     // Start the game loop
     auto counter = 0;
+
+    sf::Clock clock;
     while (window.isOpen())
     {
         // Process events
@@ -69,26 +71,29 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        
+        sf::Time elapsed = clock.restart();
+        float speed = 450.0f * elapsed.asSeconds();
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
         {
             //player->tra.location() += sf::Vector2f(-3.0f, 0.0f);
-            player->translate(sf::Vector2f(-3.0f, 0.0f));
+            player->translate(sf::Vector2f(-speed, 0.0f));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
         {
-            player->translate(sf::Vector2f(3.0f, 0.0f));
+            player->translate(sf::Vector2f(speed, 0.0f));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
         {
-            player->translate(sf::Vector2f(0.0f, 3.0f));
+            player->translate(sf::Vector2f(0.0f, speed));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
         {
-            player->translate(sf::Vector2f(0.0f, -3.0f));
+            player->translate(sf::Vector2f(0.0f, -speed));
         }
 
-        game_system.update(0.05f);
+        game_system.update(elapsed.asSeconds());
         // Clear screen
         window.clear();
        

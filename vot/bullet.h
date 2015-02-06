@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <array>
 
 #include "circle.h"
 
