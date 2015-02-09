@@ -4,11 +4,13 @@
 
 namespace vot
 {
+    #define _UMAX std::numeric_limits<uint32_t>::max()
+
     // Bullet {{{
     Bullet::Bullet(const sf::Texture &texture, float damage) :
         sf::Sprite(texture),
         _damage(damage),
-        _index(UINT_MAX)
+        _index(_UMAX)
     {
         auto size = texture.getSize();
         setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -16,7 +18,7 @@ namespace vot
     Bullet::Bullet(const Bullet &clone) :
         sf::Sprite(clone),
         _damage(clone._damage),
-        _index(UINT_MAX)
+        _index(_UMAX)
     {
 
     }
@@ -49,15 +51,22 @@ namespace vot
     PatternBullet::PatternBullet(const sf::Texture &texture, float damage) :
         Bullet(texture, damage),
         _lifetime(0.0f),
-        _total_lifetime(10.0f)
+        _total_lifetime(10.0f),
+        _pattern_type(0u)
     {
     }
     PatternBullet::PatternBullet(const PatternBullet &clone) :
         Bullet(clone),
         _lifetime(clone._lifetime),
-        _total_lifetime(clone._total_lifetime)
+        _total_lifetime(clone._total_lifetime),
+        _pattern_type(clone._pattern_type)
     {
 
+    }
+
+    bool PatternBullet::active() const
+    {
+        return _lifetime >= 0.0f;
     }
 
     void PatternBullet::init_transform(sf::Transform trans)
@@ -73,13 +82,33 @@ namespace vot
     {
         _lifetime += dt;
 
+        if (_lifetime < 0.0f)
+        {
+            return;
+        }
+
         auto dl = _lifetime / _total_lifetime;
         auto speed_dl = dl * 0.5f;
-        auto x = cosf(speed_dl * 7.0f) * sinf(speed_dl * 3.0f) * 300.0f + 320.0f;
-        auto y = sinf(speed_dl * 2.0f) * cosf(speed_dl * 13.0f) * 300.0f + 320.0f;
+        auto point = getPosition();
 
-        //auto prevPoint = getPosition();
-        auto point = _init_transform.transformPoint(x, y);
+        if (_pattern_type == 0u)
+        {
+            auto x = dl * 5000.0f;
+            if (dl >= 1.0f)
+            {
+                _lifetime = 0.0f;
+            }
+
+            point = _init_transform.transformPoint(x, 0.0f);
+        }
+        else if (_pattern_type == 1u)
+        {
+            auto x = cosf(speed_dl * 7.0f) * sinf(speed_dl * 3.0f) * 300.0f + 320.0f;
+            auto y = sinf(speed_dl * 2.0f) * cosf(speed_dl * 13.0f) * 300.0f + 320.0f;
+
+            //auto prevPoint = getPosition();
+            point = _init_transform.transformPoint(x, y);
+        }
 
         //auto dp = point - prevPoint;
         //auto angle = atan2(dp.y, dp.x);
@@ -104,7 +133,7 @@ namespace vot
     PatternBullet *BulletManager::spawn_pattern_bullet(sf::Texture &texture, float damage)
     {
         auto index = find_empty_bullet();
-        if (index == UINT_MAX)
+        if (index == _UMAX)
         {
             return nullptr;
         }
@@ -122,7 +151,7 @@ namespace vot
         }
 
         auto index = find_empty_bullet();
-        if (index == UINT_MAX)
+        if (index == _UMAX)
         {
             return NULL;
         }
@@ -141,9 +170,10 @@ namespace vot
     {
         for (auto i = 0u; i < _bullets.size(); i++)
         {
-            if (_bullets[i].get() != nullptr)
+            auto bullet = _bullets[i].get(); 
+            if (bullet != nullptr && bullet->active())
             {
-                window.draw(*_bullets[i]);
+                window.draw(*bullet);
             }
         }
     }
@@ -176,7 +206,7 @@ namespace vot
             }
         }
 
-        return UINT_MAX;
+        return _UMAX;
     }
     // }}}
 }

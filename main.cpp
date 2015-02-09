@@ -36,17 +36,35 @@ int main()
     vot::Player *player = new vot::Player(*texture_manager.texture("player"));
     game_system.player(player);
 
+    auto angle = 0.0f;
     for (auto i = 0u; i < 1000u; i++)
     {
         auto bullet = game_system.bullet_manager().clone_pattern_bullet("bullet_blue_circle");
-        bullet->update(0.06f * i);
+        sf::Transform trans;
+        trans.rotate(angle);
+        bullet->init_transform(trans);
+        angle += 45.5f;
+        bullet->update(-0.01f * i);
     }
 
-    vot::Circle circle1(sf::Vector2f(50.0f, 50.0f), 2.0f);
-    vot::Circle circle2(sf::Vector2f(100.0f, 50.0f), 26.0f);
+    auto window_size = window.getSize();
+    player->location(sf::Vector2f(0.0f, 100.0f));
 
     // Create a graphical text to display
-    sf::Text text("Hello SFML", *font_manager.font("sans"), 13);
+    sf::Text text("ABC", *font_manager.font("sans"), 13);
+
+    sf::RenderTexture render_target;
+    render_target.create(32, 32);
+    render_target.clear(sf::Color::Transparent);
+    render_target.draw(text);
+    render_target.setRepeated(true);
+
+    auto repeated_texture = render_target.getTexture();
+    sf::Sprite testSprite(repeated_texture);
+    testSprite.setTextureRect(sf::IntRect(0, 0, window_size.x * 2, window_size.y * 2));
+
+    sf::View player_camera;
+    player_camera.setSize(window_size.x, window_size.y);
 
     /*
     // Load a music to play
@@ -58,12 +76,10 @@ int main()
     */
     
     // Start the game loop
-    auto counter = 0;
-
     sf::Clock clock;
     while (window.isOpen())
     {
-        // Process events
+        // Process events {{{
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -71,51 +87,66 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        // }}}
         
+        // Keyboard input {{{
         sf::Time elapsed = clock.restart();
         float speed = 450.0f * elapsed.asSeconds();
+        float rot_speed = 180.0f * elapsed.asSeconds();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            //player->tra.location() += sf::Vector2f(-3.0f, 0.0f);
             player->translate(sf::Vector2f(-speed, 0.0f));
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             player->translate(sf::Vector2f(speed, 0.0f));
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
             player->translate(sf::Vector2f(0.0f, speed));
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
             player->translate(sf::Vector2f(0.0f, -speed));
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        {
+            player->rotateBy(-rot_speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        {
+            player->rotateBy(rot_speed);
+        }
+        // }}}
+    
+        // Game loop {{{
+        player_camera.setCenter(player->location());
+        player_camera.setRotation(player->rotation());
+        window.setView(player_camera);
 
         game_system.update(elapsed.asSeconds());
+        // }}}
+        
+        // Draw game {{{
         // Clear screen
         window.clear();
        
-        // Draw the sprite
-        //window.draw(sprite);
+        game_system.draw(window);
+        window.draw(testSprite);
+        
+        window.setView(window.getDefaultView());
+        
+        std::stringstream ss;
+        ss << "Health: " << player->life();
+        text.setString(ss.str());
         
         // Draw the string
         window.draw(text);
-        //bm.draw(window);
-        //game_system.draw(window);
-        window.draw(circle1);
-        window.draw(circle2);
-        //window.draw(game_system);
-        game_system.draw(window);
+
         // Update the window
         window.display();
-
-        counter++;
-
-        std::stringstream ss;
-        ss << "Intersecting: " << (circle1.intersects(circle2) ? "true" : "false");
-        text.setString(ss.str());
+        // }}}
     }
     return EXIT_SUCCESS;
 }

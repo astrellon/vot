@@ -15,7 +15,11 @@ namespace vot
 
     void Player::translate(const sf::Vector2f &vector)
     {
-        _sprite.move(vector);
+        // Transform move vector by the sprites rotation matrix.
+        auto matrix = _sprite.getTransform().getMatrix();
+        auto x = vector.x * matrix[0] - vector.y * matrix[1];
+        auto y = -vector.x * matrix[4] + vector.y * matrix[5];
+        _sprite.move(x, y);
         _hitbox.location(_sprite.getPosition());
     }
     void Player::location(const sf::Vector2f &vector)
@@ -26,6 +30,19 @@ namespace vot
     sf::Vector2f Player::location() const
     {
         return _sprite.getPosition();
+    }
+
+    void Player::rotateBy(float angle)
+    {
+        _sprite.rotate(angle);
+    }
+    void Player::rotation(float angle)
+    {
+        _sprite.setRotation(angle);
+    }
+    float Player::rotation() const
+    {
+        return _sprite.getRotation();
     }
 
     void Player::draw(sf::RenderTarget &target, sf::RenderStates state) const

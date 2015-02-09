@@ -23,6 +23,8 @@ namespace vot
 
             virtual void update(float dt) = 0;
 
+            virtual bool active() const = 0;
+
             void index(uint32_t value);
             uint32_t index() const;
 
@@ -44,12 +46,18 @@ namespace vot
             void init_transform(sf::Transform trans);
             const sf::Transform &init_transform() const;
 
+            void pattern_type(uint32_t type);
+            uint32_t pattern_type() const;
+
+            virtual bool active() const;
+
             virtual void update(float dt);
 
         private:
             sf::Transform _init_transform;
             float _lifetime;
             float _total_lifetime;
+            uint32_t _pattern_type;
 
     };
 

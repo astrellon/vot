@@ -17,6 +17,10 @@ namespace vot
             void location(const sf::Vector2f &vector);
             sf::Vector2f location() const;
 
+            void rotateBy(float angle);
+            void rotation(float angle);
+            float rotation() const;
+
             Circle &hitbox();
             void take_damage(float damage);
 
