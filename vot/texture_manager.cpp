@@ -56,6 +56,16 @@ namespace vot
             std::cout << "Failed to load player texture\n";
             return false;
         }
+        if (!load_texture("red_star", "data/red_star.png"))
+        {
+            std::cout << "Failed to load red star texture\n";
+            return false;
+        }
+        if (!load_texture("blue_star", "data/blue_star.png"))
+        {
+            std::cout << "Failed o load blue star texture\n";
+            return false;
+        }
         return true;
     }
 

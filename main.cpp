@@ -1,7 +1,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
-#include <time.h>
 #include <sstream>
 
 #include "vot/game_system.h"
@@ -9,16 +8,10 @@
 #include "vot/texture_manager.h"
 #include "vot/circle.h"
 #include "vot/player.h"
-
-float randf()
-{
-    return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-}
+#include "vot/background.h"
 
 int main()
 {
-    srand(time_t(NULL));
-
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window", sf::Style::Default);
 
@@ -61,10 +54,14 @@ int main()
 
     auto repeated_texture = render_target.getTexture();
     sf::Sprite testSprite(repeated_texture);
-    testSprite.setTextureRect(sf::IntRect(0, 0, window_size.x * 2, window_size.y * 2));
+    testSprite.setTextureRect(sf::IntRect(0, 0, 1024, 1024));
 
     sf::View player_camera;
     player_camera.setSize(window_size.x, window_size.y);
+
+    vot::Background background(0.2, player_camera);
+    vot::Background background2(0.1, player_camera);
+    vot::Background background3(0.05, player_camera);
 
     /*
     // Load a music to play
@@ -126,14 +123,19 @@ int main()
         window.setView(player_camera);
 
         game_system.update(elapsed.asSeconds());
+        background.update(elapsed.asSeconds());
+        background2.update(elapsed.asSeconds());
+        background3.update(elapsed.asSeconds());
         // }}}
         
         // Draw game {{{
         // Clear screen
         window.clear();
        
+        window.draw(background3);
+        window.draw(background2);
+        window.draw(background);
         game_system.draw(window);
-        window.draw(testSprite);
         
         window.setView(window.getDefaultView());
         
