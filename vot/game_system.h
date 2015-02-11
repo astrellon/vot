@@ -34,6 +34,8 @@ namespace vot
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
 
+            uint16_t _id_counter;
+
             static GameSystem *s_main;
     };
 }

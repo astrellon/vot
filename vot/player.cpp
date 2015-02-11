@@ -10,7 +10,8 @@ namespace vot
         _hitbox(5.0f),
         _life(10.0f),
         _max_life(10.0f),
-        _is_dead(false)
+        _is_dead(false),
+        _id(0u)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);        
@@ -79,7 +80,7 @@ namespace vot
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             auto gs = GameSystem::main();
-            auto bullet = gs->bullet_manager().clone_pattern_bullet("bullet_blue_circle");
+            auto bullet = gs->bullet_manager().clone_pattern_bullet("bullet_blue_circle", _id);
             auto trans = _sprite.getTransform();
             trans.rotate(-90);
             auto size = _sprite.getTexture()->getSize();
@@ -132,5 +133,14 @@ namespace vot
     float Player::max_life() const
     {
         return _max_life;
+    }
+
+    void Player::id(uint16_t value)
+    {
+        _id = value;
+    }
+    uint16_t Player::id() const
+    {
+        return _id;
     }
 }

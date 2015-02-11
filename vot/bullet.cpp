@@ -10,7 +10,8 @@ namespace vot
     Bullet::Bullet(const sf::Texture &texture, float damage) :
         sf::Sprite(texture),
         _damage(damage),
-        _index(_UMAX)
+        _index(_UMAX),
+        _owner(0u)
     {
         auto size = texture.getSize();
         setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -18,7 +19,8 @@ namespace vot
     Bullet::Bullet(const Bullet &clone) :
         sf::Sprite(clone),
         _damage(clone._damage),
-        _index(_UMAX)
+        _index(_UMAX),
+        _owner(0u)
     {
 
     }
@@ -39,6 +41,15 @@ namespace vot
     uint32_t Bullet::index() const
     {
         return _index;
+    }
+
+    void Bullet::owner(uint16_t value)
+    {
+        _owner = value;
+    }
+    uint16_t Bullet::owner() const
+    {
+        return _owner;
     }
 
     Circle &Bullet::hitbox()
@@ -156,7 +167,7 @@ namespace vot
         insert_bullet(bullet, index);
         return bullet;
     }
-    PatternBullet *BulletManager::clone_pattern_bullet(const std::string &name)
+    PatternBullet *BulletManager::clone_pattern_bullet(const std::string &name, uint16_t owner)
     {
         auto find = _src_pattern_bullets.find(name);
         if (find == _src_pattern_bullets.end())
@@ -170,6 +181,7 @@ namespace vot
             return NULL;
         }
         auto new_bullet = new PatternBullet(*find->second.get());
+        new_bullet->owner(owner);
         insert_bullet(new_bullet, index);
         return new_bullet;
     }

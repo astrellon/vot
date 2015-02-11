@@ -34,12 +34,12 @@ namespace vot
             if (bullet != nullptr)
             {
                 bullet->update(dt);
-                if (_player != nullptr && _player->hitbox().intersects(bullet->hitbox()))
+                if (_player != nullptr && bullet->owner() != _player->id() && _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
                     _bullet_manager.remove_bullet(bullet);
                 }
-                if (bullet->dead())
+                else if (bullet->dead())
                 {
                     _bullet_manager.remove_bullet(bullet);
                 }
@@ -71,6 +71,7 @@ namespace vot
     void GameSystem::player(Player *value)
     {
         _player = std::unique_ptr<Player>(value);
+        _player->id(++_id_counter);
     }
     Player *GameSystem::player() const
     {

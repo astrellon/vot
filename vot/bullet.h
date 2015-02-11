@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <memory>
-#include <array>
+//#include <array>
 
 #include "circle.h"
 
@@ -29,12 +29,16 @@ namespace vot
             void index(uint32_t value);
             uint32_t index() const;
 
+            void owner(uint16_t value);
+            uint16_t owner() const;
+
             Circle &hitbox();
 
         private:
             float _damage;
             uint32_t _index;
             Circle _hitbox;
+            uint16_t _owner;
     };
     // }}}
     
@@ -71,7 +75,7 @@ namespace vot
 
             void remove_bullet(Bullet *bullet);
             PatternBullet *spawn_pattern_bullet(sf::Texture &texture, float damamge = 1.0f);
-            PatternBullet *clone_pattern_bullet(const std::string &name);
+            PatternBullet *clone_pattern_bullet(const std::string &name, uint16_t owner);
 
             void add_src_pattern_bullet(PatternBullet *bullet, const std::string &name);
 

@@ -34,12 +34,16 @@ namespace vot
             void max_life(float value);
             float max_life() const;
 
+            void id(uint16_t value);
+            uint16_t id() const;
+
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
             float _life;
             float _max_life;
             bool _is_dead;
+            uint16_t _id;
 
     };
 }
