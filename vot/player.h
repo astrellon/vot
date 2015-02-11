@@ -11,6 +11,7 @@ namespace vot
         public:
             Player(const sf::Texture &texture);
 
+            void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;
 
             void translate(const sf::Vector2f &vector);

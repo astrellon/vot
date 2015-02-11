@@ -16,6 +16,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window", sf::Style::Default);
 
     vot::GameSystem game_system(window);
+    vot::GameSystem::main(&game_system);
     
     vot::FontManager font_manager;
     vot::FontManager::main(&font_manager);
@@ -29,16 +30,19 @@ int main()
     vot::Player *player = new vot::Player(*texture_manager.texture("player"));
     game_system.player(player);
 
+    /*
     auto angle = 0.0f;
     for (auto i = 0u; i < 1000u; i++)
     {
         auto bullet = game_system.bullet_manager().clone_pattern_bullet("bullet_blue_circle");
+        bullet->pattern_type(1u);
         sf::Transform trans;
         trans.rotate(angle);
         bullet->init_transform(trans);
         angle += 45.5f;
         bullet->update(-0.01f * i);
     }
+    */
 
     auto window_size = window.getSize();
     player->location(sf::Vector2f(0.0f, 100.0f));
@@ -86,46 +90,19 @@ int main()
         }
         // }}}
         
-        // Keyboard input {{{
-        sf::Time elapsed = clock.restart();
-        float speed = 450.0f * elapsed.asSeconds();
-        float rot_speed = 180.0f * elapsed.asSeconds();
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            player->translate(sf::Vector2f(-speed, 0.0f));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            player->translate(sf::Vector2f(speed, 0.0f));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            player->translate(sf::Vector2f(0.0f, speed));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            player->translate(sf::Vector2f(0.0f, -speed));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        {
-            player->rotateBy(-rot_speed);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-        {
-            player->rotateBy(rot_speed);
-        }
-        // }}}
-    
         // Game loop {{{
+        sf::Time elapsed = clock.restart();
+        auto dt = elapsed.asSeconds();
+        
+        player->update(dt);
         player_camera.setCenter(player->location());
         player_camera.setRotation(player->rotation());
         window.setView(player_camera);
 
-        game_system.update(elapsed.asSeconds());
-        background.update(elapsed.asSeconds());
-        background2.update(elapsed.asSeconds());
-        background3.update(elapsed.asSeconds());
+        game_system.update(dt);
+        background.update(dt);
+        background2.update(dt);
+        background3.update(dt);
         // }}}
         
         // Draw game {{{

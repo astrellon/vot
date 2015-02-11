@@ -4,6 +4,17 @@
 
 namespace vot
 {
+    GameSystem *GameSystem::s_main = nullptr;
+
+    void GameSystem::main(GameSystem *main)
+    {
+        s_main = main;
+    }
+    GameSystem *GameSystem::main()
+    {
+        return s_main;
+    }
+
     GameSystem::GameSystem(sf::RenderWindow &window) :
         _window(window)
     {
@@ -26,6 +37,10 @@ namespace vot
                 if (_player != nullptr && _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
+                    _bullet_manager.remove_bullet(bullet);
+                }
+                if (bullet->dead())
+                {
                     _bullet_manager.remove_bullet(bullet);
                 }
             }

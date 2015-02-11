@@ -24,6 +24,7 @@ namespace vot
             virtual void update(float dt) = 0;
 
             virtual bool active() const = 0;
+            virtual bool dead() const = 0;
 
             void index(uint32_t value);
             uint32_t index() const;
@@ -50,6 +51,7 @@ namespace vot
             uint32_t pattern_type() const;
 
             virtual bool active() const;
+            virtual bool dead() const;
 
             virtual void update(float dt);
 

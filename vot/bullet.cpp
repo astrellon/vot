@@ -68,7 +68,12 @@ namespace vot
     {
         return _lifetime >= 0.0f;
     }
+    bool PatternBullet::dead() const
+    {
+        return _lifetime > _total_lifetime;
+    }
 
+    
     void PatternBullet::init_transform(sf::Transform trans)
     {
         _init_transform = trans;
@@ -76,6 +81,15 @@ namespace vot
     const sf::Transform &PatternBullet::init_transform() const
     {
         return _init_transform;
+    }
+
+    void PatternBullet::pattern_type(uint32_t type)
+    {
+        _pattern_type = type;
+    }
+    uint32_t PatternBullet::pattern_type() const
+    {
+        return _pattern_type;
     }
 
     void PatternBullet::update(float dt)
@@ -94,17 +108,17 @@ namespace vot
         if (_pattern_type == 0u)
         {
             auto x = dl * 5000.0f;
-            if (dl >= 1.0f)
-            {
-                _lifetime = 0.0f;
-            }
-
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 1u)
         {
             auto x = cosf(speed_dl * 7.0f) * sinf(speed_dl * 3.0f) * 300.0f + 320.0f;
             auto y = sinf(speed_dl * 2.0f) * cosf(speed_dl * 13.0f) * 300.0f + 320.0f;
+            if (dl > 1.0f)
+            {
+                _lifetime -= _total_lifetime;
+            }
+
 
             //auto prevPoint = getPosition();
             point = _init_transform.transformPoint(x, y);

@@ -1,5 +1,8 @@
 #include "player.h"
 
+#include "game_system.h"
+#include "bullet.h"
+
 namespace vot
 {
     Player::Player(const sf::Texture &texture) :
@@ -45,12 +48,48 @@ namespace vot
         return _sprite.getRotation();
     }
 
+    void Player::update(float dt)
+    {
+        auto speed = 450.0f * dt;
+        auto rot_speed = 180.0f * dt;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        {
+            translate(sf::Vector2f(-speed, 0.0f));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        {
+            translate(sf::Vector2f(speed, 0.0f));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            translate(sf::Vector2f(0.0f, speed));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        {
+            translate(sf::Vector2f(0.0f, -speed));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+        {
+            rotateBy(-rot_speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        {
+            rotateBy(rot_speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            auto gs = GameSystem::main();
+            auto bullet = gs->bullet_manager().clone_pattern_bullet("bullet_blue_circle");
+            auto trans = _sprite.getTransform();
+            trans.rotate(-90);
+            auto size = _sprite.getTexture()->getSize();
+            trans.translate(size.x * -0.5f, size.y * 0.5f);
+            bullet->init_transform(trans);
+        }
+    }
     void Player::draw(sf::RenderTarget &target, sf::RenderStates state) const
     {
         target.draw(_sprite, state);
-        //target.draw(_sprite, state);
-        //sf::Sprite::draw(target, state);
-        //sf::Drawable::draw(target, state);
     }
 
     Circle &Player::hitbox()

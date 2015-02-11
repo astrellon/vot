@@ -25,11 +25,15 @@ namespace vot
             void update(float dt);
             void draw(sf::RenderWindow &window);
 
+            static void main(GameSystem *main);
+            static GameSystem *main();
+
         private:
             sf::RenderWindow &_window;
 
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
 
+            static GameSystem *s_main;
     };
 }

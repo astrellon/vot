@@ -45,9 +45,15 @@ namespace vot
             auto x = size * (dist(mt) * 0.95 + 0.025);
             auto y = size * (dist(mt) * 0.95 + 0.025);
 
-            auto scale = (powf(2.0f, dist(mt)) - 1.0f) * (powf(2, (_speed + 0.7) - 1.0f));
+            auto r = dist(mt) * 30 + 155;
+            auto g = dist(mt) * 30 + 155;
+            auto b = dist(mt) * 30 + 155;
+            sf::Color colour(r, g, b);
+
+            auto scale = (powf(2.0f, dist(mt)) - 1.0f) * (powf(2, (_speed + 0.5) - 1.0f));
             sprite->setScale(scale, scale);
             sprite->setPosition(x, y);
+            sprite->setColor(colour);
             _target.draw(*sprite);
         }
 
