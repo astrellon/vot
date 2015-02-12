@@ -8,7 +8,9 @@
 #include "vot/texture_manager.h"
 #include "vot/circle.h"
 #include "vot/player.h"
+#include "vot/character.h"
 #include "vot/background.h"
+#include "vot/enemy.h"
 
 int main()
 {
@@ -29,6 +31,8 @@ int main()
     game_system.create_default_bullets();
     vot::Player *player = new vot::Player(*texture_manager.texture("player"));
     game_system.player(player);
+
+    vot::Enemy enemy1(*texture_manager.texture("enemy"));
 
     /*
     auto angle = 0.0f;
@@ -99,6 +103,8 @@ int main()
         player_camera.setRotation(player->rotation());
         window.setView(player_camera);
 
+        enemy1.update(dt);
+
         game_system.update(dt);
         background.update(dt);
         background2.update(dt);
@@ -112,6 +118,7 @@ int main()
         window.draw(background3);
         window.draw(background2);
         window.draw(background);
+        window.draw(enemy1);
         game_system.draw(window);
         
         window.setView(window.getDefaultView());

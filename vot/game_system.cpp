@@ -34,6 +34,7 @@ namespace vot
             if (bullet != nullptr)
             {
                 bullet->update(dt);
+                // TODO
                 if (_player != nullptr && bullet->owner() != _player->id() && _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
@@ -64,8 +65,21 @@ namespace vot
         auto texture_manager = TextureManager::main();
 
         auto bullet_blue_circle = texture_manager->texture("bullet_blue_circle");
+        auto bullet_blue = texture_manager->texture("bullet_blue");
+        
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "bullet_blue_circle");
+        pattern_bullet->pattern_type(0u);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue_circle");
+        
+        pattern_bullet = new PatternBullet(*bullet_blue, 1.0f);
+        pattern_bullet->pattern_type(0u);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue");
+
+        pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
+
+        pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
+        pattern_bullet->pattern_type(1u);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "arena_blue");
     }
 
     void GameSystem::player(Player *value)

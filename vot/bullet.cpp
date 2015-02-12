@@ -11,7 +11,8 @@ namespace vot
         sf::Sprite(texture),
         _damage(damage),
         _index(_UMAX),
-        _owner(0u)
+        _owner(0u),
+        _group(NATURE)
     {
         auto size = texture.getSize();
         setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -20,7 +21,8 @@ namespace vot
         sf::Sprite(clone),
         _damage(clone._damage),
         _index(_UMAX),
-        _owner(0u)
+        _owner(0u),
+        _group(NATURE)
     {
 
     }
@@ -50,6 +52,15 @@ namespace vot
     uint16_t Bullet::owner() const
     {
         return _owner;
+    }
+
+    void Bullet::group(Bullet::Group value)
+    {
+        _group = value;
+    }
+    Bullet::Group Bullet::group() const
+    {
+        return _group;
     }
 
     Circle &Bullet::hitbox()
@@ -115,10 +126,16 @@ namespace vot
         auto dl = _lifetime / _total_lifetime;
         auto speed_dl = dl * 0.5f;
         auto point = getPosition();
+        auto prevPoint = getPosition();
 
         if (_pattern_type == 0u)
         {
-            auto x = dl * 5000.0f;
+            auto x = dl * 3000.0f;
+            point = _init_transform.transformPoint(x, 0.0f);
+        }
+        else if (_pattern_type == 2u)
+        {
+            auto x = dl * 6000.0f;
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 1u)
@@ -130,17 +147,15 @@ namespace vot
                 _lifetime -= _total_lifetime;
             }
 
-
-            //auto prevPoint = getPosition();
             point = _init_transform.transformPoint(x, y);
         }
 
-        //auto dp = point - prevPoint;
-        //auto angle = atan2(dp.y, dp.x);
+        auto dp = point - prevPoint;
+        auto angle = atan2(dp.y, dp.x);
 
         setPosition(point);
         hitbox().location(point);
-        //setRotation(angle * 180.0f / M_PI);
+        setRotation(angle * 180.0f / M_PI);
     }
     // }}}
 
@@ -155,19 +170,7 @@ namespace vot
     {
         _bullets[bullet->index()] = nullptr;
     }
-    PatternBullet *BulletManager::spawn_pattern_bullet(sf::Texture &texture, float damage)
-    {
-        auto index = find_empty_bullet();
-        if (index == _UMAX)
-        {
-            return nullptr;
-        }
-
-        auto bullet = new PatternBullet(texture, damage);
-        insert_bullet(bullet, index);
-        return bullet;
-    }
-    PatternBullet *BulletManager::clone_pattern_bullet(const std::string &name, uint16_t owner)
+    PatternBullet *BulletManager::spawn_pattern_bullet(const std::string &name, uint16_t owner)
     {
         auto find = _src_pattern_bullets.find(name);
         if (find == _src_pattern_bullets.end())
