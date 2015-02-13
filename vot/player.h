@@ -6,6 +6,8 @@
 
 namespace vot
 {
+    class PatternBullet;
+
     class Player : public Character
     {
         public:
@@ -14,5 +16,7 @@ namespace vot
 
         private:
             float _cooldown;
+
+            PatternBullet *spawn_bullet();
     };
 }

@@ -29,10 +29,12 @@ int main()
     texture_manager.load_default_textures();
 
     game_system.create_default_bullets();
+    game_system.create_default_enemieS();
     vot::Player *player = new vot::Player(*texture_manager.texture("player"));
+    player->hitbox().radius(5.0f);
     game_system.player(player);
 
-    vot::Enemy enemy1(*texture_manager.texture("enemy"));
+    auto enemy = game_system.enemy_manager().spawn_enemy("enemy1");
 
     /*
     auto angle = 0.0f;
@@ -103,8 +105,6 @@ int main()
         player_camera.setRotation(player->rotation());
         window.setView(player_camera);
 
-        enemy1.update(dt);
-
         game_system.update(dt);
         background.update(dt);
         background2.update(dt);
@@ -118,8 +118,7 @@ int main()
         window.draw(background3);
         window.draw(background2);
         window.draw(background);
-        window.draw(enemy1);
-        game_system.draw(window);
+        window.draw(game_system);
         
         window.setView(window.getDefaultView());
         

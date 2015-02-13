@@ -170,7 +170,7 @@ namespace vot
     {
         _bullets[bullet->index()] = nullptr;
     }
-    PatternBullet *BulletManager::spawn_pattern_bullet(const std::string &name, uint16_t owner)
+    PatternBullet *BulletManager::spawn_pattern_bullet(const std::string &name, uint16_t owner, Bullet::Group group)
     {
         auto find = _src_pattern_bullets.find(name);
         if (find == _src_pattern_bullets.end())
@@ -181,10 +181,12 @@ namespace vot
         auto index = find_empty_bullet();
         if (index == _UMAX)
         {
-            return NULL;
+            return nullptr;
         }
+
         auto new_bullet = new PatternBullet(*find->second.get());
         new_bullet->owner(owner);
+        new_bullet->group(group);
         insert_bullet(new_bullet, index);
         return new_bullet;
     }
@@ -195,14 +197,14 @@ namespace vot
         _bullets[index] = std::unique_ptr<Bullet>(bullet);;
     }
 
-    void BulletManager::draw(sf::RenderWindow &window)
+    void BulletManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         for (auto i = 0u; i < _bullets.size(); i++)
         {
             auto bullet = _bullets[i].get(); 
             if (bullet != nullptr && bullet->active())
             {
-                window.draw(*bullet);
+                target.draw(*bullet, states);
             }
         }
     }

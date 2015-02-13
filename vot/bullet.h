@@ -78,17 +78,18 @@ namespace vot
     };
 
     // BulletManager {{{
-    class BulletManager
+    class BulletManager : public sf::Drawable
     {
         public:
             BulletManager();
 
             void remove_bullet(Bullet *bullet);
-            PatternBullet *spawn_pattern_bullet(const std::string &name, uint16_t owner);
+            PatternBullet *spawn_pattern_bullet(const std::string &name, uint16_t owner, Bullet::Group group);
 
             void add_src_pattern_bullet(PatternBullet *bullet, const std::string &name);
 
-            void draw(sf::RenderWindow &window);
+            //void draw(sf::RenderWindow &window);
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             typedef std::array<std::unique_ptr<Bullet>, 2048> BulletList;
             BulletList *bullets();

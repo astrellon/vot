@@ -6,10 +6,11 @@
 
 #include "bullet.h"
 #include "player.h"
+#include "enemy.h"
 
 namespace vot
 {
-    class GameSystem
+    class GameSystem : public sf::Drawable
     {
         public:
             GameSystem(sf::RenderWindow &window);
@@ -19,11 +20,14 @@ namespace vot
             BulletManager &bullet_manager();
             void create_default_bullets();
 
+            EnemyManager &enemy_manager();
+            void create_default_enemieS();
+
             void player(Player *value);
             Player *player() const;
 
             void update(float dt);
-            void draw(sf::RenderWindow &window);
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             static void main(GameSystem *main);
             static GameSystem *main();
@@ -33,6 +37,7 @@ namespace vot
 
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
+            EnemyManager _enemy_manager;
 
             uint16_t _id_counter;
 

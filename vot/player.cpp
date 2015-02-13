@@ -42,19 +42,18 @@ namespace vot
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && _cooldown <= 0.0f)
         {
-            auto gs = GameSystem::main();
-            auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_blue", id());
+            auto bullet = spawn_bullet();
             bullet->pattern_type(2u);
             auto trans = forward_center_trans();
             bullet->init_transform(trans);
             
-            bullet = gs->bullet_manager().spawn_pattern_bullet("straight_blue", id());
+            bullet = spawn_bullet();
             bullet->pattern_type(2u);
             trans = forward_center_trans();
             trans.rotate(10.0f);
             bullet->init_transform(trans);
 
-            bullet = gs->bullet_manager().spawn_pattern_bullet("straight_blue", id());
+            bullet = spawn_bullet();
             bullet->pattern_type(2u);
             trans = forward_center_trans();
             trans.rotate(-10.0f);
@@ -63,6 +62,11 @@ namespace vot
             _cooldown = 0.1f;
         }
         _cooldown -= dt;
+    }
+
+    PatternBullet *Player::spawn_bullet()
+    {
+        return GameSystem::main()->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::PLAYER);
     }
 
 }
