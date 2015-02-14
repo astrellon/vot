@@ -78,17 +78,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="vot\background.cpp" />
     <ClCompile Include="vot\bullet.cpp" />
+    <ClCompile Include="vot\character.cpp" />
     <ClCompile Include="vot\circle.cpp" />
+    <ClCompile Include="vot\enemy.cpp" />
     <ClCompile Include="vot\font_manager.cpp" />
+    <ClCompile Include="vot\game_hud.cpp" />
     <ClCompile Include="vot\game_system.cpp" />
     <ClCompile Include="vot\player.cpp" />
     <ClCompile Include="vot\texture_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="vot\background.h" />
     <ClInclude Include="vot\bullet.h" />
+    <ClInclude Include="vot\character.h" />
     <ClInclude Include="vot\circle.h" />
+    <ClInclude Include="vot\enemy.h" />
     <ClInclude Include="vot\font_manager.h" />
+    <ClInclude Include="vot\game_hud.h" />
     <ClInclude Include="vot\game_system.h" />
     <ClInclude Include="vot\player.h" />
     <ClInclude Include="vot\texture_manager.h" />
