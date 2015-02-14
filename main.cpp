@@ -11,6 +11,7 @@
 #include "vot/character.h"
 #include "vot/background.h"
 #include "vot/enemy.h"
+#include "vot/game_hud.h"
 
 int main()
 {
@@ -30,44 +31,29 @@ int main()
 
     game_system.create_default_bullets();
     game_system.create_default_enemieS();
-    vot::Player *player = new vot::Player(*texture_manager.texture("player"));
+
+    auto player = new vot::Player(*texture_manager.texture("player"));
     player->hitbox().radius(5.0f);
     game_system.player(player);
 
     auto enemy = game_system.enemy_manager().spawn_enemy("enemy1");
+    enemy->translate(sf::Vector2f(-40.0f, 0.0f));
+    enemy = game_system.enemy_manager().spawn_enemy("enemy1");
+    enemy->translate(sf::Vector2f(40.0f, 0.0f));
 
-    /*
-    auto angle = 0.0f;
-    for (auto i = 0u; i < 1000u; i++)
-    {
-        auto bullet = game_system.bullet_manager().clone_pattern_bullet("bullet_blue_circle");
-        bullet->pattern_type(1u);
-        sf::Transform trans;
-        trans.rotate(angle);
-        bullet->init_transform(trans);
-        angle += 45.5f;
-        bullet->update(-0.01f * i);
-    }
-    */
+    player->target(enemy);
 
     auto window_size = window.getSize();
     player->location(sf::Vector2f(0.0f, 100.0f));
 
     // Create a graphical text to display
-    sf::Text text("ABC", *font_manager.font("sans"), 13);
-
-    sf::RenderTexture render_target;
-    render_target.create(32, 32);
-    render_target.clear(sf::Color::Transparent);
-    render_target.draw(text);
-    render_target.setRepeated(true);
-
-    auto repeated_texture = render_target.getTexture();
-    sf::Sprite testSprite(repeated_texture);
-    testSprite.setTextureRect(sf::IntRect(0, 0, 1024, 1024));
+    //sf::Text text("ABC", *font_manager.font("sans"), 13);
 
     sf::View player_camera;
     player_camera.setSize(window_size.x, window_size.y);
+
+    vot::HudMain hud;
+    vot::HudWorld worldHud(player_camera);
 
     vot::Background background(0.2, player_camera);
     vot::Background background2(0.1, player_camera);
@@ -106,6 +92,9 @@ int main()
         window.setView(player_camera);
 
         game_system.update(dt);
+
+        hud.update(dt);
+        worldHud.update(dt);
         background.update(dt);
         background2.update(dt);
         background3.update(dt);
@@ -119,16 +108,12 @@ int main()
         window.draw(background2);
         window.draw(background);
         window.draw(game_system);
+        window.draw(worldHud);
         
         window.setView(window.getDefaultView());
-        
-        std::stringstream ss;
-        ss << "Health: " << player->life();
-        text.setString(ss.str());
-        
-        // Draw the string
-        window.draw(text);
 
+        window.draw(hud);
+        
         // Update the window
         window.display();
         // }}}

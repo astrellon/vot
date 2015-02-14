@@ -41,36 +41,14 @@ namespace vot
     
     bool TextureManager::load_default_textures()
     {
-        if (!load_texture("bullet_blue", "data/bullet_blue.png"))
-        {
-            std::cout << "Failed to load bullet blue texture\n";
-            return false;
-        }
-        if (!load_texture("bullet_blue_circle", "data/bullet_blue_circle.png"))
-        {
-            std::cout << "Failed to load bullet blue circle texture\n";
-            return false;
-        }
-        if (!load_texture("player", "data/player.png"))
-        {
-            std::cout << "Failed to load player texture\n";
-            return false;
-        }
-        if (!load_texture("red_star", "data/red_star.png"))
-        {
-            std::cout << "Failed to load red star texture\n";
-            return false;
-        }
-        if (!load_texture("blue_star", "data/blue_star.png"))
-        {
-            std::cout << "Failed to load blue star texture\n";
-            return false;
-        }
-        if (!load_texture("enemy", "data/enemy.png"))
-        {
-            std::cout << "Failed to load enemy texture\n";
-            return false;
-        }
+        if (!load_texture_log("bullet_blue", "data/bullet_blue.png")) return false;
+        if (!load_texture_log("bullet_blue_circle", "data/bullet_blue_circle.png")) return false;
+        if (!load_texture_log("player", "data/player.png")) return false;
+        if (!load_texture_log("red_star", "data/red_star.png")) return false;
+        if (!load_texture_log("blue_star", "data/blue_star.png")) return false;
+        if (!load_texture_log("enemy", "data/enemy.png")) return false;
+        if (!load_texture_log("target", "data/target.png")) return false;
+
         return true;
     }
 
@@ -81,5 +59,15 @@ namespace vot
     TextureManager *TextureManager::main()
     {
         return s_main;
+    }
+
+    bool TextureManager::load_texture_log(const std::string &name, const std::string &filename)
+    {
+        auto result = load_texture(name, filename); 
+        if (!result)
+        {
+            std::cout << "Failed to load " << name << " texture\n";
+        }
+        return result;
     }
 }

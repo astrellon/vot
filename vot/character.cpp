@@ -8,7 +8,8 @@ namespace vot
         _life(10.0f),
         _max_life(10.0f),
         _is_dead(false),
-        _id(0u)
+        _id(0u),
+        _target(nullptr)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);        
@@ -118,5 +119,14 @@ namespace vot
         auto size = sprite().getTexture()->getSize();
         trans.translate(size.x * -0.5f, size.y * 0.5f);
         return trans;
+    }
+
+    void Character::target(Character *value)
+    {
+        _target = value;
+    }
+    Character *Character::target() const
+    {
+        return _target;
     }
 }

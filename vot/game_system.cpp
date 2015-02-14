@@ -49,8 +49,9 @@ namespace vot
             if (bullet != nullptr)
             {
                 bullet->update(dt);
-                // TODO
+                
                 auto group = bullet->group();
+                // Player bullet
                 if (group == Bullet::PLAYER)
                 {
                     // Search for enemies
@@ -59,16 +60,25 @@ namespace vot
                         auto enemy = (*enemies)[i].get();
                         if (enemy != nullptr && enemy->hitbox().intersects(bullet->hitbox()))
                         {
-                            _enemy_manager.remove_enemy(enemy);
+                            enemy->take_damage(bullet->damage());
+
+                            if (enemy->is_dead())
+                            {
+                                _enemy_manager.remove_enemy(enemy);
+                            }
+
+                            _bullet_manager.remove_bullet(bullet);
                         }
                     }
                 }
+                // Enemy bullet
                 else if (group == Bullet::ENEMY && 
                         _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
                     _bullet_manager.remove_bullet(bullet);
                 } 
+                // Remove dead (old) bullets.
                 else if (bullet->dead())
                 {
                     _bullet_manager.remove_bullet(bullet);
