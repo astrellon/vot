@@ -20,6 +20,18 @@
     <ClCompile Include="vot\texture_manager.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\background.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\character.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\enemy.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\game_hud.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -43,6 +55,18 @@
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\texture_manager.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\background.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\character.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\enemy.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\game_hud.h">
       <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>
