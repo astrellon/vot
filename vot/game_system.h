@@ -26,8 +26,22 @@ namespace vot
             void player(Player *value);
             Player *player() const;
 
+            Enemy *next_target(Enemy *current);
+
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+
+            enum KeyState
+            {
+                NO_CHANGE,
+                PRESSED,
+                RELEASED
+            };
+
+            void key_pressed(sf::Keyboard::Key key);
+            bool is_key_pressed(sf::Keyboard::Key key) const;
+            void key_released(sf::Keyboard::Key key);
+            bool is_key_released(sf::Keyboard::Key key) const;
 
             static void main(GameSystem *main);
             static GameSystem *main();
@@ -40,6 +54,10 @@ namespace vot
             EnemyManager _enemy_manager;
 
             uint16_t _id_counter;
+            uint32_t _update_counter;
+
+            uint32_t _keys_pressed[sf::Keyboard::KeyCount];
+            uint32_t _keys_released[sf::Keyboard::KeyCount];
 
             static GameSystem *s_main;
     };

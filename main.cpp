@@ -75,7 +75,18 @@ int main()
         {
             // Close window: exit
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            }
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                game_system.key_pressed(event.key.code);
+            }
+            if (event.type == sf::Event::KeyReleased)
+            {
+                game_system.key_released(event.key.code);
+            }
         }
         // }}}
         
@@ -83,12 +94,12 @@ int main()
         sf::Time elapsed = clock.restart();
         auto dt = elapsed.asSeconds();
         
+        game_system.update(dt);
+        
         player->update(dt);
         player_camera.setCenter(player->location());
         player_camera.setRotation(player->rotation());
         window.setView(player_camera);
-
-        game_system.update(dt);
 
         hud.update(dt);
         worldHud.update(dt);

@@ -18,6 +18,12 @@ namespace vot
     GameSystem::GameSystem(sf::RenderWindow &window) :
         _window(window)
     {
+        auto size = static_cast<int>(sf::Keyboard::KeyCount);
+        for (auto i = 0; i < size; i++)
+        {
+            _keys_pressed[i] = 0u;
+            _keys_released[i] = 0u;
+        }
     }
 
     sf::RenderWindow &GameSystem::window() const
@@ -27,6 +33,7 @@ namespace vot
 
     void GameSystem::update(float dt)
     {
+        _update_counter++;
         if (_player == NULL)
         {
             return;
@@ -64,6 +71,10 @@ namespace vot
 
                             if (enemy->is_dead())
                             {
+                                if (enemy == _player->target())
+                                {
+                                    _player->target(nullptr);
+                                }
                                 _enemy_manager.remove_enemy(enemy);
                             }
 
@@ -146,5 +157,51 @@ namespace vot
     Player *GameSystem::player() const
     {
         return _player.get();
+    }
+
+    Enemy *GameSystem::next_target(Enemy *current)
+    {
+        auto start_index = 0u;
+        auto enemies = _enemy_manager.enemies();
+        if (current != nullptr)
+        {
+            start_index = current->index();
+        }
+
+        auto end_index = start_index;
+        auto i = start_index + 1;
+        while (i != end_index)
+        {
+            if (i >= enemies->size())
+            {
+                i = 0u;
+                continue;
+            }
+            auto enemy = enemies->at(i).get(); 
+            if (enemy != nullptr && enemy != current)
+            {
+                return enemy;
+            }
+            ++i;
+        }
+
+        return nullptr;
+    }
+
+    void GameSystem::key_pressed(sf::Keyboard::Key key)
+    {
+        _keys_pressed[key] = _update_counter + 1;
+    }
+    bool GameSystem::is_key_pressed(sf::Keyboard::Key key) const
+    {
+        return _keys_pressed[key] == _update_counter;
+    }
+    void GameSystem::key_released(sf::Keyboard::Key key)
+    {
+        _keys_released[key] = _update_counter + 1;
+    }
+    bool GameSystem::is_key_released(sf::Keyboard::Key key) const
+    {
+        return _keys_released[key] == _update_counter;
     }
 }

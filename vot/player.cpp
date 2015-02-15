@@ -7,13 +7,16 @@ namespace vot
 {
     Player::Player(const sf::Texture &texture) :
         Character(texture),
-        _cooldown(0.0f)
+        _cooldown(0.0f),
+        _target(nullptr)
     {
 
     }
 
     void Player::update(float dt)
     {
+        auto gs = GameSystem::main();
+
         auto speed = 270.0f * dt;
         auto rot_speed = 180.0f * dt;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -40,6 +43,12 @@ namespace vot
         {
             rotateBy(rot_speed);
         }
+
+        if (gs->is_key_pressed(sf::Keyboard::T))
+        {
+            target(gs->next_target(_target));
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && _cooldown <= 0.0f)
         {
             auto bullet = spawn_bullet();
@@ -68,5 +77,13 @@ namespace vot
     {
         return GameSystem::main()->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::PLAYER);
     }
-
+    
+    void Player::target(Enemy *value)
+    {
+        _target = value;
+    }
+    Enemy *Player::target() const
+    {
+        return _target;
+    }
 }

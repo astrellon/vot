@@ -43,9 +43,6 @@ namespace vot
 
             sf::Transform forward_center_trans() const;
 
-            void target(Character *value);
-            Character *target() const;
-
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
@@ -53,7 +50,5 @@ namespace vot
             float _max_life;
             bool _is_dead;
             uint16_t _id;
-
-            Character *_target;
     };
 }
