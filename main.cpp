@@ -46,9 +46,6 @@ int main()
     auto window_size = window.getSize();
     player->location(sf::Vector2f(0.0f, 100.0f));
 
-    // Create a graphical text to display
-    //sf::Text text("ABC", *font_manager.font("sans"), 13);
-
     sf::View player_camera;
     player_camera.setSize(window_size.x, window_size.y);
 

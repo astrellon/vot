@@ -38,7 +38,7 @@ namespace vot
     void Circle::radius(float value)
     {
         _radius = value;
-        _radius = value * value;
+        _radius_squared = value * value;
     }
     float Circle::radius() const
     {
@@ -58,6 +58,7 @@ namespace vot
     {
         sf::CircleShape shape(_radius);
         shape.setPosition(_location);
+        shape.setFillColor(sf::Color::Red);
         shape.setOrigin(_radius, _radius);
         target.draw(shape, state);
     }

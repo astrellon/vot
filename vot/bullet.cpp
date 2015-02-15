@@ -21,6 +21,7 @@ namespace vot
         sf::Sprite(clone),
         _damage(clone._damage),
         _index(_UMAX),
+        _hitbox(clone._hitbox.radius()),
         _owner(0u),
         _group(NATURE)
     {
@@ -205,6 +206,7 @@ namespace vot
             if (bullet != nullptr && bullet->active())
             {
                 target.draw(*bullet, states);
+                target.draw(bullet->hitbox(), states);
             }
         }
     }

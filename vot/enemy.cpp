@@ -46,8 +46,8 @@ namespace vot
             }
             _cooldown -= dt;
 
-            auto rot_speed = 45.0f * dt;
-            rotateBy(rot_speed);
+            //auto rot_speed = 45.0f * dt;
+            //rotateBy(rot_speed);
         }
     }
 
@@ -150,6 +150,7 @@ namespace vot
             if (enemy != nullptr)
             {
                 target.draw(*enemy, states);
+                target.draw(enemy->hitbox(), states);
             }
         }
     }
