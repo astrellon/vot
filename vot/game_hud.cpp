@@ -22,6 +22,10 @@ namespace vot
 
         std::stringstream health;
         health << "Health: " << gs->player()->life();
+        if (gs->player()->looking_at_target())
+        {
+            health << "\nLooking at target";
+        }
         _health.setString(health.str());
     }
 

@@ -18,6 +18,7 @@ namespace vot
             void translate(const sf::Vector2f &vector);
             void location(const sf::Vector2f &vector);
             sf::Vector2f location() const;
+            sf::Vector2f center() const;
 
             void rotateBy(float angle);
             void rotation(float angle);
@@ -41,7 +42,7 @@ namespace vot
             sf::Sprite &sprite();
             const sf::Sprite &sprite() const;
 
-            sf::Transform forward_center_trans() const;
+            sf::Transform forward_center_trans(bool rotate = true) const;
 
         private:
             sf::Sprite _sprite;

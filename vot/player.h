@@ -18,10 +18,14 @@ namespace vot
             void target(Enemy *value);
             Enemy *target() const;
 
+            bool looking_at_target() const;
+
         private:
             float _cooldown;
 
             PatternBullet *spawn_bullet();
             Enemy *_target;
+
+            bool _look_at_target;
     };
 }

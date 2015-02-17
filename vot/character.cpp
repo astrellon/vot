@@ -32,6 +32,12 @@ namespace vot
     {
         return _sprite.getPosition();
     }
+    sf::Vector2f Character::center() const
+    {
+        auto pos = _sprite.getPosition();
+        auto size = _sprite.getTexture()->getSize();
+        return sf::Vector2f(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f);
+    }
 
     void Character::rotateBy(float angle)
     {
@@ -111,10 +117,13 @@ namespace vot
         return _sprite;
     }
     
-    sf::Transform Character::forward_center_trans() const
+    sf::Transform Character::forward_center_trans(bool rotate) const
     {
         auto trans = sprite().getTransform();
-        trans.rotate(-90);
+        if (rotate)
+        {
+            trans.rotate(-90);
+        }
         auto size = sprite().getTexture()->getSize();
         trans.translate(size.x * -0.5f, size.y * 0.5f);
         return trans;

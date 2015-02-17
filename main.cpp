@@ -52,9 +52,9 @@ int main()
     vot::HudMain hud;
     vot::HudWorld worldHud(player_camera);
 
-    vot::Background background(0.2, player_camera);
-    vot::Background background2(0.1, player_camera);
-    vot::Background background3(0.05, player_camera);
+    auto background = new vot::Background(0.2, player_camera);
+    auto background2 = new vot::Background(0.1, player_camera);
+    auto background3 = new vot::Background(0.05, player_camera);
 
     /*
     // Load a music to play
@@ -103,18 +103,18 @@ int main()
 
         hud.update(dt);
         worldHud.update(dt);
-        background.update(dt);
-        background2.update(dt);
-        background3.update(dt);
+        background->update(dt);
+        background2->update(dt);
+        background3->update(dt);
         // }}}
         
         // Draw game {{{
         // Clear screen
         window.clear();
        
-        window.draw(background3);
-        window.draw(background2);
-        window.draw(background);
+        window.draw(*background3);
+        window.draw(*background2);
+        window.draw(*background);
         window.draw(game_system);
         window.draw(worldHud);
         
@@ -126,5 +126,10 @@ int main()
         window.display();
         // }}}
     }
+
+    delete background3;
+    delete background2;
+    delete background;
+
     return EXIT_SUCCESS;
 }

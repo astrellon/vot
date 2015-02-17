@@ -3,12 +3,15 @@
 #include "game_system.h"
 #include "bullet.h"
 
+#include <iostream>
+
 namespace vot
 {
     Player::Player(const sf::Texture &texture) :
         Character(texture),
         _cooldown(0.0f),
-        _target(nullptr)
+        _target(nullptr),
+        _look_at_target(false)
     {
 
     }
@@ -48,6 +51,10 @@ namespace vot
         {
             target(gs->next_target(_target));
         }
+        if (gs->is_key_pressed(sf::Keyboard::Z))
+        {
+            _look_at_target = !_look_at_target;
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && _cooldown <= 0.0f)
         {
@@ -70,6 +77,32 @@ namespace vot
 
             _cooldown = 0.1f;
         }
+
+        if (_look_at_target && _target != nullptr)
+        {
+            auto target_center = _target->center();
+
+            auto d_pos = center() - target_center;
+            auto length = sqrt(d_pos.x * d_pos.x + d_pos.y * d_pos.y);
+            d_pos.x /= length;
+            d_pos.y /= length;
+
+            auto to_angle = atan2(d_pos.y, d_pos.x) * 180.0f / M_PI;
+            to_angle -= 90.0f;
+            auto d_angle = rotation() - to_angle;
+            while (d_angle >= 180.0f) d_angle -= 360.0f;
+            while (d_angle <= -180.0f) d_angle += 360.0f;
+
+            if (d_angle < rot_speed && d_angle > -rot_speed)
+            {
+                rotation(to_angle);
+            }
+            else
+            {
+                rotateBy(d_angle > 0 ? -rot_speed : rot_speed);
+            }
+            
+        }
         _cooldown -= dt;
     }
 
@@ -85,5 +118,10 @@ namespace vot
     Enemy *Player::target() const
     {
         return _target;
+    }
+
+    bool Player::looking_at_target() const
+    {
+        return _look_at_target;
     }
 }
