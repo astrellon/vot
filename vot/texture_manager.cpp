@@ -28,7 +28,7 @@ namespace vot
         return true;
     }
 
-    const sf::Texture *TextureManager::texture(const std::string &name) const
+    const sf::Texture *TextureManager::find_texture(const std::string &name) const
     {
         auto find = _textures.find(name);
         if (find == _textures.end())
@@ -59,6 +59,11 @@ namespace vot
     TextureManager *TextureManager::main()
     {
         return s_main;
+    }
+
+    const sf::Texture *TextureManager::texture(const std::string &name)
+    {
+        return s_main->find_texture(name); 
     }
 
     bool TextureManager::load_texture_log(const std::string &name, const std::string &filename)

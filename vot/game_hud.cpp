@@ -11,6 +11,10 @@ namespace vot
     // HudMain {{{
     HudMain::HudMain()
     {
+    }
+
+    void HudMain::create()
+    {
         _sans = FontManager::main()->font("sans");
         _health.setFont(*_sans);
         _health.setCharacterSize(13);
@@ -36,8 +40,11 @@ namespace vot
     // }}}
     
     // HudWorld {{{
-    HudWorld::HudWorld(sf::View &camera) :
-        _camera(camera)
+    HudWorld::HudWorld()
+    {
+    }
+
+    void HudWorld::create()
     {
         _sans = FontManager::main()->font("sans");
 
@@ -60,7 +67,7 @@ namespace vot
             {
                 auto pos = target->location();
                 _target.setPosition(pos.x, pos.y);
-                _target.setRotation(_camera.getRotation());
+                _target.setRotation(gs->camera().getRotation());
                 _has_target = true;
             }
         }

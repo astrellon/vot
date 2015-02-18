@@ -7,6 +7,8 @@
 #include "bullet.h"
 #include "player.h"
 #include "enemy.h"
+#include "game_hud.h"
+#include "background.h"
 
 namespace vot
 {
@@ -14,6 +16,8 @@ namespace vot
     {
         public:
             GameSystem(sf::RenderWindow &window);
+
+            void init();
 
             sf::RenderWindow &window() const;
 
@@ -25,6 +29,8 @@ namespace vot
 
             void player(Player *value);
             Player *player() const;
+
+            sf::View &camera();
 
             Enemy *next_target(Enemy *current);
 
@@ -48,10 +54,19 @@ namespace vot
 
         private:
             sf::RenderWindow &_window;
+            sf::View _camera;
 
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
             EnemyManager _enemy_manager;
+    
+            HudMain _hud;
+            HudWorld _world_hud;
+
+            Background _background;
+            Background _background2;
+            Background _background3;
+
 
             uint16_t _id_counter;
             uint32_t _update_counter;

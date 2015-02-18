@@ -5,14 +5,18 @@
 #include <math.h>
 
 #include "texture_manager.h"
+#include "game_system.h"
 
 namespace vot
 {
-    Background::Background(float speed, const sf::View &camera) :
+    Background::Background() :
         sf::Drawable(),
         sf::Transformable(),
-        _camera(camera),
-        _speed(speed)
+        _speed(1.0f)
+    {
+    }
+
+    void Background::create()
     {
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -21,12 +25,12 @@ namespace vot
         auto size = 512;
         _target.create(size, size);
 
-        auto blue_star = TextureManager::main()->texture("blue_star");
+        auto blue_star = TextureManager::texture("blue_star");
         sf::Sprite blue_star_sprite(*blue_star);
         auto s = blue_star->getSize();
         blue_star_sprite.setOrigin(s.x * 0.5f, s.y * 0.5f);
 
-        auto red_star = TextureManager::main()->texture("red_star");
+        auto red_star = TextureManager::texture("red_star");
         s = red_star->getSize();
         sf::Sprite red_star_sprite(*red_star);
         red_star_sprite.setOrigin(s.x * 0.5f, s.y * 0.5f);
@@ -62,14 +66,19 @@ namespace vot
         _sprite.setTextureRect(sf::IntRect(0, 0, 2048, 2048));
     }
 
-    const sf::View &Background::camera() const
+    void Background::speed(float value)
     {
-        return _camera;
+        _speed = value;
+    }
+    float Background::speed() const
+    {
+        return _speed;
     }
 
     void Background::update(float dt)
     {
-        auto cam_pos = _camera.getCenter();
+        auto camera = GameSystem::main()->camera();
+        auto cam_pos = camera.getCenter();
         auto pos = cam_pos;
         pos.x *= -_speed;
         pos.y *= -_speed;

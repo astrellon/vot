@@ -26,6 +26,31 @@ namespace vot
         }
     }
 
+    void GameSystem::init()
+    {
+        auto player = new vot::Player(*TextureManager::texture("player"));
+        player->hitbox().radius(5.0f);
+        player->location(sf::Vector2f(0.0f, 100.0f));
+
+        this->player(player);
+    
+        auto window_size = _window.getSize();
+        _camera.setSize(window_size.x, window_size.y);
+
+        _background.speed(0.1f);
+        _background.create();
+        _background2.speed(0.05f);
+        _background2.create();
+        _background3.speed(0.025f);
+        _background3.create();
+    
+        create_default_bullets();
+        create_default_enemieS();
+
+        _hud.create();
+        _world_hud.create();
+    }
+
     sf::RenderWindow &GameSystem::window() const
     {
         return _window;
@@ -96,16 +121,37 @@ namespace vot
                 }
             }
         }
+
+        _player->update(dt);
+        _camera.setCenter(_player->location());
+        _camera.setRotation(_player->rotation());
+
+        _background.update(dt);
+        _background2.update(dt);
+        _background3.update(dt);
+
+        _hud.update(dt); 
+        _world_hud.update(dt);
     }
     void GameSystem::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        //_bullet_manager.draw(window);
+        target.setView(_camera);
+
+        target.draw(_background3, states);
+        target.draw(_background2, states);
+        target.draw(_background, states);
+
         target.draw(_bullet_manager, states);
         target.draw(_enemy_manager, states);
         if (_player != nullptr)
         {
             target.draw(*_player.get(), states);
         }
+
+        target.draw(_world_hud);
+        
+        target.setView(target.getDefaultView());
+        target.draw(_hud);
     }
 
     BulletManager &GameSystem::bullet_manager()
@@ -114,10 +160,8 @@ namespace vot
     }
     void GameSystem::create_default_bullets()
     {
-        auto texture_manager = TextureManager::main();
-
-        auto bullet_blue_circle = texture_manager->texture("bullet_blue_circle");
-        auto bullet_blue = texture_manager->texture("bullet_blue");
+        auto bullet_blue_circle = TextureManager::texture("bullet_blue_circle");
+        auto bullet_blue = TextureManager::texture("bullet_blue");
         
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(0u);
@@ -141,9 +185,7 @@ namespace vot
     }
     void GameSystem::create_default_enemieS()
     {
-        auto texture_manager = TextureManager::main();
-
-        auto texture = texture_manager->texture("enemy");
+        auto texture = TextureManager::texture("enemy");
         auto enemy= new Enemy(*texture);
         enemy->hitbox().radius(5.0f);
         _enemy_manager.add_src_enemy(enemy, "enemy1");
@@ -157,6 +199,11 @@ namespace vot
     Player *GameSystem::player() const
     {
         return _player.get();
+    }
+
+    sf::View &GameSystem::camera()
+    {
+        return _camera;
     }
 
     Enemy *GameSystem::next_target(Enemy *current)

@@ -10,6 +10,8 @@ namespace vot
         public:
             HudMain();
 
+            void create();
+
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -23,7 +25,9 @@ namespace vot
     class HudWorld : public sf::Drawable
     {
         public:
-            HudWorld(sf::View &camera);
+            HudWorld();
+
+            void create();
 
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -31,7 +35,6 @@ namespace vot
         private:
             const sf::Font *_sans;
             sf::Sprite _target;
-            sf::View &_camera;
             bool _has_target;
     };
     // }}}

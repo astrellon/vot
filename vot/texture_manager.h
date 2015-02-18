@@ -15,12 +15,14 @@ namespace vot
             const TextureMap &textures() const;
 
             bool load_texture(const std::string &name, const std::string &filename);
-            const sf::Texture *texture(const std::string &name) const;
+            const sf::Texture *find_texture(const std::string &name) const;
 
             bool load_default_textures();
 
             static void main(TextureManager *manager);
             static TextureManager *main();
+
+            static const sf::Texture *texture(const std::string &name);
 
         private:
 
