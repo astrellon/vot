@@ -73,6 +73,11 @@ namespace vot
                 enemy->update(dt);
             }
         }
+        
+        _player->update(dt);
+        _camera.setCenter(_player->location());
+        _camera.setRotation(_player->rotation());
+
 
         auto bullets = _bullet_manager.bullets();
         for (auto i = 0u; i < bullets->size(); i++)
@@ -121,10 +126,6 @@ namespace vot
                 }
             }
         }
-
-        _player->update(dt);
-        _camera.setCenter(_player->location());
-        _camera.setRotation(_player->rotation());
 
         _background.update(dt);
         _background2.update(dt);
