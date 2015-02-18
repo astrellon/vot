@@ -57,18 +57,17 @@
 ##==========================================================================
 
 # The pre-processor and compiler options.
-MY_CFLAGS = 
+MY_CFLAGS = -I./ -I/usr/include
 
 # The linker options.
-MY_LIBS   = 
+MY_LIBS   = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # The pre-processor options used by the cpp (man cpp for more).
 #CPPFLAGS  = -I./ $(shell sdl2-config --prefix=/usr --cflags)
-CPPFLAGS  = -I./ 
+CPPFLAGS  = 
 
 # The options used in linking as well as in any direct use of ld.
-#LDFLAGS   = $(shell sdl2-config --prefix=/usr --libs) -lSDL2_ttf -lSDL2_image
-LDFLAGS   = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+LDFLAGS   = 
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
