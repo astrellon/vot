@@ -55,6 +55,8 @@ namespace vot
 
         private:
             EnemyList _enemies;
+            std::vector<std::unique_ptr<Enemy> > _dead_enemies;
+
             EnemyMap _src_enemies;
             uint32_t _enemy_index;
             uint16_t _enemy_counter;

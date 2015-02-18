@@ -217,7 +217,7 @@ namespace vot
         move(x, y);
         hitbox().location(getPosition());
         
-        if (_target == nullptr)
+        if (_target == nullptr || _target->is_dead())
         {
             return;
         }

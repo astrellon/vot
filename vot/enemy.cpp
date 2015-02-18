@@ -80,7 +80,7 @@ namespace vot
 
     void EnemyManager::remove_enemy(Enemy *enemy)
     {
-        _enemies[enemy->index()] = nullptr;
+        _dead_enemies.push_back(std::move(_enemies[enemy->index()]));
     }
 
     Enemy *EnemyManager::spawn_enemy(const std::string &name)
