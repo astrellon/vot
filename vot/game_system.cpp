@@ -28,6 +28,9 @@ namespace vot
 
     void GameSystem::init()
     {
+        create_default_bullets();
+        create_default_enemieS();
+
         auto player = new vot::Player(*TextureManager::texture("player"));
         player->hitbox().radius(5.0f);
         player->location(sf::Vector2f(0.0f, 100.0f));
@@ -44,9 +47,6 @@ namespace vot
         _background3.speed(0.025f);
         _background3.create();
     
-        create_default_bullets();
-        create_default_enemieS();
-
         _hud.create();
         _world_hud.create();
     }
@@ -77,7 +77,6 @@ namespace vot
         _player->update(dt);
         _camera.setCenter(_player->location());
         _camera.setRotation(_player->rotation());
-
 
         auto bullets = _bullet_manager.bullets();
         for (auto i = 0u; i < bullets->size(); i++)
@@ -178,6 +177,10 @@ namespace vot
         pattern_bullet->pattern_type(1u);
         pattern_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "arena_blue");
+
+        auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
+        homing_bullet->hitbox().radius(5.0f);
+        _bullet_manager.add_src_homing_bullet(homing_bullet, "homing_blue");
     }
 
     EnemyManager &GameSystem::enemy_manager()

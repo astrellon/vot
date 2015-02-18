@@ -2,6 +2,7 @@
 
 #include "game_system.h"
 #include "bullet.h"
+#include "utils.h"
 
 #include <iostream>
 
@@ -58,57 +59,49 @@ namespace vot
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && _cooldown <= 0.0f)
         {
-            auto bullet = spawn_bullet();
+            auto bullet = spawn_pattern_bullet();
             bullet->pattern_type(2u);
             auto trans = forward_center_trans();
             bullet->init_transform(trans);
             
-            bullet = spawn_bullet();
-            bullet->pattern_type(2u);
-            trans = forward_center_trans();
-            trans.rotate(10.0f);
-            bullet->init_transform(trans);
+            auto homing_bullet = spawn_homing_bullet();
+            auto angle = rotation() - 90.0f;
+            homing_bullet->setPosition(location());
+            homing_bullet->rotate(angle + 10.0f);
+            homing_bullet->target(_target);
 
-            bullet = spawn_bullet();
-            bullet->pattern_type(2u);
-            trans = forward_center_trans();
-            trans.rotate(-10.0f);
-            bullet->init_transform(trans);
+            homing_bullet = spawn_homing_bullet();
+            homing_bullet->setPosition(location());
+            homing_bullet->rotate(angle - 10.0f);
+            homing_bullet->target(_target);
+            //bullet->init_transform(trans);
 
             _cooldown = 0.1f;
         }
 
         if (_look_at_target && _target != nullptr)
         {
-            auto target_center = _target->center();
-
-            auto d_pos = center() - target_center;
-            auto length = sqrt(d_pos.x * d_pos.x + d_pos.y * d_pos.y);
-            d_pos.x /= length;
-            d_pos.y /= length;
-
-            auto to_angle = atan2(d_pos.y, d_pos.x) * 180.0f / M_PI;
-            to_angle -= 90.0f;
-            auto d_angle = rotation() - to_angle;
-            while (d_angle >= 180.0f) d_angle -= 360.0f;
-            while (d_angle <= -180.0f) d_angle += 360.0f;
-
-            if (d_angle < rot_speed && d_angle > -rot_speed)
+            auto angles = Utils::calculate_angles(center(), _target->center(), rotation());
+            if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
-                rotation(to_angle);
+                rotation(angles.to_angle());
             }
             else
             {
-                rotateBy(d_angle > 0 ? -rot_speed : rot_speed);
+                rotateBy(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
             }
             
         }
         _cooldown -= dt;
     }
 
-    PatternBullet *Player::spawn_bullet()
+    PatternBullet *Player::spawn_pattern_bullet()
     {
         return GameSystem::main()->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::PLAYER);
+    }
+    HomingBullet *Player::spawn_homing_bullet()
+    {
+        return GameSystem::main()->bullet_manager().spawn_homing_bullet("homing_blue", id(), Bullet::PLAYER);
     }
     
     void Player::target(Enemy *value)

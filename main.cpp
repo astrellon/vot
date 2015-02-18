@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <sstream>
+#include <iostream>
 
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
@@ -20,11 +21,19 @@ int main()
 
     vot::FontManager font_manager;
     vot::FontManager::main(&font_manager);
-    font_manager.load_default_fonts();
+    if (!font_manager.load_default_fonts())
+    {
+        std::cout << "Failed to load fonts on startup\n";
+        return -1;
+    }
     
     vot::TextureManager texture_manager;
     vot::TextureManager::main(&texture_manager);
-    texture_manager.load_default_textures();
+    if (!texture_manager.load_default_textures())
+    {
+        std::cout << "Failed to load textures on startup\n";
+        return -1;
+    }
 
     vot::GameSystem game_system(window);
     vot::GameSystem::main(&game_system);

@@ -3,6 +3,9 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "utils.h"
+#include "character.h"
+
 namespace vot
 {
     #define _UMAX std::numeric_limits<uint32_t>::max()
@@ -27,6 +30,13 @@ namespace vot
         _group(NATURE)
     {
 
+    }
+
+    sf::Vector2f Bullet::center() const
+    {
+        auto pos = getPosition();
+        auto size = getTexture()->getSize();
+        return sf::Vector2f(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f);
     }
 
     void Bullet::damage(float value)
@@ -164,13 +174,17 @@ namespace vot
     // HomingBullet {{{
     HomingBullet::HomingBullet(const sf::Texture &texture, float damage) :
         Bullet(texture, damage),
-        _target(nullptr)
+        _target(nullptr),
+        _lifetime(0.0f),
+        _total_lifetime(10.0f)
     {
 
     }
     HomingBullet::HomingBullet(const HomingBullet &clone) :
         Bullet(clone),
-        _target(nullptr)
+        _target(nullptr),
+        _lifetime(0.0f),
+        _total_lifetime(clone._total_lifetime)
     {
 
     }
@@ -186,21 +200,39 @@ namespace vot
 
     bool HomingBullet::active() const
     {
-        return true;
+        return _lifetime >= 0.0f;
     }
     bool HomingBullet::dead() const
     {
-        return false;
+        return _lifetime > _total_lifetime;
     }
 
     void HomingBullet::update(float dt)
     {
+        _lifetime += dt;
+        auto speed = 270.0f * dt;
+        auto matrix = getTransform().getMatrix();
+        auto x = speed * matrix[0];
+        auto y = -speed * matrix[4];
+        move(x, y);
+        hitbox().location(getPosition());
+        
         if (_target == nullptr)
         {
             return;
         }
-
         
+        auto angles = Utils::calculate_angles(center(), _target->center(), getRotation());
+        auto rot_speed = 180.0f * dt;
+
+        if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
+        {
+            setRotation(angles.to_angle());
+        }
+        else
+        {
+            rotate(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
+        }
     }
     // }}}
 
@@ -235,6 +267,26 @@ namespace vot
         insert_bullet(new_bullet, index);
         return new_bullet;
     }
+    HomingBullet *BulletManager::spawn_homing_bullet(const std::string &name, uint16_t owner, Bullet::Group group)
+    {
+        auto find = _src_homing_bullets.find(name);
+        if (find == _src_homing_bullets.end())
+        {
+            return nullptr;
+        }
+
+        auto index = find_empty_bullet();
+        if (index == _UMAX)
+        {
+            return nullptr;
+        }
+
+        auto new_bullet = new HomingBullet(*find->second.get());
+        new_bullet->owner(owner);
+        new_bullet->group(group);
+        insert_bullet(new_bullet, index);
+        return new_bullet;
+    }
 
     void BulletManager::insert_bullet(Bullet *bullet, uint32_t index)
     {
@@ -250,7 +302,7 @@ namespace vot
             if (bullet != nullptr && bullet->active())
             {
                 target.draw(*bullet, states);
-                target.draw(bullet->hitbox(), states);
+                //target.draw(bullet->hitbox(), states);
             }
         }
     }
@@ -258,6 +310,10 @@ namespace vot
     void BulletManager::add_src_pattern_bullet(PatternBullet *bullet, const std::string &name)
     {
         _src_pattern_bullets[name] = std::unique_ptr<PatternBullet>(bullet);
+    }
+    void BulletManager::add_src_homing_bullet(HomingBullet *bullet, const std::string &name)
+    {
+        _src_homing_bullets[name] = std::unique_ptr<HomingBullet>(bullet);
     }
 
     BulletManager::BulletList *BulletManager::bullets()

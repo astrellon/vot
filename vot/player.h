@@ -7,6 +7,7 @@
 namespace vot
 {
     class PatternBullet;
+    class HomingBullet;
     class Enemy;
 
     class Player : public Character
@@ -23,7 +24,8 @@ namespace vot
         private:
             float _cooldown;
 
-            PatternBullet *spawn_bullet();
+            PatternBullet *spawn_pattern_bullet();
+            HomingBullet *spawn_homing_bullet();
             Enemy *_target;
 
             bool _look_at_target;

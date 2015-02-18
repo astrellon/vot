@@ -34,6 +34,8 @@ namespace vot
             void owner(uint16_t value);
             uint16_t owner() const;
 
+            sf::Vector2f center() const;
+
             enum Group
             {
                 PLAYER,
@@ -98,6 +100,9 @@ namespace vot
 
         private:
             const Character *_target;
+
+            float _lifetime;
+            float _total_lifetime;
     };
     // }}}
 
@@ -109,8 +114,10 @@ namespace vot
 
             void remove_bullet(Bullet *bullet);
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint16_t owner, Bullet::Group group);
+            HomingBullet *spawn_homing_bullet(const std::string &name, uint16_t owner, Bullet::Group group);
 
             void add_src_pattern_bullet(PatternBullet *bullet, const std::string &name);
+            void add_src_homing_bullet(HomingBullet *bullet, const std::string &name);
 
             //void draw(sf::RenderWindow &window);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -123,6 +130,7 @@ namespace vot
             BulletList _bullets;
 
             std::map<std::string, std::unique_ptr<PatternBullet> > _src_pattern_bullets;
+            std::map<std::string, std::unique_ptr<HomingBullet> > _src_homing_bullets;
 
             uint32_t find_empty_bullet() const;
 
