@@ -160,6 +160,49 @@ namespace vot
         setRotation(angle * 180.0f / M_PI);
     }
     // }}}
+    
+    // HomingBullet {{{
+    HomingBullet::HomingBullet(const sf::Texture &texture, float damage) :
+        Bullet(texture, damage),
+        _target(nullptr)
+    {
+
+    }
+    HomingBullet::HomingBullet(const HomingBullet &clone) :
+        Bullet(clone),
+        _target(nullptr)
+    {
+
+    }
+
+    void HomingBullet::target(const Character *value)
+    {
+        _target = value;
+    }
+    const Character *HomingBullet::target() const
+    {
+        return _target;
+    }
+
+    bool HomingBullet::active() const
+    {
+        return true;
+    }
+    bool HomingBullet::dead() const
+    {
+        return false;
+    }
+
+    void HomingBullet::update(float dt)
+    {
+        if (_target == nullptr)
+        {
+            return;
+        }
+
+        
+    }
+    // }}}
 
     // BulletManager {{{
     BulletManager::BulletManager() :

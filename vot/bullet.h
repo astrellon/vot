@@ -11,6 +11,8 @@
 
 namespace vot
 {
+    class Character;
+
     // Bullet {{{
     class Bullet : public sf::Sprite
     {
@@ -52,6 +54,7 @@ namespace vot
     };
     // }}}
     
+    // PatternBullet {{{
     class PatternBullet : public Bullet
     {
         public:
@@ -76,6 +79,27 @@ namespace vot
             uint32_t _pattern_type;
 
     };
+    // }}}
+
+    // HomingBullet {{{
+    class HomingBullet : public Bullet
+    {
+        public:
+            HomingBullet(const sf::Texture &texture, float damage);
+            HomingBullet(const HomingBullet &clone);
+
+            void target(const Character *value);
+            const Character *target() const;
+
+            virtual bool active() const;
+            virtual bool dead() const;
+
+            virtual void update(float dt);
+
+        private:
+            const Character *_target;
+    };
+    // }}}
 
     // BulletManager {{{
     class BulletManager : public sf::Drawable
