@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#include <math.h>
+
 namespace vot
 {
     AnglePair Utils::calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle)
@@ -10,7 +12,7 @@ namespace vot
         d_pos.x *= rlength;
         d_pos.y *= rlength;
 
-        auto to_angle = atan2(d_pos.y, d_pos.x) * 180.0f / M_PI;
+        auto to_angle = atan2(d_pos.y, d_pos.x) * 180.0f / 3.14159;
         to_angle += offset_angle;
         auto d_angle = orig_angle - to_angle;
         while (d_angle >= 180.0f) d_angle -= 360.0f;
