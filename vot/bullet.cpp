@@ -176,7 +176,8 @@ namespace vot
         Bullet(texture, damage),
         _target(nullptr),
         _lifetime(0.0f),
-        _total_lifetime(10.0f)
+        _total_lifetime(10.0f),
+        _tracking_time(0.0f)
     {
 
     }
@@ -184,7 +185,8 @@ namespace vot
         Bullet(clone),
         _target(nullptr),
         _lifetime(0.0f),
-        _total_lifetime(clone._total_lifetime)
+        _total_lifetime(clone._total_lifetime),
+        _tracking_time(0.0f)
     {
 
     }
@@ -210,7 +212,13 @@ namespace vot
     void HomingBullet::update(float dt)
     {
         _lifetime += dt;
-        auto speed = 270.0f * dt;
+        auto speed = 90.0f * dt;
+        if (_tracking_time >= 1.0f)
+        {
+            speed = (_tracking_time - 1.0f) * 180.0f + 90.0f;
+            speed = speed > 270.0f ? 270.0f : speed;
+            speed *= dt;
+        }
         auto matrix = getTransform().getMatrix();
         auto x = speed * matrix[0];
         auto y = -speed * matrix[4];
@@ -218,6 +226,11 @@ namespace vot
         hitbox().location(getPosition());
         
         if (_target == nullptr || _target->is_dead())
+        {
+            return;
+        }
+        _tracking_time += dt;
+        if (_tracking_time < 1.0f)
         {
             return;
         }
@@ -231,7 +244,7 @@ namespace vot
         }
         else
         {
-            rotate(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
+            rotate(angles.delta_angle() > 0 ? rot_speed : -rot_speed);
         }
     }
     // }}}
