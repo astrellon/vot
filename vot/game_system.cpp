@@ -123,7 +123,14 @@ namespace vot
                             {
                                 if (enemy == _player->target())
                                 {
-                                    _player->target(nullptr);
+                                    if (_player->auto_target())
+                                    {
+                                        _player->target(next_target(enemy));
+                                    }
+                                    else
+                                    {
+                                        _player->target(nullptr);
+                                    }
                                 }
                                 _enemy_manager.remove_enemy(enemy);
                             }
@@ -177,6 +184,7 @@ namespace vot
     void GameSystem::create_default_bullets()
     {
         auto bullet_blue_circle = TextureManager::texture("bullet_blue_circle");
+        auto bullet_red_circle = TextureManager::texture("bullet_red_circle");
         auto bullet_blue = TextureManager::texture("bullet_blue");
         
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
@@ -188,6 +196,11 @@ namespace vot
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue");
+        
+        pattern_bullet = new PatternBullet(*bullet_red_circle, 1.0f);
+        pattern_bullet->pattern_type(0u);
+        pattern_bullet->hitbox().radius(5.0f);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_red_circle");
 
         pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(1u);

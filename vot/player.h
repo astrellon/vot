@@ -20,6 +20,7 @@ namespace vot
             Enemy *target() const;
 
             bool looking_at_target() const;
+            bool auto_target() const;
 
         private:
             float _cooldown;
@@ -29,5 +30,6 @@ namespace vot
             Enemy *_target;
 
             bool _look_at_target;
+            bool _auto_target;
     };
 }

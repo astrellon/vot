@@ -37,7 +37,7 @@ namespace vot
             {
                 for (auto i = 0; i < 16; i++)
                 {
-                    auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::ENEMY);
+                    auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_red_circle", id(), Bullet::ENEMY);
                     if (bullet == nullptr)
                     {
                         continue;

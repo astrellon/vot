@@ -30,6 +30,10 @@ namespace vot
         {
             health << "\nLooking at target";
         }
+        if (gs->player()->auto_target())
+        {
+            health << "\nAuto targetting";
+        }
         _health.setString(health.str());
     }
 

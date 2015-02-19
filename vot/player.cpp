@@ -12,7 +12,8 @@ namespace vot
         Character(texture),
         _cooldown(0.0f),
         _target(nullptr),
-        _look_at_target(false)
+        _look_at_target(false),
+        _auto_target(false)
     {
 
     }
@@ -50,7 +51,14 @@ namespace vot
 
         if (gs->is_key_pressed(sf::Keyboard::T))
         {
-            target(gs->next_target(_target));
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            {
+                _auto_target = !_auto_target;
+            }
+            else
+            {
+                target(gs->next_target(_target));
+            }
         }
         if (gs->is_key_pressed(sf::Keyboard::Z))
         {
@@ -125,5 +133,9 @@ namespace vot
     bool Player::looking_at_target() const
     {
         return _look_at_target;
+    }
+    bool Player::auto_target() const
+    {
+        return _auto_target;
     }
 }

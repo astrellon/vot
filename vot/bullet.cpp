@@ -215,8 +215,10 @@ namespace vot
         auto speed = 90.0f * dt;
         if (_tracking_time >= 1.0f)
         {
-            speed = (_tracking_time - 1.0f) * 180.0f + 90.0f;
-            speed = speed > 270.0f ? 270.0f : speed;
+            auto top_speed = 1000.0f;
+            auto base_speed = 100.0f;
+            speed = (_tracking_time - 1.0f) * (top_speed - base_speed) + base_speed;
+            speed = speed > top_speed ? top_speed : speed;
             speed *= dt;
         }
         auto matrix = getTransform().getMatrix();

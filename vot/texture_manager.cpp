@@ -43,6 +43,7 @@ namespace vot
     {
         if (!load_texture_log("bullet_blue", "data/bullet_blue.png")) return false;
         if (!load_texture_log("bullet_blue_circle", "data/bullet_blue_circle.png")) return false;
+        if (!load_texture_log("bullet_red_circle", "data/bullet_red_circle.png")) return false;
         if (!load_texture_log("player", "data/player.png")) return false;
         if (!load_texture_log("red_star", "data/red_star.png")) return false;
         if (!load_texture_log("blue_star", "data/blue_star.png")) return false;
