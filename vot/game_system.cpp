@@ -1,5 +1,7 @@
 #include "game_system.h"
 
+#include <random>
+
 #include "texture_manager.h"
 
 namespace vot
@@ -62,6 +64,16 @@ namespace vot
         if (_player == NULL)
         {
             return;
+        }
+
+        _spawn_timer += dt;
+        if (_spawn_timer > 3.0f)
+        {
+            std::mt19937 rd;
+            std::uniform_real_distribution<float> uni(-500.0f, 500.0f);
+            auto enemy = enemy_manager().spawn_enemy("enemy1");
+            enemy->translate(sf::Vector2f(uni(rd), uni(rd)));
+            _spawn_timer = 0.0f;
         }
 
         auto enemies = _enemy_manager.enemies();

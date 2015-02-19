@@ -67,6 +67,7 @@ namespace vot
             Background _background2;
             Background _background3;
 
+            float _spawn_timer;
 
             uint16_t _id_counter;
             uint32_t _update_counter;

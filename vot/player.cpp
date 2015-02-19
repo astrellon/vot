@@ -74,7 +74,16 @@ namespace vot
             homing_bullet->setPosition(location());
             homing_bullet->rotate(angle - 10.0f);
             homing_bullet->target(_target);
-            //bullet->init_transform(trans);
+
+            homing_bullet = spawn_homing_bullet();
+            homing_bullet->setPosition(location());
+            homing_bullet->rotate(angle - 30.0f);
+            homing_bullet->target(_target);
+
+            homing_bullet = spawn_homing_bullet();
+            homing_bullet->setPosition(location());
+            homing_bullet->rotate(angle + 30.0f);
+            homing_bullet->target(_target);
 
             _cooldown = 0.1f;
         }

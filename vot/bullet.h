@@ -103,6 +103,7 @@ namespace vot
 
             float _lifetime;
             float _total_lifetime;
+            float _tracking_time;
     };
     // }}}
 
