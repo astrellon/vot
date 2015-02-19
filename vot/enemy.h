@@ -43,6 +43,7 @@ namespace vot
             Enemy *spawn_enemy(const std::string &name);
 
             void add_src_enemy(Enemy *enemy, const std::string &name);
+            uint32_t num_enemies() const;
 
             typedef std::array<std::unique_ptr<Enemy>, 128> EnemyList;
             EnemyList *enemies();
@@ -60,6 +61,7 @@ namespace vot
             EnemyMap _src_enemies;
             uint32_t _enemy_index;
             uint16_t _enemy_counter;
+            uint32_t _num_enemies;
             
             uint32_t find_empty_enemy() const;
 

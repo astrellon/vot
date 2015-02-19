@@ -18,7 +18,9 @@ namespace vot
     }
 
     GameSystem::GameSystem(sf::RenderWindow &window) :
-        _window(window)
+        _window(window),
+        _rand_dist(-100.0f, 100.0f),
+        _rand(_rd())
     {
         auto size = static_cast<int>(sf::Keyboard::KeyCount);
         for (auto i = 0; i < size; i++)
@@ -66,14 +68,15 @@ namespace vot
             return;
         }
 
-        _spawn_timer += dt;
-        if (_spawn_timer > 3.0f)
+        if (_enemy_manager.num_enemies() < 3)
         {
-            std::mt19937 rd;
-            std::uniform_real_distribution<float> uni(-500.0f, 500.0f);
-            auto enemy = enemy_manager().spawn_enemy("enemy1");
-            enemy->translate(sf::Vector2f(uni(rd), uni(rd)));
-            _spawn_timer = 0.0f;
+            _spawn_timer += dt;
+            if (_spawn_timer > 3.0f)
+            {
+                auto enemy = enemy_manager().spawn_enemy("enemy1");
+                enemy->translate(sf::Vector2f(_rand_dist(_rd), _rand_dist(_rd)));
+                _spawn_timer = 0.0f;
+            }
         }
 
         auto enemies = _enemy_manager.enemies();
@@ -97,6 +100,12 @@ namespace vot
             if (bullet != nullptr)
             {
                 bullet->update(dt);
+                // Remove dead (old) bullets.
+                if (bullet->dead())
+                {
+                    _bullet_manager.remove_bullet(bullet);
+                    continue;
+                }
                 
                 auto group = bullet->group();
                 // Player bullet
@@ -130,11 +139,6 @@ namespace vot
                     _player->take_damage(bullet->damage());
                     _bullet_manager.remove_bullet(bullet);
                 } 
-                // Remove dead (old) bullets.
-                else if (bullet->dead())
-                {
-                    _bullet_manager.remove_bullet(bullet);
-                }
             }
         }
 

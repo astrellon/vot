@@ -85,7 +85,7 @@ namespace vot
     PatternBullet::PatternBullet(const sf::Texture &texture, float damage) :
         Bullet(texture, damage),
         _lifetime(0.0f),
-        _total_lifetime(10.0f),
+        _total_lifetime(3.0f),
         _pattern_type(0u)
     {
     }
@@ -142,12 +142,12 @@ namespace vot
 
         if (_pattern_type == 0u)
         {
-            auto x = dl * 3000.0f;
+            auto x = dl * 1000.0f;
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 2u)
         {
-            auto x = dl * 6000.0f;
+            auto x = dl * 2000.0f;
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 1u)
@@ -176,7 +176,7 @@ namespace vot
         Bullet(texture, damage),
         _target(nullptr),
         _lifetime(0.0f),
-        _total_lifetime(10.0f),
+        _total_lifetime(3.0f),
         _tracking_time(0.0f)
     {
 

@@ -38,6 +38,10 @@ namespace vot
                 for (auto i = 0; i < 16; i++)
                 {
                     auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::ENEMY);
+                    if (bullet == nullptr)
+                    {
+                        continue;
+                    }
                     auto trans = forward_center_trans();
                     trans.rotate(i * 22.5);
                     bullet->init_transform(trans);
@@ -73,7 +77,8 @@ namespace vot
     // EnemyManager {{{
     EnemyManager::EnemyManager() :
         _enemy_index(0u),
-        _enemy_counter(1u)
+        _enemy_counter(1u),
+        _num_enemies(0u)
     {
 
     }
@@ -81,6 +86,7 @@ namespace vot
     void EnemyManager::remove_enemy(Enemy *enemy)
     {
         _dead_enemies.push_back(std::move(_enemies[enemy->index()]));
+        _num_enemies--;
     }
 
     Enemy *EnemyManager::spawn_enemy(const std::string &name)
@@ -103,6 +109,11 @@ namespace vot
         return new_enemy;
     }
 
+    uint32_t EnemyManager::num_enemies() const
+    {
+        return _num_enemies;
+    }
+
     EnemyManager::EnemyList *EnemyManager::enemies()
     {
         return &_enemies;
@@ -120,6 +131,7 @@ namespace vot
     {
         enemy->index(index);
         _enemies[index] = std::unique_ptr<Enemy>(enemy);
+        _num_enemies++;
     }
     uint32_t EnemyManager::find_empty_enemy() const
     {
@@ -159,6 +171,5 @@ namespace vot
     {
         _src_enemies[name] = std::unique_ptr<Enemy>(enemy);
     }
-
     // }}}
 }

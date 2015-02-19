@@ -42,13 +42,6 @@ int main()
     game_system.init();
 
     /*
-    auto enemy = game_system.enemy_manager().spawn_enemy("enemy1");
-    enemy->translate(sf::Vector2f(-40.0f, 0.0f));
-    enemy = game_system.enemy_manager().spawn_enemy("enemy1");
-    enemy->translate(sf::Vector2f(40.0f, 0.0f));
-    */
-
-    /*
     // Load a music to play
     sf::Music music;
     if (!music.openFromFile("music.flac"))
