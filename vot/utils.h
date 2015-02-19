@@ -32,6 +32,6 @@ namespace vot
     {
         public:
 
-            static AnglePair calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle); 
+            static AnglePair calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle); 
     };
 }

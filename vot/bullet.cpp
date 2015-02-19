@@ -222,7 +222,7 @@ namespace vot
             return;
         }
         
-        auto angles = Utils::calculate_angles(center(), _target->center(), getRotation());
+        auto angles = Utils::calculate_angles(getPosition(), _target->location(), getRotation(), -180.0f);
         auto rot_speed = 180.0f * dt;
 
         if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)

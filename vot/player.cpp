@@ -81,7 +81,7 @@ namespace vot
 
         if (_look_at_target && _target != nullptr)
         {
-            auto angles = Utils::calculate_angles(center(), _target->center(), rotation());
+            auto angles = Utils::calculate_angles(center(), _target->center(), rotation(), -90.0f);
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
                 rotation(angles.to_angle());
