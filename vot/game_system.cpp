@@ -1,6 +1,7 @@
 #include "game_system.h"
 
 #include <random>
+#include <iostream>
 
 #include "texture_manager.h"
 
@@ -43,6 +44,7 @@ namespace vot
     
         auto window_size = _window.getSize();
         _camera.setSize(window_size.x, window_size.y);
+        _hud_camera = _window.getDefaultView();
 
         _background.speed(0.1f);
         _background.create();
@@ -173,7 +175,7 @@ namespace vot
 
         target.draw(_world_hud);
         
-        target.setView(target.getDefaultView());
+        target.setView(_hud_camera);
         target.draw(_hud);
     }
 
@@ -183,9 +185,13 @@ namespace vot
     }
     void GameSystem::create_default_bullets()
     {
-        auto bullet_blue_circle = TextureManager::texture("bullet_blue_circle");
-        auto bullet_red_circle = TextureManager::texture("bullet_red_circle");
-        auto bullet_blue = TextureManager::texture("bullet_blue");
+        auto tm = TextureManager::main();
+
+        auto bullet_blue_circle = tm->find_texture("bullet_blue_circle");
+        auto bullet_red_circle = tm->find_texture("bullet_red_circle");
+        auto bullet_blue = tm->find_texture("bullet_blue");
+
+        tm->display("Create bullets");
         
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(0u);
@@ -283,5 +289,12 @@ namespace vot
     bool GameSystem::is_key_released(sf::Keyboard::Key key) const
     {
         return _keys_released[key] == _update_counter;
+    }
+
+    void GameSystem::on_resize(uint32_t width, uint32_t height)
+    {
+        _camera.setSize(width, height);
+        _hud_camera.setSize(width, height);
+        _window.setSize(sf::Vector2u(width, height));
     }
 }

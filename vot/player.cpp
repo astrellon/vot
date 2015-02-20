@@ -13,7 +13,7 @@ namespace vot
         _cooldown(0.0f),
         _target(nullptr),
         _look_at_target(false),
-        _auto_target(false)
+        _auto_target(true)
     {
 
     }

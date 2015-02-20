@@ -35,6 +35,8 @@ namespace vot
 
             Enemy *next_target(Enemy *current);
 
+            void on_resize(uint32_t width, uint32_t height);
+
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -56,6 +58,7 @@ namespace vot
         private:
             sf::RenderWindow &_window;
             sf::View _camera;
+            sf::View _hud_camera;
 
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;

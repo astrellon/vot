@@ -34,6 +34,11 @@ namespace vot
         {
             health << "\nAuto targetting";
         }
+        auto target = gs->player()->target();
+        if (target != nullptr)
+        {
+            health << "\n\nTarget: " << target->life() << "/" << target->max_life();
+        }
         _health.setString(health.str());
     }
 

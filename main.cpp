@@ -35,6 +35,8 @@ int main()
         std::cout << "Failed to load textures on startup\n";
         return -1;
     }
+    texture_manager.display("Main1");
+    vot::TextureManager::main()->display("Main2");
 
     vot::GameSystem game_system(window);
     vot::GameSystem::main(&game_system);
@@ -71,6 +73,11 @@ int main()
             if (event.type == sf::Event::KeyReleased)
             {
                 game_system.key_released(event.key.code);
+            }
+
+            if (event.type == sf::Event::Resized)
+            {
+                game_system.on_resize(event.size.width, event.size.height);
             }
         }
         // }}}

@@ -6,6 +6,13 @@ namespace vot
 {
     TextureManager *TextureManager::s_main = nullptr;
 
+    TextureManager::TextureManager() :
+        _num_textures(0u),
+        _texture_load_attempt(0u)
+    {
+
+    }
+
     const TextureManager::TextureMap &TextureManager::textures() const
     {
         return _textures;
@@ -13,6 +20,7 @@ namespace vot
 
     bool TextureManager::load_texture(const std::string &name, const std::string &filename)
     {
+        _texture_load_attempt++;
         if (name.empty())
         {
             return false;
@@ -25,6 +33,7 @@ namespace vot
         }
 
         _textures[name] = texture;
+        _num_textures++;
         return true;
     }
 
@@ -37,6 +46,19 @@ namespace vot
         }
 
         return &find->second;
+    }
+
+    uint32_t TextureManager::num_textures() const
+    {
+        return _num_textures;
+    }
+    uint32_t TextureManager::count_textures() const
+    {
+        return _textures.size();
+    }
+    uint32_t TextureManager::texture_load_attempt() const
+    {
+        return _texture_load_attempt;
     }
     
     bool TextureManager::load_default_textures()
@@ -51,6 +73,11 @@ namespace vot
         if (!load_texture_log("target", "data/target.png")) return false;
 
         return true;
+    }
+
+    void TextureManager::display(const std::string &message) const
+    {
+        std::cout << message << " texture counts: " << num_textures() << ", " << count_textures() << ", " << texture_load_attempt() << "\n";
     }
 
     void TextureManager::main(TextureManager *manager)
