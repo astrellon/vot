@@ -24,6 +24,7 @@ namespace vot
 
         private:
             float _cooldown;
+            float _homing_cooldown;
 
             PatternBullet *spawn_pattern_bullet();
             HomingBullet *spawn_homing_bullet();

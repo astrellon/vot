@@ -11,6 +11,7 @@ namespace vot
     Player::Player(const sf::Texture &texture) :
         Character(texture),
         _cooldown(0.0f),
+        _homing_cooldown(0.0f),
         _target(nullptr),
         _look_at_target(false),
         _auto_target(true)
@@ -65,35 +66,43 @@ namespace vot
             _look_at_target = !_look_at_target;
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && _cooldown <= 0.0f)
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            auto bullet = spawn_pattern_bullet();
-            bullet->pattern_type(2u);
-            auto trans = forward_center_trans();
-            bullet->init_transform(trans);
+            if (_cooldown <= 0.0f)
+            {
+                auto bullet = spawn_pattern_bullet();
+                bullet->pattern_type(2u);
+                auto trans = forward_center_trans();
+                bullet->init_transform(trans);
+
+                _cooldown = 0.1f;
+            }
             
-            auto homing_bullet = spawn_homing_bullet();
-            auto angle = rotation() - 90.0f;
-            homing_bullet->setPosition(location());
-            homing_bullet->rotate(angle + 10.0f);
-            homing_bullet->target(_target);
+            if (_homing_cooldown <= 0.0f)
+            {
+                auto homing_bullet = spawn_homing_bullet();
+                auto angle = rotation() - 90.0f;
+                homing_bullet->setPosition(location());
+                homing_bullet->rotate(angle + 10.0f);
+                homing_bullet->target(_target);
 
-            homing_bullet = spawn_homing_bullet();
-            homing_bullet->setPosition(location());
-            homing_bullet->rotate(angle - 10.0f);
-            homing_bullet->target(_target);
+                homing_bullet = spawn_homing_bullet();
+                homing_bullet->setPosition(location());
+                homing_bullet->rotate(angle - 10.0f);
+                homing_bullet->target(_target);
 
-            homing_bullet = spawn_homing_bullet();
-            homing_bullet->setPosition(location());
-            homing_bullet->rotate(angle - 30.0f);
-            homing_bullet->target(_target);
+                homing_bullet = spawn_homing_bullet();
+                homing_bullet->setPosition(location());
+                homing_bullet->rotate(angle - 30.0f);
+                homing_bullet->target(_target);
 
-            homing_bullet = spawn_homing_bullet();
-            homing_bullet->setPosition(location());
-            homing_bullet->rotate(angle + 30.0f);
-            homing_bullet->target(_target);
+                homing_bullet = spawn_homing_bullet();
+                homing_bullet->setPosition(location());
+                homing_bullet->rotate(angle + 30.0f);
+                homing_bullet->target(_target);
 
-            _cooldown = 0.1f;
+                _homing_cooldown = 0.75f;
+            }
         }
 
         if (_look_at_target && _target != nullptr)
@@ -109,7 +118,9 @@ namespace vot
             }
             
         }
+
         _cooldown -= dt;
+        _homing_cooldown -= dt;
     }
 
     PatternBullet *Player::spawn_pattern_bullet()

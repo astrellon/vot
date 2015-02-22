@@ -5,6 +5,7 @@
 
 #include "utils.h"
 #include "character.h"
+#include "game_system.h"
 
 namespace vot
 {
@@ -231,7 +232,11 @@ namespace vot
         
         if (_target == nullptr || _target->is_dead())
         {
-            return;
+            _target = GameSystem::main()->next_target(nullptr);
+            if (_target == nullptr)
+            {
+                return;
+            }
         }
         _tracking_time += dt;
         if (_tracking_time < 1.0f)
