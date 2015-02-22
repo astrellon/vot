@@ -319,7 +319,7 @@ namespace vot
             if (bullet != nullptr && bullet->active())
             {
                 target.draw(*bullet, states);
-                target.draw(bullet->hitbox(), states);
+                //target.draw(bullet->hitbox(), states);
             }
         }
     }

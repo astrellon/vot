@@ -55,6 +55,16 @@ namespace vot
     void Character::draw(sf::RenderTarget &target, sf::RenderStates state) const
     {
         target.draw(_sprite, state);
+        /*
+        sf::RectangleShape line;
+        line.setSize(sf::Vector2f(_sprite.getTexture()->getSize()));
+        line.setFillColor(sf::Color::Transparent);
+        line.setOutlineThickness(2.0f);
+        line.setOutlineColor(sf::Color::Red);
+
+        state.transform *= _sprite.getTransform();
+        target.draw(line, state);
+        */
     }
 
     Circle &Character::hitbox()
@@ -125,7 +135,7 @@ namespace vot
             trans.rotate(-90);
         }
         auto size = sprite().getTexture()->getSize();
-        trans.translate(size.x * -1.0f, size.x * 1.0f);
+        trans.translate(size.y * -0.5f, size.x * 0.5f);
         return trans;
     }
 }

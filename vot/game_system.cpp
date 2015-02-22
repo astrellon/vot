@@ -71,7 +71,6 @@ namespace vot
             return;
         }
 
-        /*
         if (_enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
@@ -87,7 +86,6 @@ namespace vot
                 }
             }
         }
-        */
 
         auto enemies = _enemy_manager.enemies();
         for (auto i = 0u; i < enemies->size(); i++)
@@ -174,6 +172,7 @@ namespace vot
         target.draw(_background2, states);
         target.draw(_background, states);
 
+        /*
         for (auto y = -5; y <= 5; y++)
         {
             sf::RectangleShape line;
@@ -188,6 +187,7 @@ namespace vot
             line.setPosition(x * 20.0f, -100.0f);
             target.draw(line, states);
         }
+        */
 
         target.draw(_bullet_manager, states);
         target.draw(_enemy_manager, states);

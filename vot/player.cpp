@@ -72,7 +72,6 @@ namespace vot
             auto trans = forward_center_trans();
             bullet->init_transform(trans);
             
-            /*
             auto homing_bullet = spawn_homing_bullet();
             auto angle = rotation() - 90.0f;
             homing_bullet->setPosition(location());
@@ -93,14 +92,13 @@ namespace vot
             homing_bullet->setPosition(location());
             homing_bullet->rotate(angle + 30.0f);
             homing_bullet->target(_target);
-            */
 
             _cooldown = 0.1f;
         }
 
         if (_look_at_target && _target != nullptr)
         {
-            auto angles = Utils::calculate_angles(center(), _target->center(), rotation(), -90.0f);
+            auto angles = Utils::calculate_angles(sprite().getPosition(), _target->sprite().getPosition(), rotation(), -90.0f);
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
                 rotation(angles.to_angle());
