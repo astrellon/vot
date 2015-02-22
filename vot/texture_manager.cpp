@@ -31,6 +31,7 @@ namespace vot
         {
             return false;
         }
+        texture.setSmooth(true);
 
         _textures[name] = texture;
         _num_textures++;
@@ -63,13 +64,13 @@ namespace vot
     
     bool TextureManager::load_default_textures()
     {
-        if (!load_texture_log("bullet_blue", "data/bullet_blue.png")) return false;
+        if (!load_texture_log("bullet_blue", "data/bullet_blue_circle.png")) return false;
         if (!load_texture_log("bullet_blue_circle", "data/bullet_blue_circle.png")) return false;
         if (!load_texture_log("bullet_red_circle", "data/bullet_red_circle.png")) return false;
-        if (!load_texture_log("player", "data/player.png")) return false;
+        if (!load_texture_log("player", "data/playerShip2_blue.png")) return false;
         if (!load_texture_log("red_star", "data/red_star.png")) return false;
         if (!load_texture_log("blue_star", "data/blue_star.png")) return false;
-        if (!load_texture_log("enemy", "data/enemy.png")) return false;
+        if (!load_texture_log("enemy", "data/ufoRed.png")) return false;
         if (!load_texture_log("target", "data/target.png")) return false;
 
         return true;

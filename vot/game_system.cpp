@@ -37,6 +37,7 @@ namespace vot
         create_default_enemieS();
 
         auto player = new vot::Player(*TextureManager::texture("player"));
+        player->sprite().setScale(0.5f, 0.5f);
         player->hitbox().radius(5.0f);
         player->location(sf::Vector2f(0.0f, 100.0f));
 
@@ -70,6 +71,7 @@ namespace vot
             return;
         }
 
+        /*
         if (_enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
@@ -78,8 +80,14 @@ namespace vot
                 auto enemy = enemy_manager().spawn_enemy("enemy1");
                 enemy->translate(sf::Vector2f(_rand_dist(_rd), _rand_dist(_rd)));
                 _spawn_timer = 0.0f;
+
+                if (_player->target() == nullptr && _player->auto_target())
+                {
+                    _player->target(enemy);
+                }
             }
         }
+        */
 
         auto enemies = _enemy_manager.enemies();
         for (auto i = 0u; i < enemies->size(); i++)
@@ -166,6 +174,21 @@ namespace vot
         target.draw(_background2, states);
         target.draw(_background, states);
 
+        for (auto y = -5; y <= 5; y++)
+        {
+            sf::RectangleShape line;
+            line.setSize(sf::Vector2f(200.0, 1.0f));
+            line.setPosition(-100.0f, y * 20.0f);
+            target.draw(line, states);
+        }
+        for (auto x = -5; x <= 5; x++)
+        {
+            sf::RectangleShape line;
+            line.setSize(sf::Vector2f(1.0, 200.0f));
+            line.setPosition(x * 20.0f, -100.0f);
+            target.draw(line, states);
+        }
+
         target.draw(_bullet_manager, states);
         target.draw(_enemy_manager, states);
         if (_player != nullptr)
@@ -213,6 +236,11 @@ namespace vot
         pattern_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "arena_blue");
 
+        pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
+        pattern_bullet->pattern_type(10u);
+        pattern_bullet->hitbox().radius(5.0f);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "test");
+        
         auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
         homing_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_homing_bullet(homing_bullet, "homing_blue");
@@ -225,7 +253,8 @@ namespace vot
     void GameSystem::create_default_enemieS()
     {
         auto texture = TextureManager::texture("enemy");
-        auto enemy= new Enemy(*texture);
+        auto enemy = new Enemy(*texture);
+        enemy->sprite().setScale(0.5f, 0.5f);
         enemy->hitbox().radius(5.0f);
         _enemy_manager.add_src_enemy(enemy, "enemy1");
     }

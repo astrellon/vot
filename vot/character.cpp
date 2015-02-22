@@ -11,7 +11,7 @@ namespace vot
         _id(0u)
     {
         auto size = texture.getSize();
-        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);        
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     void Character::translate(const sf::Vector2f &vector)
@@ -125,7 +125,7 @@ namespace vot
             trans.rotate(-90);
         }
         auto size = sprite().getTexture()->getSize();
-        trans.translate(size.x * -0.5f, size.y * 0.5f);
+        trans.translate(size.x * -1.0f, size.x * 1.0f);
         return trans;
     }
 }

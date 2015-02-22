@@ -29,7 +29,8 @@ namespace vot
         _owner(0u),
         _group(NATURE)
     {
-
+        auto size = getTexture()->getSize();
+        setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     sf::Vector2f Bullet::center() const
@@ -166,8 +167,9 @@ namespace vot
         auto angle = atan2(dp.y, dp.x);
 
         setPosition(point);
+
         hitbox().location(point);
-        setRotation(angle * 180.0f / M_PI);
+        setRotation(angle * 180.0f / M_PI + 90.0f);
     }
     // }}}
     
@@ -317,7 +319,7 @@ namespace vot
             if (bullet != nullptr && bullet->active())
             {
                 target.draw(*bullet, states);
-                //target.draw(bullet->hitbox(), states);
+                target.draw(bullet->hitbox(), states);
             }
         }
     }
