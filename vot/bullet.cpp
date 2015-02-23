@@ -165,12 +165,12 @@ namespace vot
         }
 
         auto dp = point - prevPoint;
-        auto angle = atan2(dp.y, dp.x);
+        auto angle = Utils::vector_angle(dp);
 
         setPosition(point);
 
         hitbox().location(point);
-        setRotation(angle * 180.0f / M_PI + 90.0f);
+        setRotation(angle + 90.0f);
     }
     // }}}
     

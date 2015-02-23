@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <random>
+#include <math.h>
 
 namespace vot
 {
@@ -59,6 +60,11 @@ namespace vot
                 float x = para_lerp(init.x, target.x, t);
                 float y = para_lerp(init.y, target.y, t);
                 return sf::Vector2f(x, y);
+            }
+
+            static inline float vector_angle(const sf::Vector2f &vec)
+            {
+                return atan2(vec.y, vec.x) * 57.295779513082;
             }
 
         private:

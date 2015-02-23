@@ -350,7 +350,7 @@ namespace vot
         //dpos.x *= rlength;
         //dpos.y *= rlength;
 
-        auto angle = atan2(dpos.y, dpos.x) * 180.0f / M_PI;
+        auto angle = Utils::vector_angle(dpos);
         system->setRotation(angle);
     }
 }

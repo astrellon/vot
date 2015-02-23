@@ -35,6 +35,9 @@
     <ClCompile Include="vot\utils.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\particles.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -73,6 +76,9 @@
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\utils.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\particles.h">
       <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>
