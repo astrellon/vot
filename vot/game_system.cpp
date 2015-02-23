@@ -70,7 +70,7 @@ namespace vot
             return;
         }
 
-        if (false && _enemy_manager.num_enemies() < 3)
+        if (true && _enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
             if (_spawn_timer > 3.0f)
@@ -142,6 +142,8 @@ namespace vot
                                 _enemy_manager.remove_enemy(enemy);
                             }
 
+                            bullet_hit_particles(bullet, enemy, "bullet_red_circle");
+                            
                             _bullet_manager.remove_bullet(bullet);
                         }
                     }
@@ -151,6 +153,8 @@ namespace vot
                         _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
+                            
+                    bullet_hit_particles(bullet, _player.get(), "bullet_blue_circle");
                     _bullet_manager.remove_bullet(bullet);
                 } 
             }
@@ -162,6 +166,8 @@ namespace vot
 
         _hud.update(dt); 
         _world_hud.update(dt);
+
+        _particle_manager.update(dt);
     }
     void GameSystem::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
@@ -171,7 +177,7 @@ namespace vot
         target.draw(_background2, states);
         target.draw(_background, states);
 
-        if (true)
+        if (false)
         {
             for (auto y = -5; y <= 5; y++)
             {
@@ -189,8 +195,10 @@ namespace vot
             }
         }
 
-        target.draw(_bullet_manager, states);
         target.draw(_enemy_manager, states);
+        target.draw(_particle_manager, states);
+        target.draw(_bullet_manager, states);
+
         if (_player != nullptr)
         {
             target.draw(*_player.get(), states);
@@ -255,8 +263,13 @@ namespace vot
         auto texture = TextureManager::texture("enemy");
         auto enemy = new Enemy(*texture);
         enemy->sprite().setScale(0.5f, 0.5f);
-        enemy->hitbox().radius(5.0f);
+        enemy->hitbox().radius(25.0f);
         _enemy_manager.add_src_enemy(enemy, "enemy1");
+    }
+
+    ParticleSystemManager &GameSystem::particle_manager()
+    {
+        return _particle_manager;
     }
 
     void GameSystem::player(Player *value)
@@ -325,5 +338,19 @@ namespace vot
         _camera.setSize(width, height);
         _hud_camera.setSize(width, height);
         _window.setSize(sf::Vector2u(width, height));
+    }
+
+    void GameSystem::bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture)
+    {
+        auto system = _particle_manager.spawn_system(*TextureManager::texture(texture), 10);
+        system->setPosition(bullet->getPosition());
+
+        auto dpos = bullet->getPosition() - hit->location();
+        //auto rlength = 1.0f / sqrt(dpos.x * dpos.x + dpos.y + dpos.y);
+        //dpos.x *= rlength;
+        //dpos.y *= rlength;
+
+        auto angle = atan2(dpos.y, dpos.x) * 180.0f / M_PI;
+        system->setRotation(angle);
     }
 }

@@ -162,7 +162,7 @@ namespace vot
             if (enemy != nullptr)
             {
                 target.draw(*enemy, states);
-                target.draw(enemy->hitbox(), states);
+                //target.draw(enemy->hitbox(), states);
             }
         }
     }

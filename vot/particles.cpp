@@ -37,7 +37,7 @@ namespace vot
         }
 
         auto dl = _lifetime / _total_lifetime;
-        auto position = Utils::para_lerp(_init_position, _target_position, dl);  
+        auto position = Utils::lerp(_init_position, _target_position, dl);  
         setPosition(position);
         auto scale = Utils::para_lerp(_init_scale, _target_scale, dl);
         setScale(scale, scale);
@@ -103,13 +103,13 @@ namespace vot
         for (auto i = 0u; i < num_particles; i++)
         {
             _particles[i] = Particle();
-            _particles[i].lifetime(i * 0.1f);
             init_particle(_particles[i]);
         }
     }
 
-    void ParticleSystem::update(float dt)
+    bool ParticleSystem::update(float dt)
     {
+        auto active = 0u;
         for (auto i = 0u; i < _particles.size(); i++)
         {
             auto &particle = _particles[i]; 
@@ -119,11 +119,18 @@ namespace vot
                 particle.reset();
                 init_particle(particle);
             }
+            else
+            {
+                ++active;
+            }
         }
+        return active > 0u;
     }
 
     void ParticleSystem::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
+        states.transform *= getTransform();
+
         for (auto particle : _particles)
         {
             target.draw(particle, states);
@@ -132,13 +139,44 @@ namespace vot
 
     void ParticleSystem::init_particle(Particle &particle)
     {
-        auto angle = Utils::randf(0, M_PI * 2.0f);
-        auto x = cos(angle) * 10.0f;
-        auto y = sin(angle) * 10.0f;
+        auto angle = Utils::randf(-0.8f, 0.8f);
+        auto dist = Utils::randf(20, 28);
+        auto x = cos(angle) * dist;
+        auto y = sin(angle) * dist;
 
         particle.positions(sf::Vector2f(0, 0), sf::Vector2f(x, y));
-        particle.scales(0.7f, 0.1f);
+        particle.scales(0.7f, 0.05f);
         particle.texture(_texture);
+    }
+    // }}}
+    
+    // ParticleSystemManager {{{
+    ParticleSystem *ParticleSystemManager::spawn_system(const sf::Texture &texture, uint32_t num_particles)
+    {
+        auto system = new ParticleSystem(texture, num_particles);
+        _active_systems.push_back(std::unique_ptr<ParticleSystem>(system));
+
+        return system;
+    }
+
+    void ParticleSystemManager::update(float dt)
+    {
+        for (auto i = 0u; i < _active_systems.size(); i++)
+        {
+            if (!_active_systems[i]->update(dt))
+            {
+                _active_systems.erase(_active_systems.begin() + i);
+                --i;
+            }
+        }
+    }
+
+    void ParticleSystemManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        for (auto i = 0u; i < _active_systems.size(); i++)
+        {
+            target.draw(*_active_systems[i].get(), states);
+        }
     }
     // }}}
 }

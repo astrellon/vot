@@ -44,9 +44,6 @@ int main()
 
     game_system.init();
 
-    auto particle_texture = vot::TextureManager::texture("bullet_red_circle");
-    vot::ParticleSystem particles(*particle_texture, 20);
-
     /*
     // Load a music to play
     sf::Music music;
@@ -91,7 +88,6 @@ int main()
         auto dt = elapsed.asSeconds();
         
         game_system.update(dt);
-        particles.update(dt);
         // }}}
         
         // Draw game {{{
@@ -101,8 +97,6 @@ int main()
         window.draw(game_system);
 
         window.setView(game_system.camera());
-        window.draw(particles);
-        
         // Update the window
         window.display();
         // }}}

@@ -10,6 +10,7 @@
 #include "enemy.h"
 #include "game_hud.h"
 #include "background.h"
+#include "particles.h"
 
 namespace vot
 {
@@ -27,6 +28,8 @@ namespace vot
 
             EnemyManager &enemy_manager();
             void create_default_enemieS();
+
+            ParticleSystemManager &particle_manager();
 
             void player(Player *value);
             Player *player() const;
@@ -63,6 +66,7 @@ namespace vot
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
             EnemyManager _enemy_manager;
+            ParticleSystemManager _particle_manager;
     
             HudMain _hud;
             HudWorld _world_hud;
@@ -70,6 +74,8 @@ namespace vot
             Background _background;
             Background _background2;
             Background _background3;
+
+            void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
 
             float _spawn_timer;
 

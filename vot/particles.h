@@ -3,10 +3,12 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <memory>
 #include <stdint.h>
 
 namespace vot
 {
+    // Particle {{{
     class Particle : public sf::Sprite
     {
         public:
@@ -41,13 +43,15 @@ namespace vot
             sf::Vector2f _init_position;
             sf::Vector2f _target_position;
     };
+    // }}}
 
+    // ParticleSystem {{{
     class ParticleSystem : public sf::Drawable, public sf::Transformable
     {
         public:
             ParticleSystem(const sf::Texture &texture, uint32_t num_particles);
 
-            void update(float dt);
+            bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
@@ -55,5 +59,18 @@ namespace vot
             std::vector<Particle> _particles;
 
             void init_particle(Particle &particle);
+    };
+    // }}}
+    
+    class ParticleSystemManager : public sf::Drawable
+    {
+        public:
+            ParticleSystem *spawn_system(const sf::Texture &texture, uint32_t num_particles);
+
+            void update(float dt);
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+
+        private:
+            std::vector<std::unique_ptr<ParticleSystem> > _active_systems;
     };
 }
