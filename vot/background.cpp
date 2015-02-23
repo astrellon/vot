@@ -6,6 +6,7 @@
 
 #include "texture_manager.h"
 #include "game_system.h"
+#include "utils.h"
 
 namespace vot
 {
@@ -18,10 +19,6 @@ namespace vot
 
     void Background::create()
     {
-        std::random_device rd;
-        std::mt19937 mt(rd());
-        std::uniform_real_distribution<float> dist(0, 1);
-
         auto size = 512;
         _target.create(size, size);
 
@@ -46,15 +43,15 @@ namespace vot
             {
                 sprite = &red_star_sprite;
             }
-            auto x = size * (dist(mt) * 0.95 + 0.025);
-            auto y = size * (dist(mt) * 0.95 + 0.025);
+            auto x = size * (Utils::randf() * 0.95 + 0.025);
+            auto y = size * (Utils::randf() * 0.95 + 0.025);
 
-            auto r = dist(mt) * 30 + 155;
-            auto g = dist(mt) * 30 + 155;
-            auto b = dist(mt) * 30 + 155;
+            auto r = Utils::randf() * 30 + 155;
+            auto g = Utils::randf() * 30 + 155;
+            auto b = Utils::randf() * 30 + 155;
             sf::Color colour(r, g, b);
 
-            auto scale = (powf(2.0f, dist(mt)) - 1.0f) * (powf(2, (_speed + 0.5) - 1.0f));
+            auto scale = (powf(2.0f, Utils::randf()) - 1.0f) * (powf(2, (_speed + 0.5) - 1.0f));
             sprite->setScale(scale, scale);
             sprite->setPosition(x, y);
             sprite->setColor(colour);

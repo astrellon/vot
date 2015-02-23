@@ -14,6 +14,7 @@
 #include "vot/background.h"
 #include "vot/enemy.h"
 #include "vot/game_hud.h"
+#include "vot/particles.h"
 
 int main()
 {
@@ -40,8 +41,11 @@ int main()
 
     vot::GameSystem game_system(window);
     vot::GameSystem::main(&game_system);
-    
+
     game_system.init();
+
+    auto particle_texture = vot::TextureManager::texture("bullet_red_circle");
+    vot::ParticleSystem particles(*particle_texture, 20);
 
     /*
     // Load a music to play
@@ -87,6 +91,7 @@ int main()
         auto dt = elapsed.asSeconds();
         
         game_system.update(dt);
+        particles.update(dt);
         // }}}
         
         // Draw game {{{
@@ -94,6 +99,9 @@ int main()
         window.clear();
        
         window.draw(game_system);
+
+        window.setView(game_system.camera());
+        window.draw(particles);
         
         // Update the window
         window.display();

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "texture_manager.h"
+#include "utils.h"
 
 namespace vot
 {
@@ -19,9 +20,7 @@ namespace vot
     }
 
     GameSystem::GameSystem(sf::RenderWindow &window) :
-        _window(window),
-        _rand_dist(-100.0f, 100.0f),
-        _rand(_rd())
+        _window(window)
     {
         auto size = static_cast<int>(sf::Keyboard::KeyCount);
         for (auto i = 0; i < size; i++)
@@ -71,13 +70,13 @@ namespace vot
             return;
         }
 
-        if (_enemy_manager.num_enemies() < 3)
+        if (false && _enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
             if (_spawn_timer > 3.0f)
             {
                 auto enemy = enemy_manager().spawn_enemy("enemy1");
-                enemy->translate(sf::Vector2f(_rand_dist(_rd), _rand_dist(_rd)));
+                enemy->translate(Utils::rand_vec(-100.0f, 100.0f));
                 _spawn_timer = 0.0f;
 
                 if (_player->target() == nullptr && _player->auto_target())
@@ -172,22 +171,23 @@ namespace vot
         target.draw(_background2, states);
         target.draw(_background, states);
 
-        /*
-        for (auto y = -5; y <= 5; y++)
+        if (true)
         {
-            sf::RectangleShape line;
-            line.setSize(sf::Vector2f(200.0, 1.0f));
-            line.setPosition(-100.0f, y * 20.0f);
-            target.draw(line, states);
+            for (auto y = -5; y <= 5; y++)
+            {
+                sf::RectangleShape line;
+                line.setSize(sf::Vector2f(200.0, 1.0f));
+                line.setPosition(-100.0f, y * 20.0f);
+                target.draw(line, states);
+            }
+            for (auto x = -5; x <= 5; x++)
+            {
+                sf::RectangleShape line;
+                line.setSize(sf::Vector2f(1.0, 200.0f));
+                line.setPosition(x * 20.0f, -100.0f);
+                target.draw(line, states);
+            }
         }
-        for (auto x = -5; x <= 5; x++)
-        {
-            sf::RectangleShape line;
-            line.setSize(sf::Vector2f(1.0, 200.0f));
-            line.setPosition(x * 20.0f, -100.0f);
-            target.draw(line, states);
-        }
-        */
 
         target.draw(_bullet_manager, states);
         target.draw(_enemy_manager, states);

@@ -4,6 +4,9 @@
 
 namespace vot
 {
+    std::random_device Utils::_rd;
+    std::mt19937 Utils::_rand(Utils::_rd());
+
     AnglePair Utils::calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle)
     {
         auto d_pos = pos1 - pos2;

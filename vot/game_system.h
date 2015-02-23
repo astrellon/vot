@@ -72,9 +72,6 @@ namespace vot
             Background _background3;
 
             float _spawn_timer;
-            std::uniform_real_distribution<float> _rand_dist;
-            std::random_device _rd;
-            std::mt19937 _rand;
 
             uint16_t _id_counter;
             uint32_t _update_counter;
