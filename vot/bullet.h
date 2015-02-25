@@ -69,6 +69,11 @@ namespace vot
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
 
+            float lifetime() const;
+
+            void total_lifetime(float value);
+            float total_lifetime() const;
+
             virtual bool active() const;
             virtual bool dead() const;
 
@@ -92,6 +97,11 @@ namespace vot
 
             void target(const Character *value);
             const Character *target() const;
+            
+            float lifetime() const;
+
+            void total_lifetime(float value);
+            float total_lifetime() const;
 
             virtual bool active() const;
             virtual bool dead() const;

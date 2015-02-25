@@ -59,6 +59,7 @@ namespace vot
         }
 
         _target.setRepeated(true);
+        _target.setSmooth(true);
         _sprite.setTexture(_target.getTexture());
         _sprite.setTextureRect(sf::IntRect(0, 0, 2048, 2048));
     }

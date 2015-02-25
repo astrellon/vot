@@ -72,6 +72,8 @@ namespace vot
         if (!load_texture_log("blue_star", "data/blue_star.png")) return false;
         if (!load_texture_log("enemy", "data/ufoRed.png")) return false;
         if (!load_texture_log("target", "data/target.png")) return false;
+        if (!load_texture_log("powerup_bullet", "data/powerupBlue_bolt.png")) return false;
+        if (!load_texture_log("powerup_homing", "data/powerupBlue_star.png")) return false;
 
         return true;
     }

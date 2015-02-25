@@ -32,8 +32,10 @@ namespace vot
 
     void GameSystem::init()
     {
+        TextureManager::main()->display("Init GS");
         create_default_bullets();
         create_default_enemieS();
+        create_default_powerups();
 
         auto player = new vot::Player(*TextureManager::texture("player"));
         player->sprite().setScale(0.5f, 0.5f);
@@ -76,7 +78,7 @@ namespace vot
             if (_spawn_timer > 3.0f)
             {
                 auto enemy = enemy_manager().spawn_enemy("enemy1");
-                enemy->translate(Utils::rand_vec(-100.0f, 100.0f));
+                enemy->translate(Utils::rand_vec(-500.0f, 500.0f));
                 _spawn_timer = 0.0f;
 
                 if (_player->target() == nullptr && _player->auto_target())
@@ -99,6 +101,8 @@ namespace vot
         _player->update(dt);
         _camera.setCenter(_player->location());
         _camera.setRotation(_player->rotation());
+
+        _powerup_manager.update(dt);
 
         auto bullets = _bullet_manager.bullets();
         for (auto i = 0u; i < bullets->size(); i++)
@@ -139,11 +143,19 @@ namespace vot
                                         _player->target(nullptr);
                                     }
                                 }
+
+                                auto rand = Utils::randf();
+
+                                auto powerup = _powerup_manager.spawn_powerup(
+                                        rand > 0.5f ? "bullet" : "homing");
+                                powerup->location(enemy->location());
+                                powerup->init_location(enemy->location());
+                            
                                 _enemy_manager.remove_enemy(enemy);
                             }
 
-                            bullet_hit_particles(bullet, enemy, "bullet_red_circle");
-                            
+                            bullet_hit_particles(bullet, enemy, "bullet_blue_circle");
+
                             _bullet_manager.remove_bullet(bullet);
                         }
                     }
@@ -154,9 +166,21 @@ namespace vot
                 {
                     _player->take_damage(bullet->damage());
                             
-                    bullet_hit_particles(bullet, _player.get(), "bullet_blue_circle");
+                    bullet_hit_particles(bullet, _player.get(), "bullet_red_circle");
                     _bullet_manager.remove_bullet(bullet);
                 } 
+            }
+        }
+
+        auto powerups = _powerup_manager.active_powerups();
+        for (auto i = 0u; i < powerups->size(); i++)
+        {
+            auto powerup = powerups->at(i).get();
+            if (_player->hitbox().intersects(powerup->hitbox()))
+            {
+                _player->add_powerup(*powerup);
+                _powerup_manager.remove_powerup(powerup);
+                i--;
             }
         }
 
@@ -169,6 +193,7 @@ namespace vot
 
         _particle_manager.update(dt);
     }
+
     void GameSystem::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         target.setView(_camera);
@@ -195,6 +220,7 @@ namespace vot
             }
         }
 
+        target.draw(_powerup_manager, states);
         target.draw(_enemy_manager, states);
         target.draw(_particle_manager, states);
         target.draw(_bullet_manager, states);
@@ -250,6 +276,7 @@ namespace vot
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "test");
         
         auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
+        homing_bullet->total_lifetime(5.0f);
         homing_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_homing_bullet(homing_bullet, "homing_blue");
     }
@@ -270,6 +297,21 @@ namespace vot
     ParticleSystemManager &GameSystem::particle_manager()
     {
         return _particle_manager;
+    }
+
+    PowerupManager &GameSystem::powerup_manager()
+    {
+        return _powerup_manager;
+    }
+    void GameSystem::create_default_powerups()
+    {
+        auto bullet_powerup = TextureManager::texture("powerup_bullet");
+        auto homing_powerup = TextureManager::texture("powerup_homing");
+        auto powerup = new Powerup(*bullet_powerup, Powerup::BULLET, 1);
+        _powerup_manager.add_src_powerup("bullet", powerup);
+
+        powerup = new Powerup(*homing_powerup, Powerup::HOMING, 1);
+        _powerup_manager.add_src_powerup("homing", powerup);
     }
 
     void GameSystem::player(Player *value)
@@ -346,10 +388,6 @@ namespace vot
         system->setPosition(bullet->getPosition());
 
         auto dpos = bullet->getPosition() - hit->location();
-        //auto rlength = 1.0f / sqrt(dpos.x * dpos.x + dpos.y + dpos.y);
-        //dpos.x *= rlength;
-        //dpos.y *= rlength;
-
         auto angle = Utils::vector_angle(dpos);
         system->setRotation(angle);
     }

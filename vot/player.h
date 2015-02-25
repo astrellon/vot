@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 
 #include "character.h"
+#include "powerup.h"
+
+#include <map>
 
 namespace vot
 {
@@ -22,6 +25,8 @@ namespace vot
             bool looking_at_target() const;
             bool auto_target() const;
 
+            void add_powerup(const Powerup &powerup);
+
         private:
             float _cooldown;
             float _homing_cooldown;
@@ -29,6 +34,8 @@ namespace vot
             PatternBullet *spawn_pattern_bullet();
             HomingBullet *spawn_homing_bullet();
             Enemy *_target;
+
+            std::map<Powerup::Type, int32_t> _powerups;
 
             bool _look_at_target;
             bool _auto_target;

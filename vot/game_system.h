@@ -11,6 +11,7 @@
 #include "game_hud.h"
 #include "background.h"
 #include "particles.h"
+#include "powerup.h"
 
 namespace vot
 {
@@ -30,6 +31,9 @@ namespace vot
             void create_default_enemieS();
 
             ParticleSystemManager &particle_manager();
+
+            PowerupManager &powerup_manager();
+            void create_default_powerups();
 
             void player(Player *value);
             Player *player() const;
@@ -67,7 +71,8 @@ namespace vot
             std::unique_ptr<Player> _player;
             EnemyManager _enemy_manager;
             ParticleSystemManager _particle_manager;
-    
+            PowerupManager _powerup_manager; 
+
             HudMain _hud;
             HudWorld _world_hud;
 

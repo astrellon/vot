@@ -40,8 +40,10 @@ int main()
     vot::TextureManager::main()->display("Main2");
 
     vot::GameSystem game_system(window);
+    vot::TextureManager::main()->display("Main3");
     vot::GameSystem::main(&game_system);
 
+    vot::TextureManager::main()->display("Main4");
     game_system.init();
 
     /*

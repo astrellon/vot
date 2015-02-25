@@ -128,6 +128,20 @@ namespace vot
         return _pattern_type;
     }
 
+    float PatternBullet::lifetime() const
+    {
+        return _lifetime;
+    }
+
+    void PatternBullet::total_lifetime(float value)
+    {
+        _total_lifetime = value;
+    }
+    float PatternBullet::total_lifetime() const
+    {
+        return _total_lifetime;
+    }
+
     void PatternBullet::update(float dt)
     {
         _lifetime += dt;
@@ -201,6 +215,20 @@ namespace vot
     const Character *HomingBullet::target() const
     {
         return _target;
+    }
+
+    float HomingBullet::lifetime() const
+    {
+        return _lifetime;
+    }
+
+    void HomingBullet::total_lifetime(float value)
+    {
+        _total_lifetime = value;
+    }
+    float HomingBullet::total_lifetime() const
+    {
+        return _total_lifetime;
     }
 
     bool HomingBullet::active() const

@@ -75,10 +75,14 @@ namespace vot
                 auto trans = forward_center_trans();
                 bullet->init_transform(trans);
 
-                _cooldown = 0.1f;
+                _cooldown = 0.3f;
+                if (_powerups[Powerup::BULLET] > 1)
+                {
+                    _cooldown = 0.2f;
+                }
             }
             
-            if (_homing_cooldown <= 0.0f)
+            if (_homing_cooldown <= 0.0f && _powerups[Powerup::HOMING] > 0)
             {
                 auto homing_bullet = spawn_homing_bullet();
                 auto angle = rotation() - 90.0f;
@@ -91,15 +95,18 @@ namespace vot
                 homing_bullet->rotate(angle - 10.0f);
                 homing_bullet->target(_target);
 
-                homing_bullet = spawn_homing_bullet();
-                homing_bullet->setPosition(location());
-                homing_bullet->rotate(angle - 30.0f);
-                homing_bullet->target(_target);
+                if (_powerups[Powerup::HOMING] > 1)
+                {
+                    homing_bullet = spawn_homing_bullet();
+                    homing_bullet->setPosition(location());
+                    homing_bullet->rotate(angle - 30.0f);
+                    homing_bullet->target(_target);
 
-                homing_bullet = spawn_homing_bullet();
-                homing_bullet->setPosition(location());
-                homing_bullet->rotate(angle + 30.0f);
-                homing_bullet->target(_target);
+                    homing_bullet = spawn_homing_bullet();
+                    homing_bullet->setPosition(location());
+                    homing_bullet->rotate(angle + 30.0f);
+                    homing_bullet->target(_target);
+                }
 
                 _homing_cooldown = 0.75f;
             }
@@ -148,5 +155,20 @@ namespace vot
     bool Player::auto_target() const
     {
         return _auto_target;
+    }
+
+    void Player::add_powerup(const Powerup &powerup)
+    {
+        auto new_value = _powerups[powerup.type()] + powerup.value();
+        if (new_value > 5)
+        {
+            new_value = 0;
+        }
+        if (new_value < 0)
+        {
+            new_value = 0;
+        }
+
+        _powerups[powerup.type()] = new_value;
     }
 }

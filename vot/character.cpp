@@ -84,7 +84,7 @@ namespace vot
     void Character::take_damage(float damage)
     {
         _life -= damage;
-        if (_life < 0.0f)
+        if (_life <= 0.0f)
         {
             _life = 0.0f;
             _is_dead = true;
