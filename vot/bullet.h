@@ -98,9 +98,11 @@ namespace vot
     class HomingBullet : public Bullet
     {
         public:
-            HomingBullet(const sf::Texture &texture, float damage);
+            HomingBullet(const sf::Texture &texture, const sf::Texture &texture_background, float damage);
             HomingBullet(const HomingBullet &clone);
             
+            void setup(const sf::Vector2f &location, float angle);
+
             virtual sf::Vector2f location() const;
             virtual void scale(float value);
 
@@ -125,7 +127,13 @@ namespace vot
             float _total_lifetime;
             float _tracking_time;
 
+            std::array<sf::Vector2f, 20> _prev_positions;
+            int8_t _prev_position_index;
+            int8_t _prev_position_count;
+            float _prev_record_cooldown;
+
             sf::Sprite _sprite;
+            sf::Sprite _sprite_background;
     };
     // }}}
 

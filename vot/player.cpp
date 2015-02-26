@@ -26,6 +26,7 @@ namespace vot
 
         auto speed = 270.0f * dt;
         auto rot_speed = 180.0f * dt;
+        // Keyboard input {{{
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             translate(sf::Vector2f(-speed, 0.0f));
@@ -66,6 +67,7 @@ namespace vot
         {
             _look_at_target = !_look_at_target;
         }
+        // }}}
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
@@ -104,35 +106,29 @@ namespace vot
                 }
             }
             
-            if (_homing_cooldown <= 0.0f && _powerups[Powerup::HOMING] > 0)
+            auto homing_level = _powerups[Powerup::HOMING]; 
+            homing_level = 5;
+            if (_homing_cooldown <= 0.0f && homing_level > 0)
             {
-                /*
                 auto homing_bullet = spawn_homing_bullet();
                 auto angle = rotation() - 90.0f;
-                homing_bullet->setPosition(location());
-                homing_bullet->rotate(angle + 10.0f);
+                homing_bullet->setup(location(), angle + 10.0f);
                 homing_bullet->target(_target);
 
                 homing_bullet = spawn_homing_bullet();
-                homing_bullet->setPosition(location());
-                homing_bullet->rotate(angle - 10.0f);
+                homing_bullet->setup(location(), angle - 10.0f);
                 homing_bullet->target(_target);
-
-                auto homing_level = _powerups[Powerup::HOMING]; 
 
                 if (homing_level > 1)
                 {
                     homing_bullet = spawn_homing_bullet();
-                    homing_bullet->setPosition(location());
-                    homing_bullet->rotate(angle - 30.0f);
+                    homing_bullet->setup(location(), angle + 30.0f);
                     homing_bullet->target(_target);
 
                     homing_bullet = spawn_homing_bullet();
-                    homing_bullet->setPosition(location());
-                    homing_bullet->rotate(angle + 30.0f);
+                    homing_bullet->setup(location(), angle - 30.0f);
                     homing_bullet->target(_target);
                 }
-                */
 
                 _homing_cooldown = 0.75f;
             }

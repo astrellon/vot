@@ -283,7 +283,9 @@ namespace vot
         pattern_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "test");
         
-        auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
+        auto homing_background = tm->find_texture("homing_outer");
+        auto homing_center = tm->find_texture("homing_center");
+        auto homing_bullet = new HomingBullet(*homing_center, *homing_background, 2.0f);
         homing_bullet->total_lifetime(5.0f);
         homing_bullet->hitbox().radius(5.0f);
         homing_bullet->scale(0.5f);

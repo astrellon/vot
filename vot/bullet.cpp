@@ -196,29 +196,45 @@ namespace vot
     // }}}
     
     // HomingBullet {{{
-    HomingBullet::HomingBullet(const sf::Texture &texture, float damage) :
+    HomingBullet::HomingBullet(const sf::Texture &texture, const sf::Texture &texture_background, float damage) :
         Bullet(damage),
         _target(nullptr),
         _lifetime(0.0f),
         _total_lifetime(3.0f),
         _tracking_time(0.0f),
-        _sprite(texture)
+        _prev_record_cooldown(0.0f),
+        _sprite(texture),
+        _sprite_background(texture_background)
     {
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
+        
+        size = _sprite_background.getTexture()->getSize();
+        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
+
     HomingBullet::HomingBullet(const HomingBullet &clone) :
         Bullet(clone),
         _target(nullptr),
         _lifetime(0.0f),
         _total_lifetime(clone._total_lifetime),
         _tracking_time(0.0f),
-        _sprite(clone._sprite)
+        _prev_record_cooldown(0.0f),
+        _sprite(clone._sprite),
+        _sprite_background(clone._sprite_background)
     {
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
+        
+        size = _sprite_background.getTexture()->getSize();
+        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
+    void HomingBullet::setup(const sf::Vector2f &location, float angle)
+    {
+        _sprite.setPosition(location);
+        _sprite.setRotation(angle);
+    }
     sf::Vector2f HomingBullet::location() const
     {
         return _sprite.getPosition();
@@ -228,6 +244,10 @@ namespace vot
         _sprite.setScale(value, value);
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
+
+        _sprite_background.setScale(value, value);
+        size = _sprite_background.getTexture()->getSize();
+        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     void HomingBullet::target(const Character *value)
@@ -264,6 +284,22 @@ namespace vot
 
     void HomingBullet::update(float dt)
     {
+        _prev_record_cooldown -= dt;
+        if (_prev_record_cooldown < 0.0f)
+        {
+            _prev_record_cooldown = 0.005f;
+            _prev_positions[_prev_position_index++] = _sprite.getPosition();
+            if (_prev_position_index >= _prev_positions.size())
+            {
+                _prev_position_index = 0;
+            }
+
+            if (_prev_position_count < _prev_positions.size())
+            {
+                _prev_position_count++;
+            }
+        }
+
         _lifetime += dt;
         auto speed = 90.0f * dt;
         if (_tracking_time >= 1.0f)
@@ -274,10 +310,13 @@ namespace vot
             speed = speed > top_speed ? top_speed : speed;
             speed *= dt;
         }
+
         auto matrix = _sprite.getTransform().getMatrix();
         auto x = speed * matrix[0];
         auto y = -speed * matrix[4];
         _sprite.move(x, y);
+        //_sprite_background.move(x, y);
+        _sprite_background.setPosition(_sprite.getPosition());
         hitbox().location(_sprite.getPosition());
         
         if (_target == nullptr || _target->is_dead())
@@ -300,14 +339,53 @@ namespace vot
         if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
         {
             _sprite.setRotation(angles.to_angle());
+            _sprite_background.setRotation(angles.to_angle());
         }
         else
         {
-            _sprite.rotate(angles.delta_angle() > 0 ? rot_speed : -rot_speed);
+            auto angle = angles.delta_angle() > 0 ? rot_speed : -rot_speed;
+            _sprite.rotate(angle);
+            _sprite_background.rotate(angle);
         }
     }
     void HomingBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
+        sf::Sprite trail(_sprite_background);
+
+        auto scale = 1.0f;
+        auto scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1);
+        for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
+        {
+            if (j < 0)
+            {
+                j = _prev_positions.size() - 1;
+            }
+
+            scale -= scale_diff;
+            trail.setPosition(_prev_positions[j]);
+            trail.setScale(scale, scale);
+
+            target.draw(trail, states);
+        }
+        target.draw(_sprite_background, states);
+
+        scale = 1.0f;
+        target.draw(_sprite_background, states);
+        trail = sf::Sprite(_sprite);
+        for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
+        {
+            if (j < 0)
+            {
+                j = _prev_positions.size() - 1;
+            }
+
+            scale -= scale_diff;
+            trail.setPosition(_prev_positions[j]);
+            trail.setScale(scale, scale);
+
+            target.draw(trail, states);
+        }
+        
         target.draw(_sprite, states);
     }
     // }}}
