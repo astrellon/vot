@@ -64,7 +64,7 @@ namespace vot
     
     bool TextureManager::load_default_textures()
     {
-        if (!load_texture_log("bullet_blue", "data/bullet_blue_circle.png")) return false;
+        if (!load_texture_log("bullet_blue", "data/laserBlue07.png")) return false;
         if (!load_texture_log("bullet_blue_circle", "data/bullet_blue_circle.png")) return false;
         if (!load_texture_log("bullet_red_circle", "data/bullet_red_circle.png")) return false;
         if (!load_texture_log("player", "data/playerShip2_blue.png")) return false;
@@ -74,6 +74,8 @@ namespace vot
         if (!load_texture_log("target", "data/target.png")) return false;
         if (!load_texture_log("powerup_bullet", "data/powerupBlue_bolt.png")) return false;
         if (!load_texture_log("powerup_homing", "data/powerupBlue_star.png")) return false;
+        if (!load_texture_log("homing_center", "data/homing_center.png")) return false;
+        if (!load_texture_log("homing_outer", "data/homing_outer.png")) return false;
 
         return true;
     }

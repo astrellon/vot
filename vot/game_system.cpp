@@ -176,7 +176,7 @@ namespace vot
         for (auto i = 0u; i < powerups->size(); i++)
         {
             auto powerup = powerups->at(i).get();
-            if (_player->hitbox().intersects(powerup->hitbox()))
+            if (_player->powerup_hitbox().intersects(powerup->hitbox()))
             {
                 _player->add_powerup(*powerup);
                 _powerup_manager.remove_powerup(powerup);
@@ -253,12 +253,20 @@ namespace vot
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
+        pattern_bullet->scale(0.5f);
         _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue_circle");
         
         pattern_bullet = new PatternBullet(*bullet_blue, 1.0f);
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue");
+        pattern_bullet->scale(0.5f);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "player_bullet_small");
+        
+        pattern_bullet = new PatternBullet(*bullet_blue, 1.5f);
+        pattern_bullet->pattern_type(0u);
+        pattern_bullet->hitbox().radius(5.0f);
+        pattern_bullet->scale(0.75f);
+        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "player_bullet_medium");
         
         pattern_bullet = new PatternBullet(*bullet_red_circle, 1.0f);
         pattern_bullet->pattern_type(0u);
@@ -278,6 +286,7 @@ namespace vot
         auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
         homing_bullet->total_lifetime(5.0f);
         homing_bullet->hitbox().radius(5.0f);
+        homing_bullet->scale(0.5f);
         _bullet_manager.add_src_homing_bullet(homing_bullet, "homing_blue");
     }
 
@@ -385,9 +394,9 @@ namespace vot
     void GameSystem::bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture)
     {
         auto system = _particle_manager.spawn_system(*TextureManager::texture(texture), 10);
-        system->setPosition(bullet->getPosition());
+        system->setPosition(bullet->location());
 
-        auto dpos = bullet->getPosition() - hit->location();
+        auto dpos = bullet->location() - hit->location();
         auto angle = Utils::vector_angle(dpos);
         system->setRotation(angle);
     }

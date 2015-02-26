@@ -14,10 +14,10 @@ namespace vot
     class Character;
 
     // Bullet {{{
-    class Bullet : public sf::Sprite
+    class Bullet : public sf::Drawable
     {
         public:
-            Bullet(const sf::Texture &texture, float damage);
+            Bullet(float damage);
             Bullet(const Bullet &clone);
 
             virtual void damage(float value);
@@ -34,7 +34,8 @@ namespace vot
             void owner(uint16_t value);
             uint16_t owner() const;
 
-            sf::Vector2f center() const;
+            virtual sf::Vector2f location() const = 0;
+            virtual void scale(float value) = 0;
 
             enum Group
             {
@@ -63,6 +64,9 @@ namespace vot
             PatternBullet(const sf::Texture &texture, float damage);
             PatternBullet(const PatternBullet &clone);
 
+            virtual sf::Vector2f location() const;
+            virtual void scale(float value);
+
             void init_transform(sf::Transform trans);
             const sf::Transform &init_transform() const;
 
@@ -78,12 +82,14 @@ namespace vot
             virtual bool dead() const;
 
             virtual void update(float dt);
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const; 
 
         private:
             sf::Transform _init_transform;
             float _lifetime;
             float _total_lifetime;
             uint32_t _pattern_type;
+            sf::Sprite _sprite;
 
     };
     // }}}
@@ -94,6 +100,9 @@ namespace vot
         public:
             HomingBullet(const sf::Texture &texture, float damage);
             HomingBullet(const HomingBullet &clone);
+            
+            virtual sf::Vector2f location() const;
+            virtual void scale(float value);
 
             void target(const Character *value);
             const Character *target() const;
@@ -107,6 +116,7 @@ namespace vot
             virtual bool dead() const;
 
             virtual void update(float dt);
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const; 
 
         private:
             const Character *_target;
@@ -114,6 +124,8 @@ namespace vot
             float _lifetime;
             float _total_lifetime;
             float _tracking_time;
+
+            sf::Sprite _sprite;
     };
     // }}}
 

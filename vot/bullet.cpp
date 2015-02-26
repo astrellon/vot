@@ -12,33 +12,20 @@ namespace vot
     #define _UMAX std::numeric_limits<uint32_t>::max()
 
     // Bullet {{{
-    Bullet::Bullet(const sf::Texture &texture, float damage) :
-        sf::Sprite(texture),
+    Bullet::Bullet(float damage) :
         _damage(damage),
         _index(_UMAX),
         _owner(0u),
         _group(NATURE)
     {
-        auto size = texture.getSize();
-        setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
     Bullet::Bullet(const Bullet &clone) :
-        sf::Sprite(clone),
         _damage(clone._damage),
         _index(_UMAX),
         _hitbox(clone._hitbox.radius()),
         _owner(0u),
         _group(NATURE)
     {
-        auto size = getTexture()->getSize();
-        setOrigin(size.x * 0.5f, size.y * 0.5f);
-    }
-
-    sf::Vector2f Bullet::center() const
-    {
-        auto pos = getPosition();
-        auto size = getTexture()->getSize();
-        return sf::Vector2f(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f);
     }
 
     void Bullet::damage(float value)
@@ -85,19 +72,35 @@ namespace vot
     
     // PatternBullet {{{
     PatternBullet::PatternBullet(const sf::Texture &texture, float damage) :
-        Bullet(texture, damage),
+        Bullet(damage),
         _lifetime(0.0f),
         _total_lifetime(3.0f),
-        _pattern_type(0u)
+        _pattern_type(0u),
+        _sprite(texture)
     {
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
     PatternBullet::PatternBullet(const PatternBullet &clone) :
         Bullet(clone),
         _lifetime(clone._lifetime),
         _total_lifetime(clone._total_lifetime),
-        _pattern_type(clone._pattern_type)
+        _pattern_type(clone._pattern_type),
+        _sprite(clone._sprite)
     {
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
+    }
 
+    sf::Vector2f PatternBullet::location() const
+    {
+        return _sprite.getPosition();
+    }
+    void PatternBullet::scale(float value)
+    {
+        _sprite.setScale(value, value);
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     bool PatternBullet::active() const
@@ -153,8 +156,8 @@ namespace vot
 
         auto dl = _lifetime / _total_lifetime;
         auto speed_dl = dl * 0.5f;
-        auto point = getPosition();
-        auto prevPoint = getPosition();
+        auto point = _sprite.getPosition();
+        auto prevPoint = _sprite.getPosition();
 
         if (_pattern_type == 0u)
         {
@@ -181,31 +184,50 @@ namespace vot
         auto dp = point - prevPoint;
         auto angle = Utils::vector_angle(dp);
 
-        setPosition(point);
+        _sprite.setPosition(point);
 
         hitbox().location(point);
-        setRotation(angle + 90.0f);
+        _sprite.setRotation(angle + 90.0f);
+    }
+    void PatternBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        target.draw(_sprite, states);
     }
     // }}}
     
     // HomingBullet {{{
     HomingBullet::HomingBullet(const sf::Texture &texture, float damage) :
-        Bullet(texture, damage),
+        Bullet(damage),
         _target(nullptr),
         _lifetime(0.0f),
         _total_lifetime(3.0f),
-        _tracking_time(0.0f)
+        _tracking_time(0.0f),
+        _sprite(texture)
     {
-
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
     HomingBullet::HomingBullet(const HomingBullet &clone) :
         Bullet(clone),
         _target(nullptr),
         _lifetime(0.0f),
         _total_lifetime(clone._total_lifetime),
-        _tracking_time(0.0f)
+        _tracking_time(0.0f),
+        _sprite(clone._sprite)
     {
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
+    }
 
+    sf::Vector2f HomingBullet::location() const
+    {
+        return _sprite.getPosition();
+    }
+    void HomingBullet::scale(float value)
+    {
+        _sprite.setScale(value, value);
+        auto size = _sprite.getTexture()->getSize();
+        _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     void HomingBullet::target(const Character *value)
@@ -252,11 +274,11 @@ namespace vot
             speed = speed > top_speed ? top_speed : speed;
             speed *= dt;
         }
-        auto matrix = getTransform().getMatrix();
+        auto matrix = _sprite.getTransform().getMatrix();
         auto x = speed * matrix[0];
         auto y = -speed * matrix[4];
-        move(x, y);
-        hitbox().location(getPosition());
+        _sprite.move(x, y);
+        hitbox().location(_sprite.getPosition());
         
         if (_target == nullptr || _target->is_dead())
         {
@@ -272,17 +294,21 @@ namespace vot
             return;
         }
         
-        auto angles = Utils::calculate_angles(getPosition(), _target->location(), getRotation(), 0.0f);
+        auto angles = Utils::calculate_angles(_sprite.getPosition(), _target->location(), _sprite.getRotation(), 0.0f);
         auto rot_speed = 180.0f * dt;
 
         if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
         {
-            setRotation(angles.to_angle());
+            _sprite.setRotation(angles.to_angle());
         }
         else
         {
-            rotate(angles.delta_angle() > 0 ? rot_speed : -rot_speed);
+            _sprite.rotate(angles.delta_angle() > 0 ? rot_speed : -rot_speed);
         }
+    }
+    void HomingBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        target.draw(_sprite, states);
     }
     // }}}
 

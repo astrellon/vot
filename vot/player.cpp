@@ -13,6 +13,7 @@ namespace vot
         _cooldown(0.0f),
         _homing_cooldown(0.0f),
         _target(nullptr),
+        _powerup_hitbox(20.0f),
         _look_at_target(false),
         _auto_target(true)
     {
@@ -70,13 +71,34 @@ namespace vot
         {
             if (_cooldown <= 0.0f)
             {
-                auto bullet = spawn_pattern_bullet();
-                bullet->pattern_type(2u);
-                auto trans = forward_center_trans();
-                bullet->init_transform(trans);
+                auto bullet_level = _powerups[Powerup::BULLET]; 
+                bullet_level = 5;
+
+                if (bullet_level <= 5)
+                {
+                    if (bullet_level == 0)
+                    {
+                        auto bullet = spawn_pattern_bullet("player_bullet_small", 2u);
+                        auto trans = forward_center_trans();
+                        bullet->init_transform(trans);
+                    }
+                    else
+                    {
+                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 4.0f, 0.0f);
+                        if (bullet_level > 1)
+                        {
+                            spawn_pattern_bullet_pair("player_bullet_small", 2u, 30.0f, -20.0f);
+                            if (bullet_level > 2)
+                            {
+                                spawn_pattern_bullet_pair("player_bullet_small", 2u, 34.0f, -20.0f);
+                            }
+                        }
+                    }
+                }
 
                 _cooldown = 0.3f;
-                if (_powerups[Powerup::BULLET] > 1)
+
+                if (bullet_level > 1)
                 {
                     _cooldown = 0.2f;
                 }
@@ -84,6 +106,7 @@ namespace vot
             
             if (_homing_cooldown <= 0.0f && _powerups[Powerup::HOMING] > 0)
             {
+                /*
                 auto homing_bullet = spawn_homing_bullet();
                 auto angle = rotation() - 90.0f;
                 homing_bullet->setPosition(location());
@@ -95,7 +118,9 @@ namespace vot
                 homing_bullet->rotate(angle - 10.0f);
                 homing_bullet->target(_target);
 
-                if (_powerups[Powerup::HOMING] > 1)
+                auto homing_level = _powerups[Powerup::HOMING]; 
+
+                if (homing_level > 1)
                 {
                     homing_bullet = spawn_homing_bullet();
                     homing_bullet->setPosition(location());
@@ -107,6 +132,7 @@ namespace vot
                     homing_bullet->rotate(angle + 30.0f);
                     homing_bullet->target(_target);
                 }
+                */
 
                 _homing_cooldown = 0.75f;
             }
@@ -128,11 +154,28 @@ namespace vot
 
         _cooldown -= dt;
         _homing_cooldown -= dt;
+
+        _powerup_hitbox.location(sprite().getPosition());
     }
 
-    PatternBullet *Player::spawn_pattern_bullet()
+    PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)
     {
-        return GameSystem::main()->bullet_manager().spawn_pattern_bullet("straight_blue", id(), Bullet::PLAYER);
+        auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(name, id(), Bullet::PLAYER); 
+        bullet->pattern_type(pattern_type);
+        return bullet;
+    }
+    void Player::spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y)
+    {
+        auto bullet = spawn_pattern_bullet(name, pattern_type);
+        auto trans = forward_center_trans();
+        trans.translate(y, x);
+        bullet->init_transform(trans);
+
+        bullet = spawn_pattern_bullet(name, pattern_type);
+        trans = forward_center_trans();
+        trans.translate(y, -x);
+        bullet->init_transform(trans);
+
     }
     HomingBullet *Player::spawn_homing_bullet()
     {
@@ -155,6 +198,11 @@ namespace vot
     bool Player::auto_target() const
     {
         return _auto_target;
+    }
+
+    Circle &Player::powerup_hitbox()
+    {
+        return _powerup_hitbox;
     }
 
     void Player::add_powerup(const Powerup &powerup)

@@ -25,17 +25,22 @@ namespace vot
             bool looking_at_target() const;
             bool auto_target() const;
 
+            Circle &powerup_hitbox();
+
             void add_powerup(const Powerup &powerup);
 
         private:
             float _cooldown;
             float _homing_cooldown;
 
-            PatternBullet *spawn_pattern_bullet();
+            PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
+            void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
             Enemy *_target;
 
             std::map<Powerup::Type, int32_t> _powerups;
+
+            Circle _powerup_hitbox;
 
             bool _look_at_target;
             bool _auto_target;
