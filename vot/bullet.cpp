@@ -353,7 +353,7 @@ namespace vot
         sf::Sprite trail(_sprite_background);
 
         auto scale = 1.0f;
-        auto scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1);
+        auto scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1)- (1.0f / 48.0f);
         for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
         {
             if (j < 0)
@@ -370,6 +370,7 @@ namespace vot
         target.draw(_sprite_background, states);
 
         scale = 1.0f;
+        scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1);
         target.draw(_sprite_background, states);
         trail = sf::Sprite(_sprite);
         for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
