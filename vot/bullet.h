@@ -126,8 +126,9 @@ namespace vot
             float _lifetime;
             float _total_lifetime;
             float _tracking_time;
+            float _scale;
 
-            std::array<sf::Vector2f, 20> _prev_positions;
+            std::array<sf::Vector2f, 10> _prev_positions;
             int8_t _prev_position_index;
             int8_t _prev_position_count;
             float _prev_record_cooldown;

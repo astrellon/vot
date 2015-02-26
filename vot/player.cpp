@@ -74,7 +74,6 @@ namespace vot
             if (_cooldown <= 0.0f)
             {
                 auto bullet_level = _powerups[Powerup::BULLET]; 
-                bullet_level = 5;
 
                 if (bullet_level <= 5)
                 {
@@ -107,7 +106,6 @@ namespace vot
             }
             
             auto homing_level = _powerups[Powerup::HOMING]; 
-            homing_level = 5;
             if (_homing_cooldown <= 0.0f && homing_level > 0)
             {
                 auto homing_bullet = spawn_homing_bullet();

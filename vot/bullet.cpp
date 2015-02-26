@@ -202,6 +202,9 @@ namespace vot
         _lifetime(0.0f),
         _total_lifetime(3.0f),
         _tracking_time(0.0f),
+        _scale(1.0f),
+        _prev_position_index(0),
+        _prev_position_count(0),
         _prev_record_cooldown(0.0f),
         _sprite(texture),
         _sprite_background(texture_background)
@@ -219,6 +222,9 @@ namespace vot
         _lifetime(0.0f),
         _total_lifetime(clone._total_lifetime),
         _tracking_time(0.0f),
+        _scale(clone._scale),
+        _prev_position_index(0),
+        _prev_position_count(0),
         _prev_record_cooldown(0.0f),
         _sprite(clone._sprite),
         _sprite_background(clone._sprite_background)
@@ -241,6 +247,7 @@ namespace vot
     }
     void HomingBullet::scale(float value)
     {
+        _scale = value;
         _sprite.setScale(value, value);
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -287,14 +294,14 @@ namespace vot
         _prev_record_cooldown -= dt;
         if (_prev_record_cooldown < 0.0f)
         {
-            _prev_record_cooldown = 0.005f;
+            _prev_record_cooldown = 0.01f;
             _prev_positions[_prev_position_index++] = _sprite.getPosition();
-            if (_prev_position_index >= _prev_positions.size())
+            if (_prev_position_index >= static_cast<int8_t>(_prev_positions.size()))
             {
                 _prev_position_index = 0;
             }
 
-            if (_prev_position_count < _prev_positions.size())
+            if (_prev_position_count < static_cast<int8_t>(_prev_positions.size()))
             {
                 _prev_position_count++;
             }
@@ -352,8 +359,8 @@ namespace vot
     {
         sf::Sprite trail(_sprite_background);
 
-        auto scale = 1.0f;
-        auto scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1)- (1.0f / 48.0f);
+        auto scale = _scale;
+        auto scale_diff = _scale / static_cast<float>(_prev_positions.size() + 1)- (1.0f / 48.0f);
         for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
         {
             if (j < 0)
@@ -369,8 +376,8 @@ namespace vot
         }
         target.draw(_sprite_background, states);
 
-        scale = 1.0f;
-        scale_diff = 1.0f / static_cast<float>(_prev_positions.size() + 1);
+        scale = _scale;
+        scale_diff = _scale / static_cast<float>(_prev_positions.size() + 1);
         target.draw(_sprite_background, states);
         trail = sf::Sprite(_sprite);
         for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)

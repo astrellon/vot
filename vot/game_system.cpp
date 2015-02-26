@@ -20,7 +20,9 @@ namespace vot
     }
 
     GameSystem::GameSystem(sf::RenderWindow &window) :
-        _window(window)
+        _window(window),
+        _spawn_timer(0.0f),
+        _update_counter(0)
     {
         auto size = static_cast<int>(sf::Keyboard::KeyCount);
         for (auto i = 0; i < size; i++)

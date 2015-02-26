@@ -84,7 +84,6 @@ namespace vot
 
             float _spawn_timer;
 
-            uint16_t _id_counter;
             uint32_t _update_counter;
 
             uint32_t _keys_pressed[sf::Keyboard::KeyCount];
