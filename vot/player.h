@@ -36,6 +36,7 @@ namespace vot
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
             void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
+            void spawn_homing_bullet_pair(float offset_angle);
             Enemy *_target;
 
             std::map<Powerup::Type, int32_t> _powerups;

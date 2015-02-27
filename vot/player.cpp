@@ -73,62 +73,67 @@ namespace vot
         {
             if (_cooldown <= 0.0f)
             {
+                _cooldown = 0.3f;
                 auto bullet_level = _powerups[Powerup::BULLET]; 
 
-                if (bullet_level <= 5)
+                if (bullet_level == 0)
                 {
-                    if (bullet_level == 0)
-                    {
-                        auto bullet = spawn_pattern_bullet("player_bullet_small", 2u);
-                        auto trans = forward_center_trans();
-                        bullet->init_transform(trans);
-                    }
-                    else
-                    {
-                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 4.0f, 0.0f);
-                        if (bullet_level > 1)
-                        {
-                            spawn_pattern_bullet_pair("player_bullet_small", 2u, 30.0f, -20.0f);
-                            if (bullet_level > 2)
-                            {
-                                spawn_pattern_bullet_pair("player_bullet_small", 2u, 34.0f, -20.0f);
-                            }
-                        }
-                    }
+                    auto bullet = spawn_pattern_bullet("player_bullet_small", 2u);
+                    auto trans = forward_center_trans();
+                    bullet->init_transform(trans);
                 }
-
-                _cooldown = 0.3f;
-
-                if (bullet_level > 1)
+                else
                 {
-                    _cooldown = 0.2f;
+                    spawn_pattern_bullet_pair("player_bullet_small", 2u, 4.0f, 0.0f);
+                    if (bullet_level > 1)
+                    {
+                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 30.0f, -20.0f);
+                        _cooldown = 0.25f;
+                    }
+                    if (bullet_level > 2)
+                    {
+                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 34.0f, -20.0f);
+                        _cooldown = 0.20f;
+                    }
+                    if (bullet_level > 3)
+                    {
+                        _cooldown = 0.15f;
+                    }
                 }
             }
             
             auto homing_level = _powerups[Powerup::HOMING]; 
             if (_homing_cooldown <= 0.0f && homing_level > 0)
             {
-                auto homing_bullet = spawn_homing_bullet();
-                auto angle = rotation() - 90.0f;
-                homing_bullet->setup(location(), angle + 10.0f);
-                homing_bullet->target(_target);
-
-                homing_bullet = spawn_homing_bullet();
-                homing_bullet->setup(location(), angle - 10.0f);
-                homing_bullet->target(_target);
-
-                if (homing_level > 1)
+                _homing_cooldown = 0.75f;
+                if (homing_level == 1)
                 {
-                    homing_bullet = spawn_homing_bullet();
-                    homing_bullet->setup(location(), angle + 30.0f);
-                    homing_bullet->target(_target);
-
-                    homing_bullet = spawn_homing_bullet();
-                    homing_bullet->setup(location(), angle - 30.0f);
+                    auto homing_bullet = spawn_homing_bullet();
+                    auto angle = rotation() - 90.0f;
+                    homing_bullet->setup(location(), angle);
                     homing_bullet->target(_target);
                 }
+                else
+                {
+                    spawn_homing_bullet_pair(80.0f);
 
-                _homing_cooldown = 0.75f;
+                    if (homing_level == 3 || homing_level > 4)
+                    {
+                        auto homing_bullet = spawn_homing_bullet();
+                        auto angle = rotation() - 90.0f;
+                        homing_bullet->setup(location(), angle);
+                        homing_bullet->target(_target);
+                    }
+                    if (homing_level > 3)
+                    {
+                        spawn_homing_bullet_pair(100.0f);
+                        _homing_cooldown = 0.7f;
+                    }
+                    if (homing_level > 5)
+                    {
+                        _homing_cooldown = 0.65f;
+                    }
+                }
             }
         }
 
@@ -174,6 +179,17 @@ namespace vot
     HomingBullet *Player::spawn_homing_bullet()
     {
         return GameSystem::main()->bullet_manager().spawn_homing_bullet("homing_blue", id(), Bullet::PLAYER);
+    }
+    void Player::spawn_homing_bullet_pair(float offset_angle)
+    {
+        auto homing_bullet = spawn_homing_bullet();
+        auto angle = rotation() - 90.0f;
+        homing_bullet->setup(location(), angle + offset_angle);
+        homing_bullet->target(_target);
+
+        homing_bullet = spawn_homing_bullet();
+        homing_bullet->setup(location(), angle - offset_angle);
+        homing_bullet->target(_target);
     }
     
     void Player::target(Enemy *value)

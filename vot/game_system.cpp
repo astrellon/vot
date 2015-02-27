@@ -80,7 +80,7 @@ namespace vot
             if (_spawn_timer > 3.0f)
             {
                 auto enemy = enemy_manager().spawn_enemy("enemy1");
-                enemy->translate(Utils::rand_vec(-500.0f, 500.0f));
+                enemy->translate(Utils::rand_vec(-50.0f, 50.0f));
                 _spawn_timer = 0.0f;
 
                 if (_player->target() == nullptr && _player->auto_target())
@@ -159,6 +159,7 @@ namespace vot
                             bullet_hit_particles(bullet, enemy, "bullet_blue_circle");
 
                             _bullet_manager.remove_bullet(bullet);
+                            break;
                         }
                     }
                 }
