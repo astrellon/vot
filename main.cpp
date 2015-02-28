@@ -15,9 +15,16 @@
 #include "vot/enemy.h"
 #include "vot/game_hud.h"
 #include "vot/particles.h"
+#include "vot/utils.h"
 
 int main()
 {
+    vot::Ray ray(sf::Vector2f(-10.0f, 0.0f));
+    vot::Circle circle(sf::Vector2f(0.0f, 0.0f), 6.0f);
+    sf::Vector2f positions[2];
+    sf::Vector2f normals[2];
+
+    bool hit = vot::Utils::ray_circle_intersect(ray, circle, positions, normals);
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window", sf::Style::Default);
 

@@ -41,6 +41,9 @@
     <ClCompile Include="vot\powerup.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ray.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -85,6 +88,9 @@
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\powerup.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ray.h">
       <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>

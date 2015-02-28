@@ -22,29 +22,6 @@ namespace vot
 
     }
 
-    void Circle::location(const sf::Vector2f &value)
-    {
-        _location = value;
-    }
-    sf::Vector2f &Circle::location()
-    {
-        return _location;
-    }
-    const sf::Vector2f &Circle::location() const
-    {
-        return _location;
-    }
-
-    void Circle::radius(float value)
-    {
-        _radius = value;
-        _radius_squared = value * value;
-    }
-    float Circle::radius() const
-    {
-        return _radius;
-    }
-
     bool Circle::intersects(const Circle &circle)
     {
         auto dx = _location.x - circle._location.x;

@@ -12,12 +12,24 @@ namespace vot
             Circle(const sf::Vector2f &location, float radius);
 
             void translate(const sf::Vector2f &value);
-            void location(const sf::Vector2f &value);
-            sf::Vector2f &location();
-            const sf::Vector2f &location() const;
+            
+            inline void location(const sf::Vector2f &value)
+            {
+                _location = value;
+            }
+            inline sf::Vector2f location() const
+            {
+                return _location;
+            }
 
-            void radius(float value);
-            float radius() const;
+            inline void radius(float value)
+            {
+                _radius = value;
+            }
+            inline float radius() const
+            {
+                return _radius;
+            }
 
             bool intersects(const Circle &circle);
 

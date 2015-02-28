@@ -89,6 +89,7 @@
     <ClCompile Include="vot\particles.cpp" />
     <ClCompile Include="vot\player.cpp" />
     <ClCompile Include="vot\powerup.cpp" />
+    <ClCompile Include="vot\ray.cpp" />
     <ClCompile Include="vot\texture_manager.cpp" />
     <ClCompile Include="vot\utils.cpp" />
   </ItemGroup>
@@ -104,6 +105,7 @@
     <ClInclude Include="vot\particles.h" />
     <ClInclude Include="vot\player.h" />
     <ClInclude Include="vot\powerup.h" />
+    <ClInclude Include="vot\ray.h" />
     <ClInclude Include="vot\texture_manager.h" />
     <ClInclude Include="vot\utils.h" />
   </ItemGroup>

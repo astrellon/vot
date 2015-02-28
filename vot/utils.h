@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "ray.h"
+#include "circle.h"
+
 #include <random>
 #include <math.h>
 
@@ -66,6 +69,14 @@ namespace vot
             {
                 return atan2(vec.y, vec.x) * 57.295779513082;
             }
+
+            static inline float vector_dot(const sf::Vector2f &vec1, const sf::Vector2f &vec2)
+            {
+                return vec1.x * vec2.x + vec1.y * vec2.y;
+            }
+
+            static bool ray_circle_intersect(const Ray &ray, const Circle &circle, 
+                sf::Vector2f points[2], sf::Vector2f normals[2]);
 
         private:
 

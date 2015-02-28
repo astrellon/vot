@@ -23,4 +23,36 @@ namespace vot
 
         return AnglePair(to_angle, d_angle);
     }
+
+    bool Utils::ray_circle_intersect(const Ray &ray, const Circle &circle,
+        sf::Vector2f points[2], sf::Vector2f normals[2])
+    {
+        sf::Vector2f d = ray.origin() - circle.location();
+        float a = Utils::vector_dot(ray.origin(), ray.origin());
+        float b = Utils::vector_dot(d, ray.origin());
+        float c = Utils::vector_dot(d, d) - circle.radius() * circle.radius();
+
+        float disc = b * b - a * c;
+        if (disc < 0.0f)
+        {
+            return false;
+        }
+
+        float sqrtDisc = sqrt(disc);
+        float invA = 1.0f / a;
+
+        float t[2];
+        t[0] = (-b - sqrtDisc) * invA;
+        t[1] = (-b + sqrtDisc) * invA;
+
+        float invRadius = 1.0f / circle.radius();
+
+        for (int i = 0; i < 2; ++i)
+        {
+            points[i] = ray.origin() + t[i] * ray.origin();
+            normals[i] = (points[i] - circle.location()) * invRadius;
+        }
+
+        return true;
+    }
 }
