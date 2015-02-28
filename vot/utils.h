@@ -38,6 +38,9 @@ namespace vot
     {
         public:
 
+            static float degrees_to_radians;
+            static float radians_to_degrees;
+
             static AnglePair calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle); 
 
             static inline float lerp(float init, float target, float t)
@@ -65,9 +68,23 @@ namespace vot
                 return sf::Vector2f(x, y);
             }
 
-            static inline float vector_angle(const sf::Vector2f &vec)
+            static inline float vector_degrees(const sf::Vector2f &vec)
             {
-                return atan2(vec.y, vec.x) * 57.295779513082;
+                return atan2(vec.y, vec.x) * radians_to_degrees;
+            }
+            static inline float vector_radians(const sf::Vector2f &vec)
+            {
+                return atan2(vec.y, vec.x);
+            }
+
+            static inline sf::Vector2f degrees_vector(float degrees)
+            {
+                auto radians = degrees * degrees_to_radians;
+                return sf::Vector2f(cos(radians), sin(radians));
+            }
+            static inline sf::Vector2f radians_vector(float radians)
+            {
+                return sf::Vector2f(cos(radians), sin(radians));
             }
 
             static inline float vector_dot(const sf::Vector2f &vec1, const sf::Vector2f &vec2)

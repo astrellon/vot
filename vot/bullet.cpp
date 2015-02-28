@@ -182,7 +182,7 @@ namespace vot
         }
 
         auto dp = point - prevPoint;
-        auto angle = Utils::vector_angle(dp);
+        auto angle = Utils::vector_degrees(dp);
 
         _sprite.setPosition(point);
 

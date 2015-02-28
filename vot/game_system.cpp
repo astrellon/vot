@@ -402,7 +402,7 @@ namespace vot
         system->setPosition(bullet->location());
 
         auto dpos = bullet->location() - hit->location();
-        auto angle = Utils::vector_angle(dpos);
+        auto angle = Utils::vector_degrees(dpos);
         system->setRotation(angle);
     }
 }

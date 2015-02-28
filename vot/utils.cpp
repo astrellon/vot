@@ -7,6 +7,9 @@ namespace vot
     std::random_device Utils::_rd;
     std::mt19937 Utils::_rand(Utils::_rd());
 
+    float Utils::degrees_to_radians = 0.01745329251994329576923690768489f;
+    float Utils::radians_to_degrees = 57.295779513082320876798154814105f;
+
     AnglePair Utils::calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle)
     {
         auto d_pos = pos1 - pos2;
@@ -28,8 +31,8 @@ namespace vot
         sf::Vector2f points[2], sf::Vector2f normals[2])
     {
         sf::Vector2f d = ray.origin() - circle.location();
-        float a = Utils::vector_dot(ray.origin(), ray.origin());
-        float b = Utils::vector_dot(d, ray.origin());
+        float a = Utils::vector_dot(ray.direction(), ray.direction());
+        float b = Utils::vector_dot(d, ray.direction());
         float c = Utils::vector_dot(d, d) - circle.radius() * circle.radius();
 
         float disc = b * b - a * c;
@@ -49,7 +52,7 @@ namespace vot
 
         for (int i = 0; i < 2; ++i)
         {
-            points[i] = ray.origin() + t[i] * ray.origin();
+            points[i] = ray.origin() + t[i] * ray.direction();
             normals[i] = (points[i] - circle.location()) * invRadius;
         }
 

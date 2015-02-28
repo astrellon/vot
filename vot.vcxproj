@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="vot\background.cpp" />
+    <ClCompile Include="vot\beam.cpp" />
     <ClCompile Include="vot\bullet.cpp" />
     <ClCompile Include="vot\character.cpp" />
     <ClCompile Include="vot\circle.cpp" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vot\background.h" />
+    <ClInclude Include="vot\beam.h" />
     <ClInclude Include="vot\bullet.h" />
     <ClInclude Include="vot\character.h" />
     <ClInclude Include="vot\circle.h" />
