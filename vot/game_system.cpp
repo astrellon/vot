@@ -39,6 +39,7 @@ namespace vot
         create_default_bullets();
         create_default_enemies();
         create_default_powerups();
+        create_default_beams();
 
         auto player = new vot::Player(*TextureManager::texture("player"));
         player->sprite().setScale(0.5f, 0.5f);
@@ -60,6 +61,8 @@ namespace vot
     
         _hud.create();
         _world_hud.create();
+
+        player->_test_beam = _beam_manager.spawn_beam("beam1", Group::PLAYER);
     }
 
     sf::RenderWindow &GameSystem::window() const
@@ -135,26 +138,7 @@ namespace vot
 
                             if (enemy->is_dead())
                             {
-                                if (enemy == _player->target())
-                                {
-                                    if (_player->auto_target())
-                                    {
-                                        _player->target(next_target(enemy));
-                                    }
-                                    else
-                                    {
-                                        _player->target(nullptr);
-                                    }
-                                }
-
-                                auto rand = Utils::randf();
-
-                                auto powerup = _powerup_manager.spawn_powerup(
-                                        rand > 0.5f ? "bullet" : "homing");
-                                powerup->location(enemy->location());
-                                powerup->init_location(enemy->location());
-                            
-                                _enemy_manager.remove_enemy(enemy);
+                                kill_enemy(enemy);
                             }
 
                             bullet_hit_particles(bullet, enemy, "bullet_blue_circle");
@@ -188,11 +172,15 @@ namespace vot
             beam->hitting_target_length(-1.0f);
             if (beam->group() == Group::PLAYER)
             {
+                Enemy *hitting_target = nullptr;
+                auto hitting_target_length = -1.0f;
+
                 for (auto i = 0u; i < enemies->size(); i++)
                 {
                     auto enemy = (*enemies)[i].get();
                     sf::Vector2f points[2];
                     sf::Vector2f normals[2];
+
                     if (enemy != nullptr && Utils::ray_circle_intersect(beam->hitbox(), enemy->hitbox(), points, normals))
                     {
                         auto dpos = beam->hitbox().origin() - points[0];
@@ -202,11 +190,27 @@ namespace vot
                             continue;
                         }
 
-                        beam->hitting_target_length(distance);
-                        break;
+                        if (hitting_target == nullptr || hitting_target_length > distance)
+                        {
+                            beam->hitting_target_length(distance);
+                            hitting_target_length = distance;
+                            hitting_target = enemy;
+                        }
+                    }
+                }
+
+                if (hitting_target != nullptr)
+                {
+                    auto damage = 1.0f * dt;
+                    hitting_target->take_damage(damage);
+
+                    if (hitting_target->is_dead())
+                    {
+                        kill_enemy(hitting_target);
                     }
                 }
             }
+            beam->update(dt);
         }
 
         auto powerups = _powerup_manager.active_powerups();
@@ -452,5 +456,28 @@ namespace vot
         auto dpos = bullet->location() - hit->location();
         auto angle = Utils::vector_degrees(dpos);
         system->setRotation(angle);
+    }
+
+    void GameSystem::kill_enemy(Enemy *enemy)
+    {
+        if (enemy == _player->target())
+        {
+            if (_player->auto_target())
+            {
+                _player->target(next_target(enemy));
+            }
+            else
+            {
+                _player->target(nullptr);
+            }
+        }
+
+        auto rand = Utils::randf();
+
+        auto powerup = _powerup_manager.spawn_powerup(rand > 0.5f ? "bullet" : "homing");
+        powerup->location(enemy->location());
+        powerup->init_location(enemy->location());
+
+        _enemy_manager.remove_enemy(enemy);
     }
 }

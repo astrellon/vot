@@ -20,9 +20,6 @@ namespace vot
             Ray &hitbox();
             const Ray &hitbox() const;
 
-            void active(bool value);
-            bool active() const;
-
             void max_length(float value);
             float max_length() const;
 
@@ -41,7 +38,6 @@ namespace vot
         private:
             Ray _hitbox;
             uint32_t _index;
-            bool _active;
             Group::Type _group;
             float _max_length;
             float _hitting_target_length;
@@ -59,7 +55,6 @@ namespace vot
 
             void add_src_beam(const std::string &name, Beam *beam);
 
-            void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:

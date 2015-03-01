@@ -4,6 +4,8 @@
 #include <memory>
 #include <array>
 
+#include "utils.h"
+
 namespace vot
 {
     template <class T, int size>

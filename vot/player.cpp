@@ -12,10 +12,11 @@ namespace vot
         Character(texture),
         _cooldown(0.0f),
         _homing_cooldown(0.0f),
+        _look_at_target(false),
+        _auto_target(true),
         _target(nullptr),
         _powerup_hitbox(20.0f),
-        _look_at_target(false),
-        _auto_target(true)
+        _test_beam(nullptr)
     {
 
     }
@@ -155,6 +156,11 @@ namespace vot
         _homing_cooldown -= dt;
 
         _powerup_hitbox.location(sprite().getPosition());
+        if (_test_beam != nullptr)
+        {
+            _test_beam->hitbox().origin(sprite().getPosition());
+            _test_beam->hitbox().rotation(sprite().getRotation() - 90.0f);
+        }
     }
 
     PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)

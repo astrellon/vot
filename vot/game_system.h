@@ -85,8 +85,6 @@ namespace vot
             Background _background2;
             Background _background3;
 
-            void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
-
             float _spawn_timer;
 
             uint32_t _update_counter;
@@ -95,5 +93,9 @@ namespace vot
             uint32_t _keys_released[sf::Keyboard::KeyCount];
 
             static GameSystem *s_main;
+
+            void kill_enemy(Enemy *enemy);
+            void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
+
     };
 }

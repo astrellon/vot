@@ -4,6 +4,7 @@
 
 #include "character.h"
 #include "powerup.h"
+#include "beam.h"
 
 #include <map>
 
@@ -29,21 +30,22 @@ namespace vot
 
             void add_powerup(const Powerup &powerup);
 
+            Beam *_test_beam;
+            
         private:
             float _cooldown;
             float _homing_cooldown;
+            bool _look_at_target;
+            bool _auto_target;
+            Enemy *_target;
 
+            std::map<Powerup::Type, int32_t> _powerups;
+            Circle _powerup_hitbox;
+
+            
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
             void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
             void spawn_homing_bullet_pair(float offset_angle);
-            Enemy *_target;
-
-            std::map<Powerup::Type, int32_t> _powerups;
-
-            Circle _powerup_hitbox;
-
-            bool _look_at_target;
-            bool _auto_target;
     };
 }
