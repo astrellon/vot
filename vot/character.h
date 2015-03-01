@@ -11,6 +11,7 @@ namespace vot
     {
         public:
             Character(const sf::Texture &texture);
+            Character(const Character &clone);
 
             virtual void update(float dt) = 0;
             virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;

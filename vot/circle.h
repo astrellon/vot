@@ -10,6 +10,7 @@ namespace vot
             Circle();
             Circle(float radius);
             Circle(const sf::Vector2f &location, float radius);
+            Circle(const Circle &clone);
 
             void translate(const sf::Vector2f &value);
             
@@ -25,6 +26,7 @@ namespace vot
             inline void radius(float value)
             {
                 _radius = value;
+                _radius_squared = value * value;
             }
             inline float radius() const
             {

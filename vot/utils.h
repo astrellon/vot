@@ -12,14 +12,19 @@ namespace vot
 {
     class AnglePair
     {
-        public:
-            AnglePair(float to_angle, float delta_angle) :
-                _to_angle(to_angle),
-                _delta_angle(delta_angle)
-            {
+    public:
+        inline AnglePair(float to_angle, float delta_angle) :
+            _to_angle(to_angle),
+            _delta_angle(delta_angle)
+        {
 
-            }
+        }
+        inline AnglePair(double to_angle, double delta_angle) :
+            _to_angle(static_cast<float>(to_angle)),
+            _delta_angle(static_cast<float>(delta_angle))
+        {
 
+        }
             inline float to_angle() const
             {
                 return _to_angle;

@@ -47,7 +47,7 @@ namespace vot
         this->player(player);
     
         auto window_size = _window.getSize();
-        _camera.setSize(window_size.x, window_size.y);
+        _camera.setSize(static_cast<float>(window_size.x), static_cast<float>(window_size.y));
         _hud_camera = _window.getDefaultView();
 
         _background.speed(0.1f);
@@ -391,8 +391,10 @@ namespace vot
 
     void GameSystem::on_resize(uint32_t width, uint32_t height)
     {
-        _camera.setSize(width, height);
-        _hud_camera.setSize(width, height);
+        auto fwidth = static_cast<float>(width);
+        auto fheight = static_cast<float>(height);
+        _camera.setSize(fwidth, fheight);
+        _hud_camera.setSize(fwidth, fheight);
         _window.setSize(sf::Vector2u(width, height));
     }
 

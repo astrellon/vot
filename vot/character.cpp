@@ -13,6 +13,16 @@ namespace vot
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
+    Character::Character(const Character &clone) :
+        _sprite(clone._sprite),
+        _hitbox(clone._hitbox),
+        _life(clone._life),
+        _max_life(clone._max_life),
+        _is_dead(clone._is_dead),
+        _id(0u)
+    {
+
+    }
 
     void Character::translate(const sf::Vector2f &vector)
     {

@@ -43,7 +43,7 @@ namespace vot
                         continue;
                     }
                     auto trans = forward_center_trans();
-                    trans.rotate(i * 22.5);
+                    trans.rotate(i * 22.5f);
                     bullet->init_transform(trans);
                 }
                 _cooldown = 0.5f;

@@ -19,8 +19,8 @@ namespace vot
 
     void Background::create()
     {
-        auto size = 512;
-        _target.create(size, size);
+        auto size = 512.0f;
+        _target.create(static_cast<uint32_t>(size), static_cast<uint32_t>(size));
 
         auto blue_star = TextureManager::texture("blue_star");
         sf::Sprite blue_star_sprite(*blue_star);
@@ -43,15 +43,15 @@ namespace vot
             {
                 sprite = &red_star_sprite;
             }
-            auto x = size * (Utils::randf() * 0.95 + 0.025);
-            auto y = size * (Utils::randf() * 0.95 + 0.025);
+            auto x = size * (Utils::randf() * 0.95f + 0.025f);
+            auto y = size * (Utils::randf() * 0.95f + 0.025f);
 
-            auto r = Utils::randf() * 30 + 155;
-            auto g = Utils::randf() * 30 + 155;
-            auto b = Utils::randf() * 30 + 155;
+            auto r = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
+            auto g = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
+            auto b = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
             sf::Color colour(r, g, b);
 
-            auto scale = (powf(2.0f, Utils::randf()) - 1.0f) * (powf(2, (_speed + 0.5) - 1.0f));
+            auto scale = (powf(2.0f, Utils::randf()) - 1.0f) * (powf(2.0f, (_speed + 0.5f) - 1.0f));
             sprite->setScale(scale, scale);
             sprite->setPosition(x, y);
             sprite->setColor(colour);
@@ -86,8 +86,8 @@ namespace vot
         auto size = sf::Vector2i(sizef);
 
         auto text_rect = _sprite.getTextureRect();
-        auto x = int_pos.x % size.x + cam_pos.x - text_rect.width * 0.5;
-        auto y = int_pos.y % size.y + cam_pos.y - text_rect.height * 0.5;
+        auto x = int_pos.x % size.x + cam_pos.x - text_rect.width * 0.5f;
+        auto y = int_pos.y % size.y + cam_pos.y - text_rect.height * 0.5f;
         _sprite.setPosition(x, y); 
     }
 

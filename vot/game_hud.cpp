@@ -60,7 +60,7 @@ namespace vot
         auto target_texture = TextureManager::main()->texture("target");
         _target.setTexture(*target_texture);
         auto size = target_texture->getSize();
-        _target.setOrigin(size.x * 0.5, size.y * 0.5);
+        _target.setOrigin(static_cast<float>(size.x) * 0.5f, static_cast<float>(size.y) * 0.5f);
     }
 
     void HudWorld::update(float dt)

@@ -21,6 +21,13 @@ namespace vot
     {
 
     }
+    Circle::Circle(const Circle &clone) :
+        _location(clone._location),
+        _radius(clone._radius),
+        _radius_squared(clone._radius_squared)
+    {
+
+    }
 
     bool Circle::intersects(const Circle &circle)
     {
