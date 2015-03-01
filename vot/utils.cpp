@@ -10,6 +10,10 @@ namespace vot
     float Utils::degrees_to_radians = 0.01745329251994329576923690768489f;
     float Utils::radians_to_degrees = 57.295779513082320876798154814105f;
 
+    uint32_t Utils::max_uint = std::numeric_limits<uint32_t>::max();
+    int32_t Utils::max_int = std::numeric_limits<int32_t>::max();
+    int32_t Utils::min_int = std::numeric_limits<int32_t>::min();
+
     AnglePair Utils::calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle)
     {
         auto d_pos = pos1 - pos2;
@@ -30,30 +34,26 @@ namespace vot
     bool Utils::ray_circle_intersect(const Ray &ray, const Circle &circle,
         sf::Vector2f points[2], sf::Vector2f normals[2])
     {
-        sf::Vector2f d = ray.origin() - circle.location();
-        float a = Utils::vector_dot(ray.direction(), ray.direction());
-        float b = Utils::vector_dot(d, ray.direction());
-        float c = Utils::vector_dot(d, d) - circle.radius() * circle.radius();
+        auto d = ray.origin() - circle.location();
+        auto b = Utils::vector_dot(d, ray.direction());
+        auto c = Utils::vector_dot(d, d) - circle.radius_squared();
 
-        float disc = b * b - a * c;
+        auto disc = b * b - c;
         if (disc < 0.0f)
         {
             return false;
         }
 
-        float sqrtDisc = sqrt(disc);
-        float invA = 1.0f / a;
+        auto sqrt_disc = sqrt(disc);
 
         float t[2];
-        t[0] = (-b - sqrtDisc) * invA;
-        t[1] = (-b + sqrtDisc) * invA;
+        t[0] = (-b - sqrt_disc);
+        t[1] = (-b + sqrt_disc);
 
-        float invRadius = 1.0f / circle.radius();
-
-        for (int i = 0; i < 2; ++i)
+        for (auto i = 0; i < 2; ++i)
         {
             points[i] = ray.origin() + t[i] * ray.direction();
-            normals[i] = (points[i] - circle.location()) * invRadius;
+            normals[i] = (points[i] - circle.location()) * circle.radius_inv();
         }
 
         return true;

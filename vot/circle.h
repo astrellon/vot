@@ -27,10 +27,19 @@ namespace vot
             {
                 _radius = value;
                 _radius_squared = value * value;
+                _radius_inv = 1.0f / value;
             }
             inline float radius() const
             {
                 return _radius;
+            }
+            inline float radius_squared() const
+            {
+                return _radius_squared;
+            }
+            inline float radius_inv() const
+            {
+                return _radius_inv;
             }
 
             bool intersects(const Circle &circle);
@@ -41,5 +50,6 @@ namespace vot
             sf::Vector2f _location;
             float _radius;
             float _radius_squared;
+            float _radius_inv;
     };
 }

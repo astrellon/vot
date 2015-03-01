@@ -7,6 +7,7 @@
 
 #include <random>
 #include <math.h>
+#include <stdint.h>
 
 namespace vot
 {
@@ -45,6 +46,10 @@ namespace vot
 
             static float degrees_to_radians;
             static float radians_to_degrees;
+
+            static uint32_t max_uint;
+            static int32_t max_int;
+            static int32_t min_int;
 
             static AnglePair calculate_angles(const sf::Vector2f &pos1, const sf::Vector2f &pos2, float orig_angle, float offset_angle); 
 

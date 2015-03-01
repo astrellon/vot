@@ -5,6 +5,7 @@
 
 #include "texture_manager.h"
 #include "utils.h"
+#include "common.h"
 
 namespace vot
 {
@@ -36,7 +37,7 @@ namespace vot
     {
         TextureManager::main()->display("Init GS");
         create_default_bullets();
-        create_default_enemieS();
+        create_default_enemies();
         create_default_powerups();
 
         auto player = new vot::Player(*TextureManager::texture("player"));
@@ -90,7 +91,7 @@ namespace vot
             }
         }
 
-        auto enemies = _enemy_manager.enemies();
+        auto enemies = _enemy_manager.objects();
         for (auto i = 0u; i < enemies->size(); i++)
         {
             auto enemy = (*enemies)[i].get();
@@ -106,7 +107,7 @@ namespace vot
 
         _powerup_manager.update(dt);
 
-        auto bullets = _bullet_manager.bullets();
+        auto bullets = _bullet_manager.objects();
         for (auto i = 0u; i < bullets->size(); i++)
         {
             auto bullet = (*bullets)[i].get();
@@ -122,7 +123,7 @@ namespace vot
                 
                 auto group = bullet->group();
                 // Player bullet
-                if (group == Bullet::PLAYER)
+                if (group == Group::PLAYER)
                 {
                     // Search for enemies
                     for (auto i = 0u; i < enemies->size(); i++)
@@ -164,7 +165,7 @@ namespace vot
                     }
                 }
                 // Enemy bullet
-                else if (group == Bullet::ENEMY && 
+                else if (group == Group::ENEMY && 
                         _player->hitbox().intersects(bullet->hitbox()))
                 {
                     _player->take_damage(bullet->damage());
@@ -172,6 +173,39 @@ namespace vot
                     bullet_hit_particles(bullet, _player.get(), "bullet_red_circle");
                     _bullet_manager.remove_bullet(bullet);
                 } 
+            }
+        }
+
+        auto beams = _beam_manager.objects();
+        for (auto i = 0u; i < beams->size(); i++)
+        {
+            auto beam = beams->at(i).get();
+            if (beam == nullptr)
+            {
+                continue;
+            }
+
+            beam->hitting_target_length(-1.0f);
+            if (beam->group() == Group::PLAYER)
+            {
+                for (auto i = 0u; i < enemies->size(); i++)
+                {
+                    auto enemy = (*enemies)[i].get();
+                    sf::Vector2f points[2];
+                    sf::Vector2f normals[2];
+                    if (enemy != nullptr && Utils::ray_circle_intersect(beam->hitbox(), enemy->hitbox(), points, normals))
+                    {
+                        auto dpos = beam->hitbox().origin() - points[0];
+                        auto distance = sqrtf(dpos.x * dpos.x + dpos.y * dpos.y);
+                        if (distance > beam->max_length())
+                        {
+                            continue;
+                        }
+
+                        beam->hitting_target_length(distance);
+                        break;
+                    }
+                }
             }
         }
 
@@ -227,6 +261,7 @@ namespace vot
         target.draw(_enemy_manager, states);
         target.draw(_particle_manager, states);
         target.draw(_bullet_manager, states);
+        target.draw(_beam_manager, states);
 
         if (_player != nullptr)
         {
@@ -257,34 +292,34 @@ namespace vot
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
         pattern_bullet->scale(0.5f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_blue_circle");
+        _bullet_manager.add_src_pattern_bullet("straight_blue_circle", pattern_bullet);
         
         pattern_bullet = new PatternBullet(*bullet_blue, 1.0f);
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
         pattern_bullet->scale(0.5f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "player_bullet_small");
+        _bullet_manager.add_src_pattern_bullet("player_bullet_small", pattern_bullet);
         
         pattern_bullet = new PatternBullet(*bullet_blue, 1.5f);
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
         pattern_bullet->scale(0.75f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "player_bullet_medium");
+        _bullet_manager.add_src_pattern_bullet("player_bullet_medium", pattern_bullet);
         
         pattern_bullet = new PatternBullet(*bullet_red_circle, 1.0f);
         pattern_bullet->pattern_type(0u);
         pattern_bullet->hitbox().radius(5.0f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "straight_red_circle");
+        _bullet_manager.add_src_pattern_bullet("straight_red_circle", pattern_bullet);
 
         pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(1u);
         pattern_bullet->hitbox().radius(5.0f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "arena_blue");
+        _bullet_manager.add_src_pattern_bullet("arena_blue", pattern_bullet);
 
         pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(10u);
         pattern_bullet->hitbox().radius(5.0f);
-        _bullet_manager.add_src_pattern_bullet(pattern_bullet, "test");
+        _bullet_manager.add_src_pattern_bullet("test", pattern_bullet);
         
         auto homing_background = tm->find_texture("homing_outer");
         auto homing_center = tm->find_texture("homing_center");
@@ -292,20 +327,20 @@ namespace vot
         homing_bullet->total_lifetime(5.0f);
         homing_bullet->hitbox().radius(5.0f);
         homing_bullet->scale(0.5f);
-        _bullet_manager.add_src_homing_bullet(homing_bullet, "homing_blue");
+        _bullet_manager.add_src_homing_bullet("homing_blue", homing_bullet);
     }
 
     EnemyManager &GameSystem::enemy_manager()
     {
         return _enemy_manager;
     }
-    void GameSystem::create_default_enemieS()
+    void GameSystem::create_default_enemies()
     {
         auto texture = TextureManager::texture("enemy");
         auto enemy = new Enemy(*texture);
         enemy->sprite().setScale(0.5f, 0.5f);
         enemy->hitbox().radius(25.0f);
-        _enemy_manager.add_src_enemy(enemy, "enemy1");
+        _enemy_manager.add_src_enemy("enemy1", enemy);
     }
 
     ParticleSystemManager &GameSystem::particle_manager()
@@ -328,6 +363,17 @@ namespace vot
         _powerup_manager.add_src_powerup("homing", powerup);
     }
 
+    BeamManager &GameSystem::beam_manager()
+    {
+        return _beam_manager;
+    }
+    void GameSystem::create_default_beams()
+    {
+        auto beam = new Beam();
+
+        _beam_manager.add_src_beam("beam1", beam);
+    }
+
     void GameSystem::player(Player *value)
     {
         _player = std::unique_ptr<Player>(value);
@@ -346,7 +392,7 @@ namespace vot
     Enemy *GameSystem::next_target(Enemy *current)
     {
         auto start_index = 0u;
-        auto enemies = _enemy_manager.enemies();
+        auto enemies = _enemy_manager.objects();
         if (current != nullptr)
         {
             start_index = current->index();

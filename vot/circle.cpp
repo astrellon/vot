@@ -4,27 +4,31 @@ namespace vot
 {
     Circle::Circle() :
         _radius(1.0f),
-        _radius_squared(1.0f)
+        _radius_squared(1.0f),
+        _radius_inv(1.0f)
     {
 
     }
     Circle::Circle(float radius) :
         _radius(radius),
-        _radius_squared(radius * radius)
+        _radius_squared(radius * radius),
+        _radius_inv(1.0f / radius)
     {
 
     }
     Circle::Circle(const sf::Vector2f &location, float radius) :
         _location(location),
         _radius(radius),
-        _radius_squared(radius * radius)
+        _radius_squared(radius * radius),
+        _radius_inv(1.0f / radius)
     {
 
     }
     Circle::Circle(const Circle &clone) :
         _location(clone._location),
         _radius(clone._radius),
-        _radius_squared(clone._radius_squared)
+        _radius_squared(clone._radius_squared),
+        _radius_inv(clone._radius_inv)
     {
 
     }

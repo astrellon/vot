@@ -12,6 +12,7 @@
 #include "background.h"
 #include "particles.h"
 #include "powerup.h"
+#include "beam.h"
 
 namespace vot
 {
@@ -28,12 +29,15 @@ namespace vot
             void create_default_bullets();
 
             EnemyManager &enemy_manager();
-            void create_default_enemieS();
+            void create_default_enemies();
 
             ParticleSystemManager &particle_manager();
 
             PowerupManager &powerup_manager();
             void create_default_powerups();
+
+            BeamManager &beam_manager();
+            void create_default_beams();
 
             void player(Player *value);
             Player *player() const;
@@ -72,6 +76,7 @@ namespace vot
             EnemyManager _enemy_manager;
             ParticleSystemManager _particle_manager;
             PowerupManager _powerup_manager; 
+            BeamManager _beam_manager;
 
             HudMain _hud;
             HudWorld _world_hud;

@@ -1,9 +1,14 @@
 #include "beam.h"
 
+#include "utils.h"
+
 namespace vot
 {
+    // Beam {{{
     Beam::Beam() :
+        _index(Utils::max_uint),
         _active(false),
+        _group(Group::NATURE),
         _max_length(100.0f),
         _hitting_target_length(-1.0f)
     {
@@ -37,6 +42,24 @@ namespace vot
         return _max_length;
     }
 
+    void Beam::index(uint32_t value)
+    {
+        _index = value;
+    }
+    uint32_t Beam::index() const
+    {
+        return _index;
+    }
+
+    void Beam::group(Group::Type value)
+    {
+        _group = value;
+    }
+    Group::Type Beam::group() const
+    {
+        return _group;
+    }
+
     void Beam::hitting_target_length(float value)
     {
         _hitting_target_length = value;
@@ -63,6 +86,61 @@ namespace vot
 
         target.draw(_shape, states);
     }
+    // }}}
 
+    // BeamManager {{{
+    void BeamManager::remove_beam(Beam *beam)
+    {
+        _objects[beam->index()] = nullptr;
+    }
+
+    Beam *BeamManager::spawn_beam(const std::string &name, Group::Type group)
+    {
+        auto find = _src_beams.find(name);
+        if (find == _src_beams.end())
+        {
+            return nullptr;
+        }
+
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
+        {
+            return nullptr;
+        }
+
+        auto new_beam = new Beam(*find->second.get());
+        new_beam->group(group);
+        insert_object(new_beam, index);
+        return new_beam;
+    }
+
+    void BeamManager::add_src_beam(const std::string &name, Beam *beam)
+    {
+        _src_beams[name] = std::unique_ptr<Beam>(beam);
+    }
+
+    void BeamManager::update(float dt)
+    {
+        for (auto i = 0u; i < _objects.size(); i++)
+        {
+            auto beam = _objects[i].get();
+            if (beam != nullptr)
+            {
+                beam->update(dt);
+            }
+        }
+    }
+    void BeamManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        for (auto i = 0u; i < _objects.size(); i++)
+        {
+            auto beam = _objects[i].get();
+            if (beam != nullptr)
+            {
+                target.draw(*beam, states);
+            }
+        }
+    }
+    // }}}
 
 }

@@ -159,7 +159,7 @@ namespace vot
 
     PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)
     {
-        auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(name, id(), Bullet::PLAYER); 
+        auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(name, Group::PLAYER); 
         bullet->pattern_type(pattern_type);
         return bullet;
     }
@@ -178,7 +178,7 @@ namespace vot
     }
     HomingBullet *Player::spawn_homing_bullet()
     {
-        return GameSystem::main()->bullet_manager().spawn_homing_bullet("homing_blue", id(), Bullet::PLAYER);
+        return GameSystem::main()->bullet_manager().spawn_homing_bullet("homing_blue", Group::PLAYER);
     }
     void Player::spawn_homing_bullet_pair(float offset_angle)
     {

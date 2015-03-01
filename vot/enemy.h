@@ -5,6 +5,7 @@
 #include <memory>
 #include <array>
 
+#include "object_manager.h"
 #include "character.h"
 
 namespace vot
@@ -34,7 +35,7 @@ namespace vot
     // }}}
 
     // EnemyManager {{{
-    class EnemyManager : public sf::Drawable
+    class EnemyManager : public sf::Drawable, public ObjectManager<Enemy, 128>
     {
         public:
             EnemyManager();
@@ -42,12 +43,8 @@ namespace vot
             void remove_enemy(Enemy *enemy);
             Enemy *spawn_enemy(const std::string &name);
 
-            void add_src_enemy(Enemy *enemy, const std::string &name);
+            void add_src_enemy(const std::string &name, Enemy *enemy);
             uint32_t num_enemies() const;
-
-            typedef std::array<std::unique_ptr<Enemy>, 128> EnemyList;
-            EnemyList *enemies();
-            const EnemyList *enemies() const;
 
             typedef std::map<std::string, std::unique_ptr<Enemy> > EnemyMap;
             const EnemyMap &src_enemies() const;
@@ -55,18 +52,11 @@ namespace vot
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
-            EnemyList _enemies;
             std::vector<std::unique_ptr<Enemy> > _dead_enemies;
 
             EnemyMap _src_enemies;
-            uint32_t _enemy_index;
             uint16_t _enemy_counter;
             uint32_t _num_enemies;
-            
-            uint32_t find_empty_enemy() const;
-
-            void insert_enemy(Enemy *enemy, uint32_t index);
-
     };
     // }}}
 }

@@ -9,22 +9,18 @@
 
 namespace vot
 {
-    #define _UMAX std::numeric_limits<uint32_t>::max()
-
     // Bullet {{{
     Bullet::Bullet(float damage) :
         _damage(damage),
-        _index(_UMAX),
-        _owner(0u),
-        _group(NATURE)
+        _index(Utils::max_uint),
+        _group(Group::NATURE)
     {
     }
     Bullet::Bullet(const Bullet &clone) :
         _damage(clone._damage),
-        _index(_UMAX),
+        _index(Utils::max_uint),
         _hitbox(clone._hitbox.radius()),
-        _owner(0u),
-        _group(NATURE)
+        _group(Group::NATURE)
     {
     }
 
@@ -46,20 +42,11 @@ namespace vot
         return _index;
     }
 
-    void Bullet::owner(uint16_t value)
-    {
-        _owner = value;
-    }
-    uint16_t Bullet::owner() const
-    {
-        return _owner;
-    }
-
-    void Bullet::group(Bullet::Group value)
+    void Bullet::group(Group::Type value)
     {
         _group = value;
     }
-    Bullet::Group Bullet::group() const
+    Group::Type Bullet::group() const
     {
         return _group;
     }
@@ -399,17 +386,12 @@ namespace vot
     // }}}
 
     // BulletManager {{{
-    BulletManager::BulletManager() :
-        _bullet_index(0u)
-    {
-
-    }
-
     void BulletManager::remove_bullet(Bullet *bullet)
     {
-        _bullets[bullet->index()] = nullptr;
+        _objects[bullet->index()] = nullptr;
     }
-    PatternBullet *BulletManager::spawn_pattern_bullet(const std::string &name, uint16_t owner, Bullet::Group group)
+
+    PatternBullet *BulletManager::spawn_pattern_bullet(const std::string &name, Group::Type group)
     {
         auto find = _src_pattern_bullets.find(name);
         if (find == _src_pattern_bullets.end())
@@ -417,19 +399,18 @@ namespace vot
             return nullptr;
         }
 
-        auto index = find_empty_bullet();
-        if (index == _UMAX)
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
         {
             return nullptr;
         }
 
         auto new_bullet = new PatternBullet(*find->second.get());
-        new_bullet->owner(owner);
         new_bullet->group(group);
-        insert_bullet(new_bullet, index);
+        insert_object(new_bullet, index);
         return new_bullet;
     }
-    HomingBullet *BulletManager::spawn_homing_bullet(const std::string &name, uint16_t owner, Bullet::Group group)
+    HomingBullet *BulletManager::spawn_homing_bullet(const std::string &name, Group::Type group)
     {
         auto find = _src_homing_bullets.find(name);
         if (find == _src_homing_bullets.end())
@@ -437,30 +418,23 @@ namespace vot
             return nullptr;
         }
 
-        auto index = find_empty_bullet();
-        if (index == _UMAX)
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
         {
             return nullptr;
         }
 
         auto new_bullet = new HomingBullet(*find->second.get());
-        new_bullet->owner(owner);
         new_bullet->group(group);
-        insert_bullet(new_bullet, index);
+        insert_object(new_bullet, index);
         return new_bullet;
-    }
-
-    void BulletManager::insert_bullet(Bullet *bullet, uint32_t index)
-    {
-        bullet->index(index);
-        _bullets[index] = std::unique_ptr<Bullet>(bullet);;
     }
 
     void BulletManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        for (auto i = 0u; i < _bullets.size(); i++)
+        for (auto i = 0u; i < _objects.size(); i++)
         {
-            auto bullet = _bullets[i].get(); 
+            auto bullet = _objects[i].get(); 
             if (bullet != nullptr && bullet->active())
             {
                 target.draw(*bullet, states);
@@ -469,39 +443,13 @@ namespace vot
         }
     }
 
-    void BulletManager::add_src_pattern_bullet(PatternBullet *bullet, const std::string &name)
+    void BulletManager::add_src_pattern_bullet(const std::string &name, PatternBullet *bullet)
     {
         _src_pattern_bullets[name] = std::unique_ptr<PatternBullet>(bullet);
     }
-    void BulletManager::add_src_homing_bullet(HomingBullet *bullet, const std::string &name)
+    void BulletManager::add_src_homing_bullet(const std::string &name, HomingBullet *bullet)
     {
         _src_homing_bullets[name] = std::unique_ptr<HomingBullet>(bullet);
-    }
-
-    BulletManager::BulletList *BulletManager::bullets()
-    {
-        return &_bullets;
-    }
-
-    uint32_t BulletManager::find_empty_bullet() const
-    {
-        auto start = _bullet_index;
-        auto index = _bullet_index + 1;
-        while (start != index)
-        {
-            if (_bullets[index].get() == nullptr)
-            {
-                return index;
-            }
-
-            index++;
-            if (index >= _bullets.size())
-            {
-                index = 0;
-            }
-        }
-
-        return _UMAX;
     }
     // }}}
 }

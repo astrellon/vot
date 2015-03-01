@@ -8,6 +8,8 @@
 #include <array>
 
 #include "circle.h"
+#include "object_manager.h"
+#include "common.h"
 
 namespace vot
 {
@@ -31,20 +33,11 @@ namespace vot
             void index(uint32_t value);
             uint32_t index() const;
 
-            void owner(uint16_t value);
-            uint16_t owner() const;
-
             virtual sf::Vector2f location() const = 0;
             virtual void scale(float value) = 0;
 
-            enum Group
-            {
-                PLAYER,
-                ENEMY,
-                NATURE
-            };
-            void group(Group value);
-            Group group() const;
+            void group(Group::Type value);
+            Group::Type group() const;
 
             Circle &hitbox();
 
@@ -52,8 +45,7 @@ namespace vot
             float _damage;
             uint32_t _index;
             Circle _hitbox;
-            uint16_t _owner;
-            Group _group;
+            Group::Type _group;
     };
     // }}}
     
@@ -139,34 +131,23 @@ namespace vot
     // }}}
 
     // BulletManager {{{
-    class BulletManager : public sf::Drawable
+    class BulletManager : public sf::Drawable, public ObjectManager<Bullet, 2048>
     {
         public:
-            BulletManager();
-
             void remove_bullet(Bullet *bullet);
-            PatternBullet *spawn_pattern_bullet(const std::string &name, uint16_t owner, Bullet::Group group);
-            HomingBullet *spawn_homing_bullet(const std::string &name, uint16_t owner, Bullet::Group group);
 
-            void add_src_pattern_bullet(PatternBullet *bullet, const std::string &name);
-            void add_src_homing_bullet(HomingBullet *bullet, const std::string &name);
+            PatternBullet *spawn_pattern_bullet(const std::string &name, Group::Type group);
+            HomingBullet *spawn_homing_bullet(const std::string &name, Group::Type group);
+
+            void add_src_pattern_bullet(const std::string &name, PatternBullet *bullet);
+            void add_src_homing_bullet(const std::string &name, HomingBullet *bullet);
 
             //void draw(sf::RenderWindow &window);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-            typedef std::array<std::unique_ptr<Bullet>, 2048> BulletList;
-            BulletList *bullets();
-
         private:
-            uint32_t _bullet_index;
-            BulletList _bullets;
-
             std::map<std::string, std::unique_ptr<PatternBullet> > _src_pattern_bullets;
             std::map<std::string, std::unique_ptr<HomingBullet> > _src_homing_bullets;
-
-            uint32_t find_empty_bullet() const;
-
-            void insert_bullet(Bullet *bullet, uint32_t index);
     };
     // }}}
 }
