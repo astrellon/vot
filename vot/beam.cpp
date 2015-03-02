@@ -1,6 +1,7 @@
 #include "beam.h"
 
 #include "utils.h"
+#include "texture_manager.h"
 
 namespace vot
 {
@@ -9,9 +10,17 @@ namespace vot
         _index(Utils::max_uint),
         _group(Group::NATURE),
         _max_length(100.0f),
+        _width(10.0f),
         _hitting_target_length(-1.0f)
     {
+        _shape.setOrigin(0.0f, _width * 0.5f);
+        _shape_top.setOrigin(0.0f, _width * 0.5f);
 
+        auto texture = TextureManager::texture("beam");
+        _shape.setTexture(texture, true);
+
+        texture = TextureManager::texture("beam_top");
+        _shape_top.setTexture(texture, true);
     }
 
     Ray &Beam::hitbox()
@@ -30,6 +39,20 @@ namespace vot
     float Beam::max_length() const
     {
         return _max_length;
+    }
+
+    void Beam::width(float value)
+    {
+        _width = value;
+        _shape.setOrigin(0.0f, _width * 0.5f);
+        _shape_top.setOrigin(0.0f, _width * 0.5f);
+
+        auto size = _shape_top.getTexture()->getSize();
+        _shape_top.setSize(sf::Vector2f(size.x, _width));
+    }
+    float Beam::width() const
+    {
+        return _width;
     }
 
     void Beam::index(uint32_t value)
@@ -62,15 +85,19 @@ namespace vot
     void Beam::update(float dt)
     {
         auto length = _hitting_target_length < 0.0f ? _max_length : _hitting_target_length;
-        _shape.setOrigin(0.0f, 3.0f);
-        _shape.setSize(sf::Vector2f(length, 6.0f));
+        _shape.setSize(sf::Vector2f(length, _width));
         _shape.setRotation(_hitbox.rotation());
         _shape.setPosition(_hitbox.origin());
+
+        auto top_pos = _hitbox.direction() * length + _hitbox.origin();
+        _shape_top.setRotation(_hitbox.rotation());
+        _shape_top.setPosition(top_pos);
     }
 
     void Beam::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         target.draw(_shape, states);
+        target.draw(_shape_top, states);
     }
     // }}}
 

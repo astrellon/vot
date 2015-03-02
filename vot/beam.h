@@ -23,6 +23,9 @@ namespace vot
             void max_length(float value);
             float max_length() const;
 
+            void width(float value);
+            float width() const;
+
             void index(uint32_t value);
             uint32_t index() const;
 
@@ -40,9 +43,11 @@ namespace vot
             uint32_t _index;
             Group::Type _group;
             float _max_length;
+            float _width;
             float _hitting_target_length;
 
             sf::RectangleShape _shape;
+            sf::RectangleShape _shape_top;
     };
     // }}}
 

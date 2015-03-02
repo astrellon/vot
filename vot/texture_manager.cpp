@@ -76,6 +76,8 @@ namespace vot
         if (!load_texture_log("powerup_homing", "data/powerupBlue_star.png")) return false;
         if (!load_texture_log("homing_center", "data/homing_center.png")) return false;
         if (!load_texture_log("homing_outer", "data/homing_outer.png")) return false;
+        if (!load_texture_log("beam", "data/beam.png")) return false;
+        if (!load_texture_log("beam_top", "data/beam_top.png")) return false;
 
         return true;
     }

@@ -96,6 +96,7 @@ namespace vot
 
             void kill_enemy(Enemy *enemy);
             void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
+            void beam_hit_particles(const sf::Vector2f &point, const sf::Vector2f &normal, const std::string &texture);
 
     };
 }

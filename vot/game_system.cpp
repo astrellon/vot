@@ -174,12 +174,15 @@ namespace vot
             {
                 Enemy *hitting_target = nullptr;
                 auto hitting_target_length = -1.0f;
+                sf::Vector2f hitting_normal;
+                sf::Vector2f hitting_point;
+                    
+                sf::Vector2f points[2];
+                sf::Vector2f normals[2];
 
                 for (auto i = 0u; i < enemies->size(); i++)
                 {
                     auto enemy = (*enemies)[i].get();
-                    sf::Vector2f points[2];
-                    sf::Vector2f normals[2];
 
                     if (enemy != nullptr && Utils::ray_circle_intersect(beam->hitbox(), enemy->hitbox(), points, normals))
                     {
@@ -195,6 +198,8 @@ namespace vot
                             beam->hitting_target_length(distance);
                             hitting_target_length = distance;
                             hitting_target = enemy;
+                            hitting_point = points[0];
+                            hitting_normal = normals[0];
                         }
                     }
                 }
@@ -203,6 +208,8 @@ namespace vot
                 {
                     auto damage = 1.0f * dt;
                     hitting_target->take_damage(damage);
+                            
+                    beam_hit_particles(hitting_point, hitting_normal, "bullet_blue_circle");
 
                     if (hitting_target->is_dead())
                     {
@@ -374,6 +381,7 @@ namespace vot
     void GameSystem::create_default_beams()
     {
         auto beam = new Beam();
+        beam->width(16.0f);
 
         _beam_manager.add_src_beam("beam1", beam);
     }
@@ -456,6 +464,15 @@ namespace vot
         auto dpos = bullet->location() - hit->location();
         auto angle = Utils::vector_degrees(dpos);
         system->setRotation(angle);
+    }
+    void GameSystem::beam_hit_particles(const sf::Vector2f &point, const sf::Vector2f &normal, const std::string &texture)
+    {
+        auto system = _particle_manager.spawn_system(*TextureManager::texture(texture), 1);
+        system->setPosition(point);
+
+        auto angle = Utils::vector_degrees(normal);
+        system->setRotation(angle);
+    
     }
 
     void GameSystem::kill_enemy(Enemy *enemy)
