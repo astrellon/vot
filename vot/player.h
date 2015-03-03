@@ -19,6 +19,8 @@ namespace vot
         public:
             Player(const sf::Texture &texture);
             virtual void update(float dt);
+
+            void init();
             
             void target(Enemy *value);
             Enemy *target() const;
@@ -30,8 +32,6 @@ namespace vot
 
             void add_powerup(const Powerup &powerup);
 
-            Beam *_test_beam;
-            
         private:
             float _cooldown;
             float _homing_cooldown;
@@ -41,11 +41,14 @@ namespace vot
 
             std::map<Powerup::Type, int32_t> _powerups;
             Circle _powerup_hitbox;
-
             
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
             void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
             void spawn_homing_bullet_pair(float offset_angle);
+            
+            Beam *_middle_beam;
+            Beam *_left_beam;
+            Beam *_right_beam;
     };
 }

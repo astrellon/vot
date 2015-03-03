@@ -45,6 +45,7 @@ namespace vot
         player->sprite().setScale(0.5f, 0.5f);
         player->hitbox().radius(5.0f);
         player->location(sf::Vector2f(0.0f, 100.0f));
+        player->init();
 
         this->player(player);
     
@@ -61,8 +62,6 @@ namespace vot
     
         _hud.create();
         _world_hud.create();
-
-        player->_test_beam = _beam_manager.spawn_beam("beam1", Group::PLAYER);
     }
 
     sf::RenderWindow &GameSystem::window() const
@@ -164,7 +163,7 @@ namespace vot
         for (auto i = 0u; i < beams->size(); i++)
         {
             auto beam = beams->at(i).get();
-            if (beam == nullptr)
+            if (beam == nullptr || !beam->is_active())
             {
                 continue;
             }
@@ -270,8 +269,8 @@ namespace vot
 
         target.draw(_powerup_manager, states);
         target.draw(_enemy_manager, states);
-        target.draw(_particle_manager, states);
         target.draw(_bullet_manager, states);
+        target.draw(_particle_manager, states);
         target.draw(_beam_manager, states);
 
         if (_player != nullptr)
@@ -381,7 +380,8 @@ namespace vot
     void GameSystem::create_default_beams()
     {
         auto beam = new Beam();
-        beam->width(16.0f);
+        beam->width(12.0f);
+        beam->max_length(250.0f);
 
         _beam_manager.add_src_beam("beam1", beam);
     }

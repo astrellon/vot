@@ -27,44 +27,45 @@ namespace vot
     void Character::translate(const sf::Vector2f &vector)
     {
         // Transform move vector by the sprites rotation matrix.
-        auto matrix = _sprite.getTransform().getMatrix();
+        auto matrix = getTransform().getMatrix();
         auto x = vector.x * matrix[0] - vector.y * matrix[1];
         auto y = -vector.x * matrix[4] + vector.y * matrix[5];
-        _sprite.move(x, y);
-        _hitbox.location(_sprite.getPosition());
+        move(x, y);
+        _hitbox.location(getPosition());
     }
     void Character::location(const sf::Vector2f &vector)
     {
-        _sprite.setPosition(vector);
+        setPosition(vector);
         _hitbox.location(vector);
     }
     sf::Vector2f Character::location() const
     {
-        return _sprite.getPosition();
+        return getPosition();
     }
     sf::Vector2f Character::center() const
     {
-        auto pos = _sprite.getPosition();
+        auto pos = getPosition();
         auto size = _sprite.getTexture()->getSize();
         return sf::Vector2f(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f);
     }
 
     void Character::rotateBy(float angle)
     {
-        _sprite.rotate(angle);
+        rotate(angle);
     }
     void Character::rotation(float angle)
     {
-        _sprite.setRotation(angle);
+        setRotation(angle);
     }
     float Character::rotation() const
     {
-        return _sprite.getRotation();
+        return getRotation();
     }
 
-    void Character::draw(sf::RenderTarget &target, sf::RenderStates state) const
+    void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        target.draw(_sprite, state);
+        states.transform *= getTransform();
+        target.draw(_sprite, states);
         /*
         sf::RectangleShape line;
         line.setSize(sf::Vector2f(_sprite.getTexture()->getSize()));
@@ -139,13 +140,13 @@ namespace vot
     
     sf::Transform Character::forward_center_trans(bool rotate) const
     {
-        auto trans = sprite().getTransform();
+        auto trans = getTransform();
         if (rotate)
         {
             trans.rotate(-90);
         }
-        auto size = sprite().getTexture()->getSize();
-        trans.translate(size.y * -0.5f, size.x * 0.5f);
+        //auto size = sprite().getTexture()->getSize();
+        //trans.translate(size.y * -0.5f, size.x * 0.5f);
         return trans;
     }
 }

@@ -7,7 +7,7 @@
 
 namespace vot
 {
-    class Character : public sf::Drawable
+    class Character : public sf::Drawable, public sf::Transformable
     {
         public:
             Character(const sf::Texture &texture);

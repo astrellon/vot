@@ -35,6 +35,10 @@ namespace vot
             void hitting_target_length(float value);
             float hitting_target_length() const;
 
+            void is_active(bool value);
+            bool is_active() const;
+            void toggle_active();
+
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -45,6 +49,7 @@ namespace vot
             float _max_length;
             float _width;
             float _hitting_target_length;
+            bool _is_active;
 
             sf::RectangleShape _shape;
             sf::RectangleShape _shape_top;

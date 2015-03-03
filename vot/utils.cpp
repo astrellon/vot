@@ -37,6 +37,10 @@ namespace vot
         auto d = ray.origin() - circle.location();
         auto b = Utils::vector_dot(d, ray.direction());
         auto c = Utils::vector_dot(d, d) - circle.radius_squared();
+        if (b > 0.0f)
+        {
+            return false;
+        }
 
         auto disc = b * b - c;
         if (disc < 0.0f)

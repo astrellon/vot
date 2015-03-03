@@ -16,9 +16,20 @@ namespace vot
         _auto_target(true),
         _target(nullptr),
         _powerup_hitbox(20.0f),
-        _test_beam(nullptr)
+        _middle_beam(nullptr),
+        _left_beam(nullptr),
+        _right_beam(nullptr)
     {
 
+    }
+
+    void Player::init()
+    {
+        auto gs = GameSystem::main();
+
+        _middle_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
+        _left_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
+        _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
     }
 
     void Player::update(float dt)
@@ -69,6 +80,13 @@ namespace vot
             _look_at_target = !_look_at_target;
         }
         // }}}
+        
+        if (gs->is_key_pressed(sf::Keyboard::B))
+        {
+            //_middle_beam->toggle_active();
+            _left_beam->toggle_active();
+            _right_beam->toggle_active();
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
@@ -140,7 +158,7 @@ namespace vot
 
         if (_look_at_target && _target != nullptr)
         {
-            auto angles = Utils::calculate_angles(sprite().getPosition(), _target->sprite().getPosition(), rotation(), -90.0f);
+            auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
                 rotation(angles.to_angle());
@@ -149,18 +167,24 @@ namespace vot
             {
                 rotateBy(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
             }
-            
         }
 
         _cooldown -= dt;
         _homing_cooldown -= dt;
 
-        _powerup_hitbox.location(sprite().getPosition());
-        if (_test_beam != nullptr)
-        {
-            _test_beam->hitbox().origin(sprite().getPosition());
-            _test_beam->hitbox().rotation(sprite().getRotation() - 90.0f);
-        }
+        auto trans = getTransform();
+        auto middle_pos = trans.transformPoint(0.0f, 0.0f);
+        _powerup_hitbox.location(getPosition());
+        _middle_beam->hitbox().origin(middle_pos);
+        _middle_beam->hitbox().rotation(getRotation() - 90.0f);
+
+        auto left_pos = trans.transformPoint(-18.0f, 8.0f);
+        _left_beam->hitbox().origin(left_pos);
+        _left_beam->hitbox().rotation(getRotation() - 90.0f);
+
+        auto right_pos = trans.transformPoint(18.0f, 8.0f);
+        _right_beam->hitbox().origin(right_pos);
+        _right_beam->hitbox().rotation(getRotation() - 90.0f);
     }
 
     PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)

@@ -11,7 +11,8 @@ namespace vot
         _group(Group::NATURE),
         _max_length(100.0f),
         _width(10.0f),
-        _hitting_target_length(-1.0f)
+        _hitting_target_length(-1.0f),
+        _is_active(false)
     {
         _shape.setOrigin(0.0f, _width * 0.5f);
         _shape_top.setOrigin(0.0f, _width * 0.5f);
@@ -82,6 +83,19 @@ namespace vot
         return _hitting_target_length;
     }
 
+    void Beam::is_active(bool value)
+    {
+        _is_active = value;
+    }
+    bool Beam::is_active() const
+    {
+        return _is_active;
+    }
+    void Beam::toggle_active()
+    {
+        _is_active = !_is_active;
+    }
+
     void Beam::update(float dt)
     {
         auto length = _hitting_target_length < 0.0f ? _max_length : _hitting_target_length;
@@ -137,7 +151,7 @@ namespace vot
         for (auto i = 0u; i < _objects.size(); i++)
         {
             auto beam = _objects[i].get();
-            if (beam != nullptr)
+            if (beam != nullptr && beam->is_active())
             {
                 target.draw(*beam, states);
             }
