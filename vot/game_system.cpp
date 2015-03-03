@@ -112,7 +112,7 @@ namespace vot
         auto bullets = _bullet_manager.objects();
         for (auto i = 0u; i < bullets->size(); i++)
         {
-            auto bullet = (*bullets)[i].get();
+            auto bullet = bullets->at(i).get();
             if (bullet != nullptr)
             {
                 bullet->update(dt);
@@ -205,7 +205,7 @@ namespace vot
 
                 if (hitting_target != nullptr)
                 {
-                    auto damage = 1.0f * dt;
+                    auto damage = beam->dps() * dt;
                     hitting_target->take_damage(damage);
                             
                     beam_hit_particles(hitting_point, hitting_normal, "bullet_blue_circle");
@@ -381,7 +381,8 @@ namespace vot
     {
         auto beam = new Beam();
         beam->width(12.0f);
-        beam->max_length(250.0f);
+        beam->max_length(200.0f);
+        beam->dps(2.0f);
 
         _beam_manager.add_src_beam("beam1", beam);
     }

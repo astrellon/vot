@@ -12,6 +12,7 @@ namespace vot
         _max_length(100.0f),
         _width(10.0f),
         _hitting_target_length(-1.0f),
+        _dps(2.0f),
         _is_active(false)
     {
         _shape.setOrigin(0.0f, _width * 0.5f);
@@ -94,6 +95,15 @@ namespace vot
     void Beam::toggle_active()
     {
         _is_active = !_is_active;
+    }
+
+    void Beam::dps(float value)
+    {
+        _dps = value;
+    }
+    float Beam::dps() const
+    {
+        return _dps;
     }
 
     void Beam::update(float dt)

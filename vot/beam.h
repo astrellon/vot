@@ -39,6 +39,9 @@ namespace vot
             bool is_active() const;
             void toggle_active();
 
+            void dps(float value);
+            float dps() const;
+
             void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -49,6 +52,7 @@ namespace vot
             float _max_length;
             float _width;
             float _hitting_target_length;
+            float _dps;
             bool _is_active;
 
             sf::RectangleShape _shape;
