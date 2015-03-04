@@ -137,10 +137,15 @@ namespace vot
             void remove_bullet(Bullet *bullet);
 
             PatternBullet *spawn_pattern_bullet(const std::string &name, Group::Type group);
+            PatternBullet *spawn_pattern_bullet(const PatternBullet &blueprint, Group::Type group);
             HomingBullet *spawn_homing_bullet(const std::string &name, Group::Type group);
+            HomingBullet *spawn_homing_bullet(const HomingBullet &blueprint, Group::Type group);
 
             void add_src_pattern_bullet(const std::string &name, PatternBullet *bullet);
             void add_src_homing_bullet(const std::string &name, HomingBullet *bullet);
+
+            PatternBullet *find_src_pattern_bullet(const std::string &name) const;
+            HomingBullet *find_src_homing_bullet(const std::string &name) const;
 
             //void draw(sf::RenderWindow &window);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

@@ -3,6 +3,7 @@
 #include "game_system.h"
 #include "bullet.h"
 #include "utils.h"
+#include "texture_manager.h"
 
 #include <iostream>
 
@@ -30,6 +31,13 @@ namespace vot
         _middle_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         _left_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
+
+        auto bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
+        _left_turret = std::unique_ptr<PatternBulletHardpoint>(
+                new PatternBulletHardpoint(*bullet, Group::PLAYER));
+
+        auto turret = TextureManager::texture("turret");
+        _left_turret->texture(turret);
     }
 
     void Player::update(float dt)

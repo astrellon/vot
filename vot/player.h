@@ -5,6 +5,7 @@
 #include "character.h"
 #include "powerup.h"
 #include "beam.h"
+#include "hardpoint.h"
 
 #include <map>
 
@@ -50,5 +51,7 @@ namespace vot
             Beam *_middle_beam;
             Beam *_left_beam;
             Beam *_right_beam;
+
+            std::unique_ptr<PatternBulletHardpoint> _left_turret;
     };
 }

@@ -41,5 +41,6 @@ namespace vot
             static TextureManager *s_main;
 
             bool load_texture_log(const std::string &name, const std::string &filename);
+            void try_load(const std::string &name, const std::string &from_data);
     };
 }

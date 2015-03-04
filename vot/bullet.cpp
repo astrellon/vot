@@ -410,6 +410,20 @@ namespace vot
         insert_object(new_bullet, index);
         return new_bullet;
     }
+    PatternBullet *BulletManager::spawn_pattern_bullet(const PatternBullet &blueprint, Group::Type group)
+    {
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
+        {
+            return nullptr;
+        }
+
+        auto new_bullet = new PatternBullet(blueprint);
+        new_bullet->group(group);
+        insert_object(new_bullet, index);
+        return new_bullet;
+    }
+
     HomingBullet *BulletManager::spawn_homing_bullet(const std::string &name, Group::Type group)
     {
         auto find = _src_homing_bullets.find(name);
@@ -428,6 +442,38 @@ namespace vot
         new_bullet->group(group);
         insert_object(new_bullet, index);
         return new_bullet;
+    }
+    HomingBullet *BulletManager::spawn_homing_bullet(const HomingBullet &blueprint, Group::Type group)
+    {
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
+        {
+            return nullptr;
+        }
+
+        auto new_bullet = new HomingBullet(blueprint);
+        new_bullet->group(group);
+        insert_object(new_bullet, index);
+        return new_bullet;
+    }
+
+    PatternBullet *BulletManager::find_src_pattern_bullet(const std::string &name) const
+    {
+        auto find = _src_pattern_bullets.find(name);
+        if (find == _src_pattern_bullets.end())
+        {
+            return nullptr;
+        }
+        return find->second.get();
+    }
+    HomingBullet *BulletManager::find_src_homing_bullet(const std::string &name) const
+    {
+        auto find = _src_homing_bullets.find(name);
+        if (find == _src_homing_bullets.end())
+        {
+            return nullptr;
+        }
+        return find->second.get();
     }
 
     void BulletManager::draw(sf::RenderTarget &target, sf::RenderStates states) const

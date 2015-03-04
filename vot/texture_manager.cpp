@@ -1,5 +1,6 @@
 #include "texture_manager.h"
 
+#include <sstream>
 #include <iostream>
 
 namespace vot
@@ -64,22 +65,41 @@ namespace vot
     
     bool TextureManager::load_default_textures()
     {
-        if (!load_texture_log("bullet_blue", "data/laserBlue07.png")) return false;
-        if (!load_texture_log("bullet_blue_circle", "data/bullet_blue_circle.png")) return false;
-        if (!load_texture_log("bullet_red_circle", "data/bullet_red_circle.png")) return false;
-        if (!load_texture_log("player", "data/playerShip2_blue.png")) return false;
-        if (!load_texture_log("red_star", "data/red_star.png")) return false;
-        if (!load_texture_log("blue_star", "data/blue_star.png")) return false;
-        if (!load_texture_log("enemy", "data/ufoRed.png")) return false;
-        if (!load_texture_log("target", "data/target.png")) return false;
-        if (!load_texture_log("powerup_bullet", "data/powerupBlue_bolt.png")) return false;
-        if (!load_texture_log("powerup_homing", "data/powerupBlue_star.png")) return false;
-        if (!load_texture_log("homing_center", "data/homing_center.png")) return false;
-        if (!load_texture_log("homing_outer", "data/homing_outer.png")) return false;
-        if (!load_texture_log("beam", "data/beam.png")) return false;
-        if (!load_texture_log("beam_top", "data/beam_top.png")) return false;
+        try
+        {
+            try_load("bullet_blue", "laserBlue07.png");
+            try_load("bullet_blue_circle", "bullet_blue_circle.png");
+            try_load("bullet_red_circle", "bullet_red_circle.png");
+            try_load("player", "playerShip2_blue.png");
+            try_load("red_star", "red_star.png");
+            try_load("blue_star", "blue_star.png");
+            try_load("enemy", "ufoRed.png");
+            try_load("target", "target.png");
+            try_load("powerup_bullet", "powerupBlue_bolt.png");
+            try_load("powerup_homing", "powerupBlue_star.png");
+            try_load("homing_center", "homing_center.png");
+            try_load("homing_outer", "homing_outer.png");
+            try_load("beam", "beam.png");
+            try_load("beam_top", "beam_top.png");
+            try_load("turret", "turret.png");
+        }
+        catch (...)
+        {
+            return false;
+        }
 
         return true;
+    }
+
+    void TextureManager::try_load(const std::string &name, const std::string &from_data)
+    {
+        std::stringstream filename;
+        filename << "data/" << from_data;
+
+        if (!load_texture_log(name, filename.str()))
+        {
+            throw std::runtime_error("Failed to load texture");
+        }
     }
 
     void TextureManager::display(const std::string &message) const

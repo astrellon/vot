@@ -150,6 +150,19 @@ namespace vot
         insert_object(new_beam, index);
         return new_beam;
     }
+    Beam *BeamManager::spawn_beam(const Beam &blueprint, Group::Type group)
+    {
+        auto index = find_empty_object();
+        if (index == Utils::max_uint)
+        {
+            return nullptr;
+        }
+
+        auto new_beam = new Beam(blueprint);
+        new_beam->group(group);
+        insert_object(new_beam, index);
+        return new_beam;
+    }
 
     void BeamManager::add_src_beam(const std::string &name, Beam *beam)
     {

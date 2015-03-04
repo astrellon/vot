@@ -65,7 +65,9 @@ namespace vot
     {
         public:
             void remove_beam(Beam *beam);
+
             Beam *spawn_beam(const std::string &name, Group::Type group);
+            Beam *spawn_beam(const Beam &blueprint, Group::Type group);
 
             void add_src_beam(const std::string &name, Beam *beam);
 
