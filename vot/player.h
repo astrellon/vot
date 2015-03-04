@@ -52,6 +52,6 @@ namespace vot
             Beam *_left_beam;
             Beam *_right_beam;
 
-            std::unique_ptr<PatternBulletHardpoint> _left_turret;
+            //std::unique_ptr<PatternBulletHardpoint> _left_turret;
     };
 }

@@ -14,6 +14,9 @@ namespace vot
         public:
             Hardpoint(Group::Type group);
 
+            void parent(Character *value);
+            Character *parent() const;
+
             void target(Character *value);
             Character *target() const;
 
@@ -42,6 +45,7 @@ namespace vot
         private:
             float _cooldown;
             float _max_cooldown;
+            Character *_parent;
             Character *_target;
             Group::Type _group;
             sf::Sprite _sprite;
@@ -55,10 +59,14 @@ namespace vot
         public:
             PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group);
 
+            void pattern_type(uint32_t type);
+            uint32_t pattern_type() const;
+
             virtual void fire();
 
         private:
             const PatternBullet &_blueprint;
+            uint32_t _pattern_type;
     };
 
     /*

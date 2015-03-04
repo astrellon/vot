@@ -1,16 +1,28 @@
 #include "hardpoint.h"
 
+#include "game_system.h"
+
 namespace vot
 {
     // Hardpoint {{{
     Hardpoint::Hardpoint(Group::Type group) :
         _cooldown(0.0f),
         _max_cooldown(0.5f),
+        _parent(nullptr),
         _target(nullptr),
         _group(group),
         _world_rotation(0.0f)
     {
 
+    }
+
+    void Hardpoint::parent(Character *value)
+    {
+        _parent = value;
+    }
+    Character *Hardpoint::parent() const
+    {
+        return _parent;
     }
 
     void Hardpoint::target(Character *value)
@@ -25,6 +37,7 @@ namespace vot
     void Hardpoint::texture(const sf::Texture *value)
     {
         _sprite.setTexture(*value);
+        _sprite.setRotation(90.0f);
         auto size = value->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
@@ -88,14 +101,33 @@ namespace vot
     // PatternBulletHardpoint {{{
     PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group) :
         Hardpoint(group),
-        _blueprint(blueprint)
+        _blueprint(blueprint),
+        _pattern_type(0u)
     {
 
     }
 
+    void PatternBulletHardpoint::pattern_type(uint32_t type)
+    {
+        _pattern_type = type;
+    }
+    uint32_t PatternBulletHardpoint::pattern_type() const
+    {
+        return _pattern_type;
+    }
+
     void PatternBulletHardpoint::fire()
     {
+        if (cooldown() < 0.0f)
+        {
+            auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(_blueprint, Group::PLAYER); 
+            bullet->pattern_type(_pattern_type);
 
+            auto trans = parent()->getTransform() * getTransform();
+            bullet->init_transform(trans);
+
+            cooldown(max_cooldown());
+        }
     }
     // }}}
 }

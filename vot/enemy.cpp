@@ -54,6 +54,8 @@ namespace vot
             //auto rot_speed = 45.0f * dt;
             //rotateBy(rot_speed);
         }
+
+        Character::update(dt);
     }
 
     void Enemy::enemy_type(uint32_t value)

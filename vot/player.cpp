@@ -33,11 +33,13 @@ namespace vot
         _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
 
         auto bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-        _left_turret = std::unique_ptr<PatternBulletHardpoint>(
-                new PatternBulletHardpoint(*bullet, Group::PLAYER));
+        auto left_turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
+        left_turret->setPosition(18, 10);
+        left_turret->setRotation(-90.0f);
 
         auto turret = TextureManager::texture("turret");
-        _left_turret->texture(turret);
+        left_turret->texture(turret);
+        add_hardpoint(left_turret);
     }
 
     void Player::update(float dt)
@@ -94,6 +96,14 @@ namespace vot
             //_middle_beam->toggle_active();
             _left_beam->toggle_active();
             _right_beam->toggle_active();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+        {
+            auto points = hardpoints();
+            for (auto i = 0u; i < points->size(); i++)
+            {
+                points->at(i)->fire();
+            }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -193,6 +203,8 @@ namespace vot
         auto right_pos = trans.transformPoint(18.0f, 8.0f);
         _right_beam->hitbox().origin(right_pos);
         _right_beam->hitbox().rotation(getRotation() - 90.0f);
+
+        Character::update(dt);
     }
 
     PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)
@@ -212,7 +224,6 @@ namespace vot
         trans = forward_center_trans();
         trans.translate(y, -x);
         bullet->init_transform(trans);
-
     }
     HomingBullet *Player::spawn_homing_bullet()
     {

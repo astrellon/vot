@@ -2,8 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
+#include <vector>
+#include <memory>
 
 #include "circle.h"
+#include "hardpoint.h"
 
 namespace vot
 {
@@ -13,7 +16,7 @@ namespace vot
             Character(const sf::Texture &texture);
             Character(const Character &clone);
 
-            virtual void update(float dt) = 0;
+            virtual void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;
 
             void translate(const sf::Vector2f &vector);
@@ -45,6 +48,11 @@ namespace vot
 
             sf::Transform forward_center_trans(bool rotate = true) const;
 
+            typedef std::vector<std::unique_ptr<Hardpoint> > HardpointList; 
+            const HardpointList *hardpoints() const;
+            
+            void add_hardpoint(Hardpoint *point);
+
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
@@ -52,5 +60,7 @@ namespace vot
             float _max_life;
             bool _is_dead;
             uint16_t _id;
+
+            HardpointList _hardpoints;
     };
 }

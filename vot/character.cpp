@@ -62,6 +62,13 @@ namespace vot
         return getRotation();
     }
 
+    void Character::update(float dt)
+    {
+        for (auto i = 0u; i < _hardpoints.size(); i++)
+        {
+            _hardpoints[i]->update(dt);
+        }
+    }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         states.transform *= getTransform();
@@ -76,6 +83,11 @@ namespace vot
         state.transform *= _sprite.getTransform();
         target.draw(line, state);
         */
+
+        for (auto i = 0u; i < _hardpoints.size(); i++)
+        {
+            target.draw(*_hardpoints[i].get(), states);
+        }
     }
 
     Circle &Character::hitbox()
@@ -148,5 +160,15 @@ namespace vot
         //auto size = sprite().getTexture()->getSize();
         //trans.translate(size.y * -0.5f, size.x * 0.5f);
         return trans;
+    }
+
+    const Character::HardpointList *Character::hardpoints() const
+    {
+        return &_hardpoints;
+    }
+    void Character::add_hardpoint(Hardpoint *point)
+    {
+        point->parent(this);
+        _hardpoints.push_back(std::unique_ptr<Hardpoint>(point));
     }
 }
