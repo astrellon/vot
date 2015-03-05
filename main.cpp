@@ -19,6 +19,7 @@
 
 int main()
 {
+    // Init {{{
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
 
@@ -55,8 +56,9 @@ int main()
     // Play the music
     music.play();
     */
+    // }}}
     
-    // Start the game loop
+    // Game loop {{{
     sf::Clock clock;
     while (window.isOpen())
     {
@@ -113,6 +115,7 @@ int main()
         window.display();
         // }}}
     }
+    // }}}
 
     return EXIT_SUCCESS;
 }

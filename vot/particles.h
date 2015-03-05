@@ -73,6 +73,7 @@ namespace vot
     };
     // }}}
     
+    // ParticleSystemManager {{{
     class ParticleSystemManager : public sf::Drawable
     {
         public:
@@ -84,4 +85,5 @@ namespace vot
         private:
             std::vector<std::unique_ptr<ParticleSystem> > _active_systems;
     };
+    // }}}
 }
