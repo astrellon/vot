@@ -162,7 +162,8 @@ namespace vot
     // BeamHardpoint {{{
     BeamHardpoint::BeamHardpoint(const Beam &blueprint, Group::Type group) :
         Hardpoint(group),
-        _blueprint(blueprint)
+        _blueprint(blueprint),
+        _charge_up(0.0f)
     {
         _active_beam = GameSystem::main()->beam_manager().spawn_beam(blueprint, group);
     }
@@ -172,19 +173,31 @@ namespace vot
         Hardpoint::update(dt);
 
         _active_beam->is_active(_fire_beam);
+        auto charge = _fire_beam ? dt : -dt;
+        _charge_up += charge;
+        if (_charge_up > 1.0f) _charge_up = 1.0f;
+        if (_charge_up < 0.0f) _charge_up = 0.0f;
+
         if (_fire_beam)
         {
-            auto trans = parent()->getTransform() * getTransform();
-            _active_beam->hitbox().origin(trans.transformPoint(sf::Vector2f()));
-            _active_beam->hitbox().rotation(getRotation() + parent()->getRotation());
+            if (_charge_up >= 1.0f)
+            {
+                _charge_up = 1.0f;
+                auto trans = parent()->getTransform() * getTransform();
+                _active_beam->hitbox().origin(trans.transformPoint(sf::Vector2f()));
+                _active_beam->hitbox().rotation(getRotation() + parent()->getRotation());
+            }
         }
 
         _fire_beam = false;
     }
     void BeamHardpoint::fire()
     {
-        //_active_beam->toggle_active();
         _fire_beam = true;
+        if (_charge_up < 0.0f)
+        {
+            _charge_up = 0.0f;
+        }
     }
     // }}}
 }

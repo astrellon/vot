@@ -31,16 +31,18 @@ namespace vot
         _middle_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         _left_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
+        auto turret_texture = TextureManager::texture("turret");
 
+        /*
         auto homing_bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
         auto pattern_bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
         auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
         pattern_turret->setPosition(-18, -10);
         pattern_turret->setRotation(-90.0f);
 
-        auto turret_texture = TextureManager::texture("turret");
         pattern_turret->texture(turret_texture);
         add_hardpoint(pattern_turret);
+        */
         
         /*
         auto homing_turret = new HomingBulletHardpoint(*homing_bullet, Group::PLAYER);
@@ -54,6 +56,13 @@ namespace vot
         auto beam_blueprint = gs->beam_manager().find_src_beam("beam1");
         auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
         beam_turret->setPosition(18, -10);
+        beam_turret->setRotation(-90.0f);
+
+        beam_turret->texture(turret_texture);
+        add_hardpoint(beam_turret);
+        
+        beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
+        beam_turret->setPosition(-18, -10);
         beam_turret->setRotation(-90.0f);
 
         beam_turret->texture(turret_texture);

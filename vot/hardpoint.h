@@ -86,5 +86,7 @@ namespace vot
             const Beam &_blueprint;
             Beam *_active_beam;
             bool _fire_beam;
+
+            float _charge_up;
     };
 }
