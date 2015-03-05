@@ -33,13 +33,22 @@ namespace vot
         _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
 
         auto bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-        auto left_turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
-        left_turret->setPosition(18, 10);
-        left_turret->setRotation(-90.0f);
+        auto turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
+        turret->pattern_type(2u);
+        turret->setPosition(18, -20);
+        turret->setRotation(-90.0f);
 
-        auto turret = TextureManager::texture("turret");
-        left_turret->texture(turret);
-        add_hardpoint(left_turret);
+        auto turret_texture = TextureManager::texture("turret");
+        turret->texture(turret_texture);
+        add_hardpoint(turret);
+        
+        turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
+        turret->pattern_type(2u);
+        turret->setPosition(-18, -20);
+        turret->setRotation(-90.0f);
+
+        turret->texture(turret_texture);
+        add_hardpoint(turret);
     }
 
     void Player::update(float dt)
@@ -244,6 +253,12 @@ namespace vot
     void Player::target(Enemy *value)
     {
         _target = value;
+
+        auto points = hardpoints();
+        for (auto i = 0u; i < points->size(); i++)
+        {
+            points->at(i)->target(value);
+        }
     }
     Enemy *Player::target() const
     {

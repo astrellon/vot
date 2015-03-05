@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <iostream>
 
 #include "utils.h"
 #include "character.h"
@@ -103,6 +104,7 @@ namespace vot
     void PatternBullet::init_transform(sf::Transform trans)
     {
         _init_transform = trans;
+        update(0.0f);
     }
     const sf::Transform &PatternBullet::init_transform() const
     {

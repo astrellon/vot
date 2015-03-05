@@ -10,8 +10,7 @@ namespace vot
         _max_cooldown(0.5f),
         _parent(nullptr),
         _target(nullptr),
-        _group(group),
-        _world_rotation(0.0f)
+        _group(group)
     {
 
     }
@@ -81,20 +80,27 @@ namespace vot
     void Hardpoint::update(float dt)
     {
         _cooldown -= dt;
+
+        if (_target != nullptr)
+        {
+            auto rot_speed = 90.0f;
+            auto parent_trans = _parent->getInverseTransform();
+            auto local_target = parent_trans * _target->getPosition();
+            auto angles = Utils::calculate_angles(getPosition(), local_target, getRotation(), 180.0f);
+            if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
+            {
+                setRotation(angles.to_angle());
+            }
+            else
+            {
+                rotate(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
+            }
+        }
     }
     void Hardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         states.transform *= getTransform();
         target.draw(_sprite, states);
-    }
-
-    void Hardpoint::world_position(sf::Vector2f value)
-    {
-        _world_position = value;
-    }
-    void Hardpoint::world_rotation(float value)
-    {
-        _world_rotation = value;
     }
     // }}}
     

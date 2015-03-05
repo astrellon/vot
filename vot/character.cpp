@@ -66,7 +66,8 @@ namespace vot
     {
         for (auto i = 0u; i < _hardpoints.size(); i++)
         {
-            _hardpoints[i]->update(dt);
+            auto hardpoint = _hardpoints[i].get(); 
+            hardpoint->update(dt);
         }
     }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const

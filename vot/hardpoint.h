@@ -35,9 +35,6 @@ namespace vot
             virtual void fire() = 0;
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-            void world_position(sf::Vector2f value);
-            void world_rotation(float value);
-
         protected:
             void cooldown(float value);
             void change_cooldown(float delta);
@@ -49,9 +46,6 @@ namespace vot
             Character *_target;
             Group::Type _group;
             sf::Sprite _sprite;
-            sf::Vector2f _world_position;
-            float _world_rotation;
-
     };
 
     class PatternBulletHardpoint : public Hardpoint
