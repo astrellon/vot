@@ -35,7 +35,7 @@ namespace vot
         auto bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
         auto turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
         turret->pattern_type(2u);
-        turret->setPosition(18, -20);
+        turret->setPosition(18, 10);
         turret->setRotation(-90.0f);
 
         auto turret_texture = TextureManager::texture("turret");
@@ -44,7 +44,7 @@ namespace vot
         
         turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
         turret->pattern_type(2u);
-        turret->setPosition(-18, -20);
+        turret->setPosition(-18, 10);
         turret->setRotation(-90.0f);
 
         turret->texture(turret_texture);

@@ -83,7 +83,7 @@ namespace vot
 
         if (_target != nullptr)
         {
-            auto rot_speed = 90.0f;
+            auto rot_speed = 90.0f * dt;
             auto parent_trans = _parent->getInverseTransform();
             auto local_target = parent_trans * _target->getPosition();
             auto angles = Utils::calculate_angles(getPosition(), local_target, getRotation(), 180.0f);
