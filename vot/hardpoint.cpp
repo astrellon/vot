@@ -103,7 +103,7 @@ namespace vot
         target.draw(_sprite, states);
     }
     // }}}
-    
+
     // PatternBulletHardpoint {{{
     PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group) :
         Hardpoint(group),
@@ -126,7 +126,7 @@ namespace vot
     {
         if (cooldown() < 0.0f)
         {
-            auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(_blueprint, Group::PLAYER); 
+            auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(_blueprint, Group::PLAYER);
             bullet->pattern_type(_pattern_type);
 
             auto trans = parent()->getTransform() * getTransform();
@@ -136,7 +136,7 @@ namespace vot
         }
     }
     // }}}
-    
+
     // HomingBulletHardpoint {{{
     HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet &blueprint, Group::Type group) :
         Hardpoint(group),
@@ -149,13 +149,42 @@ namespace vot
     {
         if (cooldown() < 0.0f)
         {
-            auto bullet = GameSystem::main()->bullet_manager().spawn_homing_bullet(_blueprint, Group::PLAYER); 
+            auto bullet = GameSystem::main()->bullet_manager().spawn_homing_bullet(_blueprint, Group::PLAYER);
 
             auto trans = parent()->getTransform() * getTransform();
-            bullet->setup(trans * getPosition(), parent()->getRotation() + getRotation());
+            bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
 
             cooldown(max_cooldown());
         }
+    }
+    // }}}
+
+    // BeamHardpoint {{{
+    BeamHardpoint::BeamHardpoint(const Beam &blueprint, Group::Type group) :
+        Hardpoint(group),
+        _blueprint(blueprint)
+    {
+        _active_beam = GameSystem::main()->beam_manager().spawn_beam(blueprint, group);
+    }
+
+    void BeamHardpoint::update(float dt)
+    {
+        Hardpoint::update(dt);
+
+        _active_beam->is_active(_fire_beam);
+        if (_fire_beam)
+        {
+            auto trans = parent()->getTransform() * getTransform();
+            _active_beam->hitbox().origin(trans.transformPoint(sf::Vector2f()));
+            _active_beam->hitbox().rotation(getRotation() + parent()->getRotation());
+        }
+
+        _fire_beam = false;
+    }
+    void BeamHardpoint::fire()
+    {
+        //_active_beam->toggle_active();
+        _fire_beam = true;
     }
     // }}}
 }

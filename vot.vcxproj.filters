@@ -47,6 +47,9 @@
     <ClCompile Include="vot\beam.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\hardpoint.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -103,6 +106,9 @@
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\common.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\hardpoint.h">
       <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>

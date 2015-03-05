@@ -70,6 +70,7 @@ namespace vot
             Beam *spawn_beam(const Beam &blueprint, Group::Type group);
 
             void add_src_beam(const std::string &name, Beam *beam);
+            Beam *find_src_beam(const std::string &name) const;
 
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 

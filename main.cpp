@@ -19,20 +19,8 @@
 
 int main()
 {
-    vot::Ray ray(sf::Vector2f(-10.0f, 1.0f), 0.0f);
-    vot::Ray ray2(sf::Vector2f(10.0f, 1.0f), 180.0f);
-    vot::Ray ray3(sf::Vector2f(0.0f, 10.0f), 270.0f);
-    vot::Ray ray4(sf::Vector2f(0.0f, -10.0f), 90.0f);
-    vot::Circle circle(sf::Vector2f(0.0f, 0.0f), 6.0f);
-    sf::Vector2f positions[2];
-    sf::Vector2f normals[2];
-
-    bool hit = vot::Utils::ray_circle_intersect(ray, circle, positions, normals);
-    hit = vot::Utils::ray_circle_intersect(ray2, circle, positions, normals);
-    hit = vot::Utils::ray_circle_intersect(ray3, circle, positions, normals);
-    hit = vot::Utils::ray_circle_intersect(ray4, circle, positions, normals);
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
 
     vot::FontManager font_manager;
     vot::FontManager::main(&font_manager);

@@ -74,16 +74,17 @@ namespace vot
             const HomingBullet &_blueprint;
     };
 
-    /*
     class BeamHardpoint : public Hardpoint
     {
         public:
             BeamHardpoint(const Beam &blueprint, Group::Type group);
 
+            virtual void update(float dt);
             virtual void fire();
 
         private:
             const Beam &_blueprint;
+            Beam *_active_beam;
+            bool _fire_beam;
     };
-    */
 }

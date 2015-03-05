@@ -131,6 +131,7 @@ namespace vot
         _objects[beam->index()] = nullptr;
     }
 
+
     Beam *BeamManager::spawn_beam(const std::string &name, Group::Type group)
     {
         auto find = _src_beams.find(name);
@@ -167,6 +168,16 @@ namespace vot
     void BeamManager::add_src_beam(const std::string &name, Beam *beam)
     {
         _src_beams[name] = std::unique_ptr<Beam>(beam);
+    }
+    Beam *BeamManager::find_src_beam(const std::string &name) const
+    {
+        auto find = _src_beams.find(name);
+        if (find == _src_beams.end())
+        {
+            return nullptr;
+        }
+
+        return find->second.get();
     }
 
     void BeamManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
