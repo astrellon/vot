@@ -136,4 +136,26 @@ namespace vot
         }
     }
     // }}}
+    
+    // HomingBulletHardpoint {{{
+    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet &blueprint, Group::Type group) :
+        Hardpoint(group),
+        _blueprint(blueprint)
+    {
+
+    }
+
+    void HomingBulletHardpoint::fire()
+    {
+        if (cooldown() < 0.0f)
+        {
+            auto bullet = GameSystem::main()->bullet_manager().spawn_homing_bullet(_blueprint, Group::PLAYER); 
+
+            auto trans = parent()->getTransform() * getTransform();
+            bullet->setup(trans * getPosition(), parent()->getRotation() + getRotation());
+
+            cooldown(max_cooldown());
+        }
+    }
+    // }}}
 }

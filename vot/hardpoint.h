@@ -63,7 +63,6 @@ namespace vot
             uint32_t _pattern_type;
     };
 
-    /*
     class HomingBulletHardpoint : public Hardpoint
     {
         public:
@@ -75,6 +74,7 @@ namespace vot
             const HomingBullet &_blueprint;
     };
 
+    /*
     class BeamHardpoint : public Hardpoint
     {
         public:

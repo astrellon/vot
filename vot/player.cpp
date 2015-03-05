@@ -32,9 +32,8 @@ namespace vot
         _left_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
 
-        auto bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-        auto turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
-        turret->pattern_type(2u);
+        auto bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
+        auto turret = new HomingBulletHardpoint(*bullet, Group::PLAYER);
         turret->setPosition(18, 10);
         turret->setRotation(-90.0f);
 
@@ -42,8 +41,7 @@ namespace vot
         turret->texture(turret_texture);
         add_hardpoint(turret);
         
-        turret = new PatternBulletHardpoint(*bullet, Group::PLAYER);
-        turret->pattern_type(2u);
+        turret = new HomingBulletHardpoint(*bullet, Group::PLAYER);
         turret->setPosition(-18, 10);
         turret->setRotation(-90.0f);
 
