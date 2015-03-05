@@ -46,6 +46,7 @@ namespace vot
 
             static float degrees_to_radians;
             static float radians_to_degrees;
+            static float pi;
 
             static uint32_t max_uint;
             static int32_t max_int;

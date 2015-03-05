@@ -77,7 +77,7 @@ namespace vot
             return;
         }
 
-        if (true && _enemy_manager.num_enemies() < 3)
+        if (false && _enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
             if (_spawn_timer > 3.0f)
@@ -465,6 +465,7 @@ namespace vot
         auto dpos = bullet->location() - hit->location();
         auto angle = Utils::vector_degrees(dpos);
         system->setRotation(angle);
+        system->init();
     }
     void GameSystem::beam_hit_particles(const sf::Vector2f &point, const sf::Vector2f &normal, const std::string &texture)
     {
@@ -473,7 +474,7 @@ namespace vot
 
         auto angle = Utils::vector_degrees(normal);
         system->setRotation(angle);
-    
+        system->init();
     }
 
     void GameSystem::kill_enemy(Enemy *enemy)

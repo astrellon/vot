@@ -51,12 +51,23 @@ namespace vot
         public:
             ParticleSystem(const sf::Texture &texture, uint32_t num_particles);
 
+            void init();
+
+            void system_type(uint32_t value);
+            uint32_t system_type() const;
+
+            void loop_system(bool value);
+            bool loop_system() const;
+
             bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
             const sf::Texture &_texture;
             std::vector<Particle> _particles;
+            bool _loop_system;
+
+            uint32_t _system_type;
 
             void init_particle(Particle &particle);
     };

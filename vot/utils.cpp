@@ -9,6 +9,7 @@ namespace vot
 
     float Utils::degrees_to_radians = 0.01745329251994329576923690768489f;
     float Utils::radians_to_degrees = 57.295779513082320876798154814105f;
+    float Utils::pi = 3.141592654f;
 
     uint32_t Utils::max_uint = std::numeric_limits<uint32_t>::max();
     int32_t Utils::max_int = std::numeric_limits<int32_t>::max();

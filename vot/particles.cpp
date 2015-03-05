@@ -98,13 +98,37 @@ namespace vot
         sf::Drawable(),
         sf::Transformable(),
         _texture(texture),
-        _particles(num_particles)
+        _particles(num_particles),
+        _loop_system(false),
+        _system_type(0u)
     {
-        for (auto i = 0u; i < num_particles; i++)
+    }
+
+    void ParticleSystem::init()
+    {
+        for (auto i = 0u; i < _particles.size(); i++)
         {
             _particles[i] = Particle();
             init_particle(_particles[i]);
         }
+    }
+
+    void ParticleSystem::system_type(uint32_t value)
+    {
+        _system_type = value;
+    }
+    uint32_t ParticleSystem::system_type() const
+    {
+        return _system_type;
+    }
+
+    void ParticleSystem::loop_system(bool value)
+    {
+        _loop_system = value;
+    }
+    bool ParticleSystem::loop_system() const
+    {
+        return _loop_system;
     }
 
     bool ParticleSystem::update(float dt)
@@ -114,7 +138,7 @@ namespace vot
         {
             auto &particle = _particles[i]; 
             particle.update(dt);
-            if (!particle.active())
+            if (_loop_system && !particle.active())
             {
                 particle.reset();
                 init_particle(particle);
@@ -133,20 +157,41 @@ namespace vot
 
         for (auto particle : _particles)
         {
+            if (particle.lifetime() < 0.0f)
+            {
+                continue;
+            }
             target.draw(particle, states);
         }
     }
 
     void ParticleSystem::init_particle(Particle &particle)
     {
-        auto angle = Utils::randf(-0.8f, 0.8f);
-        auto dist = Utils::randf(20, 28);
-        auto x = cos(angle) * dist;
-        auto y = sin(angle) * dist;
+        if (_system_type == 0u)
+        {
+            auto angle = Utils::randf(-0.8f, 0.8f);
+            auto dist = Utils::randf(20, 28);
+            auto x = cos(angle) * dist;
+            auto y = sin(angle) * dist;
 
-        particle.positions(sf::Vector2f(0, 0), sf::Vector2f(x, y));
-        particle.scales(0.7f, 0.05f);
-        particle.texture(_texture);
+            particle.positions(sf::Vector2f(0, 0), sf::Vector2f(x, y));
+            particle.scales(0.7f, 0.05f);
+            particle.texture(_texture);
+        }
+        else if (_system_type == 1u)
+        {
+            auto angle = Utils::randf(0, Utils::pi * 2.0f);
+            auto dist = Utils::randf(12, 20);
+            auto x = cos(angle) * dist;
+            auto y = sin(angle) * dist;
+
+            particle.positions(sf::Vector2f(x, y), sf::Vector2f(0, 0));
+            particle.scales(0.05f, 0.5f);
+            particle.texture(_texture);
+
+            auto lifetime_offset = Utils::randf(0, 1.0f);
+            particle.lifetime(-lifetime_offset);
+        }
     }
     // }}}
     

@@ -73,6 +73,15 @@ int main()
             if (event.type == sf::Event::KeyPressed)
             {
                 game_system.key_pressed(event.key.code);
+
+                if (event.key.code == sf::Keyboard::J)
+                {
+                    auto texture = vot::TextureManager::texture("bullet_blue_circle");
+                    auto system = game_system.particle_manager().spawn_system(*texture, 20);
+                    system->setPosition(0, 0);
+                    system->system_type(1u);
+                    system->init();
+                }
             }
             if (event.type == sf::Event::KeyReleased)
             {
