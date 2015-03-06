@@ -138,10 +138,13 @@ namespace vot
         {
             auto &particle = _particles[i]; 
             particle.update(dt);
-            if (_loop_system && !particle.active())
+            if (!particle.active())
             {
-                particle.reset();
-                init_particle(particle);
+                if (_loop_system)
+                {
+                    particle.reset();
+                    init_particle(particle);
+                }
             }
             else
             {
