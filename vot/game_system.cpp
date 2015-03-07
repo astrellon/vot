@@ -77,7 +77,7 @@ namespace vot
             return;
         }
 
-        if (false && _enemy_manager.num_enemies() < 3)
+        if (true && _enemy_manager.num_enemies() < 3)
         {
             _spawn_timer += dt;
             if (_spawn_timer > 3.0f)

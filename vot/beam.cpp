@@ -182,6 +182,8 @@ namespace vot
 
     void BeamManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
+        states.blendMode = sf::BlendAdd;
+
         for (auto i = 0u; i < _objects.size(); i++)
         {
             auto beam = _objects[i].get();

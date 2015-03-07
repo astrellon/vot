@@ -157,6 +157,7 @@ namespace vot
     void ParticleSystem::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         states.transform *= getTransform();
+        states.blendMode = sf::BlendAdd;
 
         for (auto particle : _particles)
         {

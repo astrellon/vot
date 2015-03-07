@@ -172,11 +172,12 @@ namespace vot
     {
         Hardpoint::update(dt);
 
-        _active_beam->is_active(_fire_beam);
         auto charge = _fire_beam ? dt : -dt;
         _charge_up += charge;
         if (_charge_up > 1.0f) _charge_up = 1.0f;
         if (_charge_up < 0.0f) _charge_up = 0.0f;
+        
+        _active_beam->is_active(_fire_beam && _charge_up >= 1.0f);
 
         if (_fire_beam)
         {
