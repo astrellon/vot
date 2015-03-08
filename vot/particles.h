@@ -59,6 +59,9 @@ namespace vot
             void loop_system(bool value);
             bool loop_system() const;
 
+            void auto_remove(bool value);
+            bool auto_remove() const;
+
             bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -66,6 +69,8 @@ namespace vot
             const sf::Texture &_texture;
             std::vector<Particle> _particles;
             bool _loop_system;
+            bool _auto_remove;
+            bool _active;
 
             uint32_t _system_type;
 

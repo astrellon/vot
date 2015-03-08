@@ -100,12 +100,15 @@ namespace vot
         _texture(texture),
         _particles(num_particles),
         _loop_system(false),
+        _auto_remove(true),
+        _active(true),
         _system_type(0u)
     {
     }
 
     void ParticleSystem::init()
     {
+        _active = true;
         for (auto i = 0u; i < _particles.size(); i++)
         {
             _particles[i] = Particle();
@@ -131,8 +134,22 @@ namespace vot
         return _loop_system;
     }
 
+    void ParticleSystem::auto_remove(bool value)
+    {
+        _auto_remove = value;
+    }
+    bool ParticleSystem::auto_remove() const
+    {
+        return _auto_remove;
+    }
+
     bool ParticleSystem::update(float dt)
     {
+        if (!_active)
+        {
+            return false;
+        }
+
         auto active = 0u;
         for (auto i = 0u; i < _particles.size(); i++)
         {
@@ -151,6 +168,8 @@ namespace vot
                 ++active;
             }
         }
+
+        _active = active > 0u;
         return active > 0u;
     }
 
@@ -212,7 +231,8 @@ namespace vot
     {
         for (auto i = 0u; i < _active_systems.size(); i++)
         {
-            if (!_active_systems[i]->update(dt))
+            auto running = _active_systems[i]->update(dt); 
+            if (!running && _active_systems[i]->auto_remove())
             {
                 _active_systems.erase(_active_systems.begin() + i);
                 --i;

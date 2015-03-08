@@ -164,9 +164,15 @@ namespace vot
     BeamHardpoint::BeamHardpoint(const Beam &blueprint, Group::Type group) :
         Hardpoint(group),
         _blueprint(blueprint),
+        _charge_up_system(nullptr),
         _charge_up(0.0f)
     {
         _active_beam = GameSystem::main()->beam_manager().spawn_beam(blueprint, group);
+
+        auto texture = TextureManager::texture("bullet_blue_circle");
+        _charge_up_system = GameSystem::main()->particle_manager().spawn_system(*texture, 2);
+        _charge_up_system->system_type(1u);
+        _charge_up_system->auto_remove(false);
     }
 
     void BeamHardpoint::update(float dt)
@@ -179,23 +185,32 @@ namespace vot
         if (_charge_up < 0.0f) _charge_up = 0.0f;
         
         _active_beam->is_active(_fire_beam && _charge_up >= 1.0f);
+                
+        auto trans = parent()->getTransform() * getTransform();
+        auto global_position = trans.transformPoint(sf::Vector2f(8, 0));
+        _charge_up_system->setPosition(global_position);
+
 
         if (_fire_beam)
         {
-                    auto texture = TextureManager::texture("bullet_blue_circle");
-                    auto system = GameSystem::main()->particle_manager().spawn_system(*texture, 20);
-                    system->setPosition(0, 0);
-                    system->system_type(1u);
-                    system->init();
+            
+            if (_charge_up < 1.0f)
+            {
+                if (!_prev_charging_up)
+                {
+                    _charge_up_system->init();
+                }
+            }
 
             if (_charge_up >= 1.0f)
             {
                 _charge_up = 1.0f;
-                auto trans = parent()->getTransform() * getTransform();
-                _active_beam->hitbox().origin(trans.transformPoint(sf::Vector2f()));
+                _active_beam->hitbox().origin(global_position);
                 _active_beam->hitbox().rotation(getRotation() + parent()->getRotation());
             }
         }
+
+        _prev_charging_up = _fire_beam;
 
         _fire_beam = false;
     }

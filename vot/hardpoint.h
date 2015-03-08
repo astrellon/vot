@@ -8,6 +8,7 @@
 namespace vot
 {
     class Character;
+    class ParticleSystem;
 
     class Hardpoint : public sf::Drawable, public sf::Transformable
     {
@@ -85,9 +86,10 @@ namespace vot
         private:
             const Beam &_blueprint;
             Beam *_active_beam;
+            bool _prev_charging_up;;
             bool _fire_beam;
-            //ParticleSystem *_charge_up_system;
 
+            ParticleSystem *_charge_up_system;
             float _charge_up;
     };
 }
