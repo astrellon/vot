@@ -39,6 +39,9 @@ namespace vot
             bool is_active() const;
             void toggle_active();
 
+            void hit_particle_cooldown(float value);
+            float hit_particle_cooldown() const;
+
             void dps(float value);
             float dps() const;
 
@@ -54,6 +57,7 @@ namespace vot
             float _hitting_target_length;
             float _dps;
             bool _is_active;
+            float _hit_particle_cooldown;
 
             sf::RectangleShape _shape;
             sf::RectangleShape _shape_top;

@@ -1,6 +1,7 @@
 #include "hardpoint.h"
 
 #include "game_system.h"
+#include "texture_manager.h"
 
 namespace vot
 {
@@ -181,6 +182,12 @@ namespace vot
 
         if (_fire_beam)
         {
+                    auto texture = TextureManager::texture("bullet_blue_circle");
+                    auto system = GameSystem::main()->particle_manager().spawn_system(*texture, 20);
+                    system->setPosition(0, 0);
+                    system->system_type(1u);
+                    system->init();
+
             if (_charge_up >= 1.0f)
             {
                 _charge_up = 1.0f;

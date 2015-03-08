@@ -208,7 +208,11 @@ namespace vot
                     auto damage = beam->dps() * dt;
                     hitting_target->take_damage(damage);
                             
-                    beam_hit_particles(hitting_point, hitting_normal, "bullet_blue_circle");
+                    if (beam->hit_particle_cooldown() > 0.05f)
+                    {
+                        beam_hit_particles(hitting_point, hitting_normal, "bullet_blue_circle");
+                        beam->hit_particle_cooldown(0.0f);
+                    }
 
                     if (hitting_target->is_dead())
                     {
@@ -331,12 +335,10 @@ namespace vot
         pattern_bullet->hitbox().radius(5.0f);
         _bullet_manager.add_src_pattern_bullet("test", pattern_bullet);
         
-        auto homing_background = tm->find_texture("homing_outer");
-        auto homing_center = tm->find_texture("homing_center");
-        auto homing_bullet = new HomingBullet(*homing_center, *homing_background, 2.0f);
+        auto homing_bullet = new HomingBullet(*bullet_blue_circle, 2.0f);
         homing_bullet->total_lifetime(5.0f);
         homing_bullet->hitbox().radius(5.0f);
-        homing_bullet->scale(0.5f);
+        homing_bullet->scale(0.75f);
         _bullet_manager.add_src_homing_bullet("homing_blue", homing_bullet);
     }
 

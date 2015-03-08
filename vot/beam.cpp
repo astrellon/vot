@@ -13,7 +13,8 @@ namespace vot
         _width(10.0f),
         _hitting_target_length(-1.0f),
         _dps(2.0f),
-        _is_active(false)
+        _is_active(false),
+        _hit_particle_cooldown(0.0f)
     {
         _shape.setOrigin(0.0f, _width * 0.5f);
         _shape_top.setOrigin(0.0f, _width * 0.5f);
@@ -97,6 +98,15 @@ namespace vot
         _is_active = !_is_active;
     }
 
+    void Beam::hit_particle_cooldown(float value)
+    {
+        _hit_particle_cooldown = value;
+    }
+    float Beam::hit_particle_cooldown() const
+    {
+        return _hit_particle_cooldown;
+    }
+
     void Beam::dps(float value)
     {
         _dps = value;
@@ -116,6 +126,8 @@ namespace vot
         auto top_pos = _hitbox.direction() * length + _hitbox.origin();
         _shape_top.setRotation(_hitbox.rotation());
         _shape_top.setPosition(top_pos);
+
+        _hit_particle_cooldown += dt;
     }
 
     void Beam::draw(sf::RenderTarget &target, sf::RenderStates states) const

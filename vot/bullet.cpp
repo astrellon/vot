@@ -185,7 +185,7 @@ namespace vot
     // }}}
     
     // HomingBullet {{{
-    HomingBullet::HomingBullet(const sf::Texture &texture, const sf::Texture &texture_background, float damage) :
+    HomingBullet::HomingBullet(const sf::Texture &texture, float damage) :
         Bullet(damage),
         _target(nullptr),
         _lifetime(0.0f),
@@ -195,14 +195,10 @@ namespace vot
         _prev_position_index(0),
         _prev_position_count(0),
         _prev_record_cooldown(0.0f),
-        _sprite(texture),
-        _sprite_background(texture_background)
+        _sprite(texture)
     {
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
-        
-        size = _sprite_background.getTexture()->getSize();
-        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     HomingBullet::HomingBullet(const HomingBullet &clone) :
@@ -215,14 +211,10 @@ namespace vot
         _prev_position_index(0),
         _prev_position_count(0),
         _prev_record_cooldown(0.0f),
-        _sprite(clone._sprite),
-        _sprite_background(clone._sprite_background)
+        _sprite(clone._sprite)
     {
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
-        
-        size = _sprite_background.getTexture()->getSize();
-        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     void HomingBullet::setup(const sf::Vector2f &location, float angle)
@@ -240,10 +232,6 @@ namespace vot
         _sprite.setScale(value, value);
         auto size = _sprite.getTexture()->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
-
-        _sprite_background.setScale(value, value);
-        size = _sprite_background.getTexture()->getSize();
-        _sprite_background.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }
 
     void HomingBullet::target(const Character *value)
@@ -311,8 +299,6 @@ namespace vot
         auto x = speed * matrix[0];
         auto y = -speed * matrix[4];
         _sprite.move(x, y);
-        //_sprite_background.move(x, y);
-        _sprite_background.setPosition(_sprite.getPosition());
         hitbox().location(_sprite.getPosition());
         
         if (_target == nullptr || _target->is_dead())
@@ -335,40 +321,20 @@ namespace vot
         if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
         {
             _sprite.setRotation(angles.to_angle());
-            _sprite_background.setRotation(angles.to_angle());
         }
         else
         {
             auto angle = angles.delta_angle() > 0 ? rot_speed : -rot_speed;
             _sprite.rotate(angle);
-            _sprite_background.rotate(angle);
         }
     }
     void HomingBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        sf::Sprite trail(_sprite_background);
+        states.blendMode = sf::BlendAdd;
 
         auto scale = _scale;
-        auto scale_diff = _scale / static_cast<float>(_prev_positions.size() + 1)- (1.0f / 48.0f);
-        for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
-        {
-            if (j < 0)
-            {
-                j = _prev_positions.size() - 1;
-            }
-
-            scale -= scale_diff;
-            trail.setPosition(_prev_positions[j]);
-            trail.setScale(scale, scale);
-
-            target.draw(trail, states);
-        }
-        target.draw(_sprite_background, states);
-
-        scale = _scale;
-        scale_diff = _scale / static_cast<float>(_prev_positions.size() + 1);
-        target.draw(_sprite_background, states);
-        trail = sf::Sprite(_sprite);
+        auto scale_diff = _scale / static_cast<float>(_prev_positions.size() + 1);
+        auto trail = sf::Sprite(_sprite);
         for (int8_t i = _prev_position_count, j = _prev_position_index - 1; i >= 0; i--, j--)
         {
             if (j < 0)

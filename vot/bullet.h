@@ -90,7 +90,7 @@ namespace vot
     class HomingBullet : public Bullet
     {
         public:
-            HomingBullet(const sf::Texture &texture, const sf::Texture &texture_background, float damage);
+            HomingBullet(const sf::Texture &texture, float damage);
             HomingBullet(const HomingBullet &clone);
             
             void setup(const sf::Vector2f &location, float angle);
@@ -126,7 +126,6 @@ namespace vot
             float _prev_record_cooldown;
 
             sf::Sprite _sprite;
-            sf::Sprite _sprite_background;
     };
     // }}}
 
