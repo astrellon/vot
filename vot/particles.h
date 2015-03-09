@@ -31,6 +31,7 @@ namespace vot
 
             void scales(float init, float target);
             void positions(const sf::Vector2f &init, const sf::Vector2f &target);
+            void alphas(uint8_t init, uint8_t target);
 
         private:
             float _lifetime;
@@ -39,6 +40,9 @@ namespace vot
 
             float _init_scale;
             float _target_scale;
+
+            uint8_t _init_alpha;
+            uint8_t _target_alpha;
 
             sf::Vector2f _init_position;
             sf::Vector2f _target_position;

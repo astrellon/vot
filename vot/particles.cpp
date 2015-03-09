@@ -11,7 +11,9 @@ namespace vot
         _total_lifetime(1.0f),
         _active(true),
         _init_scale(1.0f),
-        _target_scale(1.0f)
+        _target_scale(1.0f),
+        _init_alpha(255u),
+        _target_alpha(255u)
     {
 
     }
@@ -41,6 +43,9 @@ namespace vot
         setPosition(position);
         auto scale = Utils::para_lerp(_init_scale, _target_scale, dl);
         setScale(scale, scale);
+
+        auto alpha = static_cast<uint8_t>(Utils::para_lerp(_init_alpha, _target_alpha, dl));
+        setColor(sf::Color(255u, 255u, 255u, alpha));
 
         if (_lifetime > _total_lifetime)
         {
@@ -90,6 +95,11 @@ namespace vot
     {
         _init_position = init;
         _target_position = target;
+    }
+    void Particle::alphas(uint8_t init, uint8_t target)
+    {
+        _init_alpha = init;
+        _target_alpha = target;
     }
     // }}}
 
@@ -203,13 +213,14 @@ namespace vot
         }
         else if (_system_type == 1u)
         {
-            auto angle = Utils::randf(0, Utils::pi * 2.0f);
+            auto angle = Utils::randf(-0.7f, 0.7f);
             auto dist = Utils::randf(12, 20);
             auto x = cos(angle) * dist;
             auto y = sin(angle) * dist;
 
             particle.positions(sf::Vector2f(x, y), sf::Vector2f(0, 0));
-            particle.scales(0.05f, 0.5f);
+            particle.scales(0.05f, 0.8f);
+            particle.alphas(255u, 0u);
             particle.texture(_texture);
 
             auto lifetime_offset = Utils::randf(0, 1.0f);

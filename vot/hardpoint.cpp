@@ -170,9 +170,27 @@ namespace vot
         _active_beam = GameSystem::main()->beam_manager().spawn_beam(blueprint, group);
 
         auto texture = TextureManager::texture("bullet_blue_circle");
-        _charge_up_system = GameSystem::main()->particle_manager().spawn_system(*texture, 2);
+        _charge_up_system = GameSystem::main()->particle_manager().spawn_system(*texture, 10);
         _charge_up_system->system_type(1u);
         _charge_up_system->auto_remove(false);
+
+        texture = TextureManager::texture("beam_glow");
+        auto size = texture->getSize();
+        _beam_glow.setTexture(*texture);
+        _beam_glow.setOrigin(size.x * 0.5f, size.y * 0.5f);
+        _beam_glow.setPosition(8, 0);
+    }
+
+    void BeamHardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        Hardpoint::draw(target, states);
+
+        if (_charge_up > 0.0f)
+        {
+            states.blendMode = sf::BlendAdd;
+            states.transform *= getTransform();
+            target.draw(_beam_glow, states);
+        }
     }
 
     void BeamHardpoint::update(float dt)
@@ -185,11 +203,16 @@ namespace vot
         if (_charge_up < 0.0f) _charge_up = 0.0f;
         
         _active_beam->is_active(_fire_beam && _charge_up >= 1.0f);
-                
+
         auto trans = parent()->getTransform() * getTransform();
         auto global_position = trans.transformPoint(sf::Vector2f(8, 0));
+        auto global_rotation = getRotation() + parent()->getRotation();
         _charge_up_system->setPosition(global_position);
-
+        _charge_up_system->setRotation(global_rotation);
+        
+        _beam_glow.setScale(_charge_up, _charge_up);
+        //_beam_glow.setPosition(global_position);
+                
 
         if (_fire_beam)
         {
@@ -206,7 +229,7 @@ namespace vot
             {
                 _charge_up = 1.0f;
                 _active_beam->hitbox().origin(global_position);
-                _active_beam->hitbox().rotation(getRotation() + parent()->getRotation());
+                _active_beam->hitbox().rotation(global_rotation);
             }
         }
 

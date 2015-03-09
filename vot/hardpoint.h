@@ -83,11 +83,14 @@ namespace vot
             virtual void update(float dt);
             virtual void fire();
 
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+
         private:
             const Beam &_blueprint;
             Beam *_active_beam;
             bool _prev_charging_up;;
             bool _fire_beam;
+            sf::Sprite _beam_glow;
 
             ParticleSystem *_charge_up_system;
             float _charge_up;
