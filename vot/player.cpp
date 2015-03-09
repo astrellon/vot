@@ -36,17 +36,24 @@ namespace vot
 
         auto homing_bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
         auto pattern_bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-        auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setPosition(-18, 10);
-        pattern_turret->setRotation(-90.0f);
 
+        auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
+        pattern_turret->setup(-16, 4, -90.0f, 180.0f, 300.0f);
         pattern_turret->texture(bullet_turret_texture);
         add_hardpoint(pattern_turret);
         
         pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setPosition(18, 10);
-        pattern_turret->setRotation(-90.0f);
+        pattern_turret->setup(16, 4, -90.0f, 240.0f, 0.0f);
+        pattern_turret->texture(bullet_turret_texture);
+        add_hardpoint(pattern_turret);
+        
+        pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
+        pattern_turret->setup(20, 10, -90.0f, 270.0f, 45.0f);
+        pattern_turret->texture(bullet_turret_texture);
+        add_hardpoint(pattern_turret);
 
+        pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
+        pattern_turret->setup(-20, 10, -90.0f, 75.0f, 270.0f);
         pattern_turret->texture(bullet_turret_texture);
         add_hardpoint(pattern_turret);
 

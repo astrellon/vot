@@ -26,6 +26,14 @@ namespace vot
 
             sf::Sprite &sprite();
 
+            void max_angle(float value);
+            float max_angle() const;
+            
+            void min_angle(float value);
+            float min_angle() const;
+
+            void setup(float x, float y, float rotation, float min = 0.0f, float max = 360.0f);
+
             void max_cooldown(float value);
             float max_cooldown() const;
             float cooldown() const;
@@ -47,6 +55,9 @@ namespace vot
             Character *_target;
             Group::Type _group;
             sf::Sprite _sprite;
+
+            float _max_angle;
+            float _min_angle;
     };
 
     class PatternBulletHardpoint : public Hardpoint

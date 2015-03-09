@@ -2,6 +2,7 @@
 
 #include "game_system.h"
 #include "texture_manager.h"
+#include "utils.h"
 
 namespace vot
 {
@@ -11,7 +12,9 @@ namespace vot
         _max_cooldown(0.5f),
         _parent(nullptr),
         _target(nullptr),
-        _group(group)
+        _group(group),
+        _max_angle(360.0f),
+        _min_angle(0.0f)
     {
 
     }
@@ -49,6 +52,32 @@ namespace vot
     sf::Sprite &Hardpoint::sprite()
     {
         return _sprite;
+    }
+    
+    void Hardpoint::max_angle(float value)
+    {
+        _max_angle = value;
+    }
+    float Hardpoint::max_angle() const
+    {
+        return _max_angle;
+    }
+    
+    void Hardpoint::min_angle(float value)
+    {
+        _min_angle = value;
+    }
+    float Hardpoint::min_angle() const
+    {
+        return _min_angle;
+    }
+
+    void Hardpoint::setup(float x, float y, float rotation, float min, float max)
+    {
+        setPosition(x, y);
+        setRotation(rotation);
+        min_angle(min);
+        max_angle(max);
     }
 
     void Hardpoint::max_cooldown(float value)
@@ -95,6 +124,25 @@ namespace vot
             else
             {
                 rotate(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
+            }
+            
+            auto angle = getRotation();
+            if (_max_angle > _min_angle)
+            {
+                if (angle > _max_angle)
+                {
+                    setRotation(_max_angle);
+                }
+                if (angle < _min_angle)
+                {
+                    setRotation(_min_angle);
+                }
+            }
+            else if (angle < _min_angle && angle > _max_angle)
+            {
+                auto dmin = Utils::abs(_min_angle - angle);
+                auto dmax = Utils::abs(_max_angle - angle);
+                setRotation(dmin < dmax ? _min_angle : _max_angle);
             }
         }
     }

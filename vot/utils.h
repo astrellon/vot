@@ -106,6 +106,15 @@ namespace vot
             static bool ray_circle_intersect(const Ray &ray, const Circle &circle, 
                 sf::Vector2f points[2], sf::Vector2f normals[2]);
 
+            static inline float abs(float value)
+            {
+                if (value < 0.0f)
+                {
+                    return -value;
+                }
+                return value;
+            }
+
         private:
 
             static std::random_device _rd;
