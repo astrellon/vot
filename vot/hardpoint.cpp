@@ -109,9 +109,10 @@ namespace vot
     PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group) :
         Hardpoint(group),
         _blueprint(blueprint),
-        _pattern_type(0u)
+        _pattern_type(0u),
+        _fire_bullet(false)
     {
-
+    
     }
 
     void PatternBulletHardpoint::pattern_type(uint32_t type)
@@ -123,18 +124,40 @@ namespace vot
         return _pattern_type;
     }
 
-    void PatternBulletHardpoint::fire()
+    void PatternBulletHardpoint::update(float dt)
     {
-        if (cooldown() < 0.0f)
+        Hardpoint::update(dt);
+
+        if (_fire_bullet && cooldown() < 0.0f)
         {
+            auto texture = TextureManager::texture("bullet_blue_circle");
+            auto system = GameSystem::main()->particle_manager().spawn_system(*texture, 3);
+            system->speed_factor(1.75f);
+
+            auto trans = parent()->getTransform() * getTransform();
+            auto global_position = trans.transformPoint(sf::Vector2f(8, 0));
+            auto global_rotation = getRotation() + parent()->getRotation();
+            system->setPosition(global_position);
+            system->setRotation(global_rotation);
+            system->init();
+
             auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(_blueprint, Group::PLAYER);
             bullet->pattern_type(_pattern_type);
 
-            auto trans = parent()->getTransform() * getTransform();
             bullet->init_transform(trans);
 
             cooldown(max_cooldown());
         }
+
+        _fire_bullet = false;
+    }
+    void PatternBulletHardpoint::fire()
+    {
+        _fire_bullet = true;
+    }
+    void PatternBulletHardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        Hardpoint::draw(target, states);
     }
     // }}}
 

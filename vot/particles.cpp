@@ -112,7 +112,8 @@ namespace vot
         _loop_system(false),
         _auto_remove(true),
         _active(true),
-        _system_type(0u)
+        _system_type(0u),
+        _speed_factor(1.0f)
     {
     }
 
@@ -153,6 +154,15 @@ namespace vot
         return _auto_remove;
     }
 
+    void ParticleSystem::speed_factor(float value)
+    {
+        _speed_factor = value;
+    }
+    float ParticleSystem::speed_factor() const
+    {
+        return _speed_factor;
+    }
+
     bool ParticleSystem::update(float dt)
     {
         if (!_active)
@@ -161,10 +171,11 @@ namespace vot
         }
 
         auto active = 0u;
+        auto speed_dt = dt * _speed_factor;
         for (auto i = 0u; i < _particles.size(); i++)
         {
             auto &particle = _particles[i]; 
-            particle.update(dt);
+            particle.update(speed_dt);
             if (!particle.active())
             {
                 if (_loop_system)

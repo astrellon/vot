@@ -28,6 +28,7 @@ int main()
     if (!font_manager.load_default_fonts())
     {
         std::cout << "Failed to load fonts on startup\n";
+        std::cin.get();
         return -1;
     }
     
@@ -36,6 +37,7 @@ int main()
     if (!texture_manager.load_default_textures())
     {
         std::cout << "Failed to load textures on startup\n";
+        std::cin.get();
         return -1;
     }
     texture_manager.display("Main1");

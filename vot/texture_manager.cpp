@@ -80,7 +80,8 @@ namespace vot
             try_load("beam", "beam.png");
             try_load("beam_top", "beam_top.png");
             try_load("beam_glow", "beam_glow.png");
-            try_load("turret", "turret.png");
+            try_load("beam_turret", "beam_turret.png");
+            try_load("bullet_turret", "bullet_turret.png");
         }
         catch (...)
         {

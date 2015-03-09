@@ -66,6 +66,9 @@ namespace vot
             void auto_remove(bool value);
             bool auto_remove() const;
 
+            void speed_factor(float value);
+            float speed_factor() const;
+
             bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -77,6 +80,7 @@ namespace vot
             bool _active;
 
             uint32_t _system_type;
+            float _speed_factor;
 
             void init_particle(Particle &particle);
     };

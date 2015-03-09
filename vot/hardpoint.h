@@ -57,11 +57,14 @@ namespace vot
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
 
+            virtual void update(float dt);
             virtual void fire();
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
             const PatternBullet &_blueprint;
             uint32_t _pattern_type;
+            bool _fire_bullet;
     };
 
     class HomingBulletHardpoint : public Hardpoint

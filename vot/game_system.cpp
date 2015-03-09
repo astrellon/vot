@@ -274,13 +274,13 @@ namespace vot
         target.draw(_powerup_manager, states);
         target.draw(_enemy_manager, states);
         target.draw(_bullet_manager, states);
-        target.draw(_particle_manager, states);
         target.draw(_beam_manager, states);
 
         if (_player != nullptr)
         {
             target.draw(*_player.get(), states);
         }
+        target.draw(_particle_manager, states);
 
         target.draw(_world_hud);
         
