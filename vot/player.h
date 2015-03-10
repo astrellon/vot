@@ -23,6 +23,10 @@ namespace vot
 
             void init();
             
+            virtual void translate(const sf::Vector2f &vector);
+            virtual void location(const sf::Vector2f &vector);
+            virtual sf::Vector2f location() const;
+            
             void target(Enemy *value);
             Enemy *target() const;
 

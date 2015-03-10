@@ -227,7 +227,8 @@ namespace vot
         for (auto i = 0u; i < powerups->size(); i++)
         {
             auto powerup = powerups->at(i).get();
-            if (_player->powerup_hitbox().intersects(powerup->hitbox()))
+            auto intersects = _player->powerup_hitbox().intersects(powerup->hitbox());
+            if (intersects)
             {
                 _player->add_powerup(*powerup);
                 _powerup_manager.remove_powerup(powerup);

@@ -19,9 +19,9 @@ namespace vot
             virtual void update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates state) const;
 
-            void translate(const sf::Vector2f &vector);
-            void location(const sf::Vector2f &vector);
-            sf::Vector2f location() const;
+            virtual void translate(const sf::Vector2f &vector);
+            virtual void location(const sf::Vector2f &vector);
+            virtual sf::Vector2f location() const;
             sf::Vector2f center() const;
 
             void rotateBy(float angle);

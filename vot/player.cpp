@@ -75,6 +75,23 @@ namespace vot
         */
     }
 
+    void Player::translate(const sf::Vector2f &vector)
+    {
+        Character::translate(vector);
+
+        _powerup_hitbox.location(getPosition());
+    }
+    void Player::location(const sf::Vector2f &vector)
+    {
+        Character::location(vector);
+
+        _powerup_hitbox.location(getPosition());
+    }
+    sf::Vector2f Player::location() const
+    {
+        return Character::location();
+    }
+
     void Player::update(float dt)
     {
         auto gs = GameSystem::main();
