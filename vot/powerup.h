@@ -28,7 +28,6 @@ namespace vot
             int32_t value() const;
 
             void location(const sf::Vector2f &location); 
-            void init_location(const sf::Vector2f &location);
 
             Circle &hitbox();
             const Circle &hitbox() const;
@@ -39,8 +38,6 @@ namespace vot
             Type _type;
             int32_t _value;
             Circle _hitbox;
-
-            sf::Vector2f _init_location;
 
             float _lifetime; 
     };

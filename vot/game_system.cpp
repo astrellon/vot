@@ -497,7 +497,6 @@ namespace vot
 
         auto powerup = _powerup_manager.spawn_powerup(rand > 0.5f ? "bullet" : "homing");
         powerup->location(enemy->location());
-        powerup->init_location(enemy->location());
 
         _enemy_manager.remove_enemy(enemy);
     }

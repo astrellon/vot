@@ -33,6 +33,8 @@ namespace vot
 
             void add_powerup(const Powerup &powerup);
 
+            void add_hardpoint_placement(HardpointPlacement *placement);
+
         private:
             float _cooldown;
             float _homing_cooldown;
@@ -42,16 +44,13 @@ namespace vot
 
             std::map<Powerup::Type, int32_t> _powerups;
             Circle _powerup_hitbox;
-            
+
+            std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
+
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
             void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
             void spawn_homing_bullet_pair(float offset_angle);
             
-            Beam *_middle_beam;
-            Beam *_left_beam;
-            Beam *_right_beam;
-
-            //std::unique_ptr<PatternBulletHardpoint> _left_turret;
     };
 }

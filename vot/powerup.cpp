@@ -38,10 +38,6 @@ namespace vot
         setPosition(location);
         _hitbox.location(location);
     }
-    void Powerup::init_location(const sf::Vector2f &location)
-    {
-        _init_location = location;
-    }
 
     Circle &Powerup::hitbox()
     {

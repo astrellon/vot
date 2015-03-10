@@ -10,6 +10,7 @@ namespace vot
     class Character;
     class ParticleSystem;
 
+    // Hardpoint {{{
     class Hardpoint : public sf::Drawable, public sf::Transformable
     {
         public:
@@ -32,6 +33,7 @@ namespace vot
             void min_angle(float value);
             float min_angle() const;
 
+            // Sets up the x,y position, initial rotation, and min and max angle restrictions.
             void setup(float x, float y, float rotation, float min = 0.0f, float max = 360.0f);
 
             void max_cooldown(float value);
@@ -59,7 +61,9 @@ namespace vot
             float _max_angle;
             float _min_angle;
     };
+    // }}}
 
+    // PatternBulletHardpoint {{{
     class PatternBulletHardpoint : public Hardpoint
     {
         public:
@@ -77,7 +81,9 @@ namespace vot
             uint32_t _pattern_type;
             bool _fire_bullet;
     };
+    // }}}
 
+    // HomingBulletHardpoint {{{
     class HomingBulletHardpoint : public Hardpoint
     {
         public:
@@ -88,7 +94,9 @@ namespace vot
         private:
             const HomingBullet &_blueprint;
     };
+    // }}}
 
+    // BeamHardpoint {{{
     class BeamHardpoint : public Hardpoint
     {
         public:
@@ -109,4 +117,34 @@ namespace vot
             ParticleSystem *_charge_up_system;
             float _charge_up;
     };
+    // }}}
+    
+    // HardpointPlacement {{{
+    class HardpointPlacement
+    {
+        public:
+            HardpointPlacement();
+            HardpointPlacement(float x, float y, float min, float max);
+
+            void setup(float x, float y, float min, float max);
+
+            void hardpoint(Hardpoint *point);
+            Hardpoint *hardpoint() const;
+
+            void position(const sf::Vector2f &position);
+            sf::Vector2f position() const;
+
+            void max_angle(float value);
+            float max_angle() const;
+            
+            void min_angle(float value);
+            float min_angle() const;
+
+        private:
+            Hardpoint *_hardpoint;
+            sf::Vector2f _position;
+            float _min_angle;
+            float _max_angle;
+    };
+    // }}}
 }

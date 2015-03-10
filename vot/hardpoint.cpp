@@ -317,4 +317,69 @@ namespace vot
         }
     }
     // }}}
+    
+    // HardpointPlacement {{{
+    HardpointPlacement::HardpointPlacement() :
+        _hardpoint(nullptr),
+        _min_angle(0.0f),
+        _max_angle(360.0f)
+    {
+
+    }
+    HardpointPlacement::HardpointPlacement(float x, float y, float min, float max) :
+        _hardpoint(nullptr),
+        _position(x, y),
+        _min_angle(min),
+        _max_angle(max)
+    {
+
+    }
+
+    void HardpointPlacement::setup(float x, float y, float min, float max)
+    {
+        position(sf::Vector2f(x, y));
+        min_angle(min);
+        max_angle(max);
+    }
+    void HardpointPlacement::hardpoint(Hardpoint *hardpoint)
+    {
+        _hardpoint = hardpoint;
+        if (hardpoint != nullptr)
+        {
+            auto average = (_min_angle + _max_angle) * 0.5f;
+            hardpoint->setup(_position.x, _position.y, average, _min_angle, _max_angle);
+        }
+    }
+    Hardpoint *HardpointPlacement::hardpoint() const
+    {
+        return _hardpoint;
+    }
+
+    void HardpointPlacement::position(const sf::Vector2f &position)
+    {
+        _position = position;
+    }
+    sf::Vector2f HardpointPlacement::position() const
+    {
+        return _position;
+    }
+    
+    void HardpointPlacement::max_angle(float value)
+    {
+        _max_angle = value;
+    }
+    float HardpointPlacement::max_angle() const
+    {
+        return _max_angle;
+    }
+    
+    void HardpointPlacement::min_angle(float value)
+    {
+        _min_angle = value;
+    }
+    float HardpointPlacement::min_angle() const
+    {
+        return _min_angle;
+    }
+    // }}}
 }

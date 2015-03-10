@@ -16,10 +16,7 @@ namespace vot
         _look_at_target(false),
         _auto_target(true),
         _target(nullptr),
-        _powerup_hitbox(20.0f),
-        _middle_beam(nullptr),
-        _left_beam(nullptr),
-        _right_beam(nullptr)
+        _powerup_hitbox(20.0f)
     {
 
     }
@@ -28,15 +25,13 @@ namespace vot
     {
         auto gs = GameSystem::main();
 
-        _middle_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
-        _left_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
-        _right_beam = gs->beam_manager().spawn_beam("beam1", Group::PLAYER);
         auto beam_turret_texture = TextureManager::texture("beam_turret");
         auto bullet_turret_texture = TextureManager::texture("bullet_turret");
 
         auto homing_bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
         auto pattern_bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
 
+        /*
         auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
         pattern_turret->setup(-16, 4, -90.0f, 180.0f, 300.0f);
         pattern_turret->texture(bullet_turret_texture);
@@ -56,7 +51,12 @@ namespace vot
         pattern_turret->setup(-20, 10, -90.0f, 75.0f, 270.0f);
         pattern_turret->texture(bullet_turret_texture);
         add_hardpoint(pattern_turret);
+        */
 
+        add_hardpoint_placement(new HardpointPlacement(-16, 4, 180, 300));
+        add_hardpoint_placement(new HardpointPlacement(16, 4, 240, 0));
+        add_hardpoint_placement(new HardpointPlacement(20, 10, 270, 45));
+        add_hardpoint_placement(new HardpointPlacement(-20, 10, 75, 270));
         /*
         auto beam_blueprint = gs->beam_manager().find_src_beam("beam1");
         auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
@@ -124,12 +124,6 @@ namespace vot
         }
         // }}}
         
-        if (gs->is_key_pressed(sf::Keyboard::B))
-        {
-            //_middle_beam->toggle_active();
-            _left_beam->toggle_active();
-            _right_beam->toggle_active();
-        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
         {
             auto points = hardpoints();
@@ -223,20 +217,6 @@ namespace vot
         _cooldown -= dt;
         _homing_cooldown -= dt;
 
-        auto trans = getTransform();
-        auto middle_pos = trans.transformPoint(0.0f, 0.0f);
-        _powerup_hitbox.location(getPosition());
-        _middle_beam->hitbox().origin(middle_pos);
-        _middle_beam->hitbox().rotation(getRotation() - 90.0f);
-
-        auto left_pos = trans.transformPoint(-18.0f, 8.0f);
-        _left_beam->hitbox().origin(left_pos);
-        _left_beam->hitbox().rotation(getRotation() - 90.0f);
-
-        auto right_pos = trans.transformPoint(18.0f, 8.0f);
-        _right_beam->hitbox().origin(right_pos);
-        _right_beam->hitbox().rotation(getRotation() - 90.0f);
-
         Character::update(dt);
     }
 
@@ -305,6 +285,7 @@ namespace vot
 
     void Player::add_powerup(const Powerup &powerup)
     {
+        /*
         auto new_value = _powerups[powerup.type()] + powerup.value();
         if (new_value > 5)
         {
@@ -316,5 +297,38 @@ namespace vot
         }
 
         _powerups[powerup.type()] = new_value;
+        */
+
+        HardpointPlacement *empty_placement = nullptr;
+        for (auto i = 0u; i < _hardpoint_placements.size(); i++)
+        {
+            auto placement = _hardpoint_placements[i].get();
+            if (placement->hardpoint() == nullptr)
+            {
+                empty_placement = placement;
+                break;
+            }
+        }
+
+        if (empty_placement == nullptr)
+        {
+            return;
+        }
+
+        if (powerup.type() == Powerup::BULLET)
+        {
+            auto pattern_bullet = GameSystem::main()->bullet_manager().find_src_pattern_bullet("player_bullet_small");
+            auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
+            auto bullet_turret_texture = TextureManager::texture("bullet_turret");
+            pattern_turret->texture(bullet_turret_texture);
+
+            empty_placement->hardpoint(pattern_turret);
+            add_hardpoint(pattern_turret);
+        }
+    }
+
+    void Player::add_hardpoint_placement(HardpointPlacement *placement)
+    {
+        _hardpoint_placements.push_back(std::unique_ptr<HardpointPlacement>(placement));
     }
 }
