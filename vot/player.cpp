@@ -99,24 +99,25 @@ namespace vot
     {
         auto gs = GameSystem::main();
 
-        auto speed = 270.0f * dt;
+        auto speed = 1000.0f;
         auto rot_speed = 180.0f * dt;
         // Keyboard input {{{
+        acceleration(sf::Vector2f(0, 0));
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            translate(sf::Vector2f(-speed, 0.0f));
+            acceleration(sf::Vector2f(-speed, 0.0f));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            translate(sf::Vector2f(speed, 0.0f));
+            acceleration(sf::Vector2f(speed, 0.0f));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            translate(sf::Vector2f(0.0f, speed));
+            acceleration(sf::Vector2f(0.0f, speed));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            translate(sf::Vector2f(0.0f, -speed));
+            acceleration(sf::Vector2f(0.0f, -speed));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {

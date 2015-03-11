@@ -8,7 +8,8 @@ namespace vot
         _life(10.0f),
         _max_life(10.0f),
         _is_dead(false),
-        _id(0u)
+        _id(0u),
+        _max_speed(250.0f)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -19,7 +20,8 @@ namespace vot
         _life(clone._life),
         _max_life(clone._max_life),
         _is_dead(clone._is_dead),
-        _id(0u)
+        _id(0u),
+        _max_speed(clone._max_speed)
     {
 
     }
@@ -69,6 +71,15 @@ namespace vot
             auto hardpoint = _hardpoints[i].get(); 
             hardpoint->update(dt);
         }
+
+        _velocity += _acceleration * dt;
+        auto length = Utils::vector_length(_velocity);
+        if (length > _max_speed)
+        {
+            _velocity /= length;
+            _velocity *= _max_speed;
+        }
+        move(_velocity * dt);
 
         _hitbox.location(getPosition());
     }
@@ -161,5 +172,31 @@ namespace vot
     {
         point->parent(this);
         _hardpoints.push_back(std::unique_ptr<Hardpoint>(point));
+    }
+
+    void Character::acceleration(const sf::Vector2f &acc)
+    {
+        auto matrix = getTransform().getMatrix();
+        auto x = acc.x * matrix[0] - acc.y * matrix[1];
+        auto y = -acc.x * matrix[4] + acc.y * matrix[5];
+        _acceleration = sf::Vector2f(x, y);
+    }
+    sf::Vector2f Character::acceleration() const
+    {
+        return _acceleration;
+    }
+
+    sf::Vector2f Character::velocity() const
+    {
+        return _velocity;
+    }
+
+    void Character::max_speed(float speed)
+    {
+        _max_speed = speed;
+    }
+    float Character::max_speed() const
+    {
+        return _max_speed;
     }
 }

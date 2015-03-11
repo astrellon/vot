@@ -51,6 +51,14 @@ namespace vot
             
             void add_hardpoint(Hardpoint *point);
 
+            void acceleration(const sf::Vector2f &acc);
+            sf::Vector2f acceleration() const;
+
+            sf::Vector2f velocity() const;
+
+            void max_speed(float speed);
+            float max_speed() const;
+
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
@@ -60,5 +68,9 @@ namespace vot
             uint16_t _id;
 
             HardpointList _hardpoints;
+
+            sf::Vector2f _acceleration;
+            sf::Vector2f _velocity;
+            float _max_speed;
     };
 }

@@ -25,6 +25,7 @@ namespace vot
         auto dist = Utils::vector_length(to_player);
         auto unit_player = to_player / dist;
 
+        /*
         if (dist > 200.0f)
         {
             _controlling->move(unit_player * dt * 50.0f);
@@ -41,6 +42,7 @@ namespace vot
             auto sideways = trans.transformPoint(unit_player);
             _controlling->move(sideways * dt * 50.0f);
         }
+        */
 
         // Arena
         if (_cooldown <= 0.0f)
