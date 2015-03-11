@@ -51,10 +51,14 @@ namespace vot
 
             std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
 
+            void create_new_hardpoint(Powerup::Type type);
+
+            /*
             PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
             void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
             HomingBullet *spawn_homing_bullet();
             void spawn_homing_bullet_pair(float offset_angle);
+            */
             
     };
 }

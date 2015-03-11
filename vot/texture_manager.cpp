@@ -77,6 +77,7 @@ namespace vot
             try_load("target", "target.png");
             try_load("powerup_bullet", "powerupBlue_bolt.png");
             try_load("powerup_homing", "powerupBlue_star.png");
+            try_load("powerup_beam", "powerupBlue_shield.png");
             try_load("beam", "beam.png");
             try_load("beam_top", "beam_top.png");
             try_load("beam_glow", "beam_glow.png");

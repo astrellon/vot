@@ -46,8 +46,6 @@ namespace vot
             sf::Sprite &sprite();
             const sf::Sprite &sprite() const;
 
-            sf::Transform forward_center_trans(bool rotate = true) const;
-
             typedef std::vector<std::unique_ptr<Hardpoint> > HardpointList; 
             const HardpointList *hardpoints() const;
             

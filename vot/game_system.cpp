@@ -371,11 +371,16 @@ namespace vot
     {
         auto bullet_powerup = TextureManager::texture("powerup_bullet");
         auto homing_powerup = TextureManager::texture("powerup_homing");
+        auto beam_powerup = TextureManager::texture("powerup_beam");
+
         auto powerup = new Powerup(*bullet_powerup, Powerup::BULLET, 1);
         _powerup_manager.add_src_powerup("bullet", powerup);
 
         powerup = new Powerup(*homing_powerup, Powerup::HOMING, 1);
         _powerup_manager.add_src_powerup("homing", powerup);
+        
+        powerup = new Powerup(*beam_powerup, Powerup::BEAM, 1);
+        _powerup_manager.add_src_powerup("beam", powerup);
     }
 
     BeamManager &GameSystem::beam_manager()
@@ -498,7 +503,8 @@ namespace vot
 
         auto rand = Utils::randf();
 
-        auto powerup = _powerup_manager.spawn_powerup(rand > 0.5f ? "bullet" : "homing");
+        auto type = rand > 0.66f ? "bullet" : (rand < 0.33f ? "beam" : "homing");
+        auto powerup = _powerup_manager.spawn_powerup(type);
         powerup->location(enemy->location());
 
         _enemy_manager.remove_enemy(enemy);

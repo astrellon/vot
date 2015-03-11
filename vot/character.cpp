@@ -153,18 +153,6 @@ namespace vot
         return _sprite;
     }
     
-    sf::Transform Character::forward_center_trans(bool rotate) const
-    {
-        auto trans = getTransform();
-        if (rotate)
-        {
-            trans.rotate(-90);
-        }
-        //auto size = sprite().getTexture()->getSize();
-        //trans.translate(size.y * -0.5f, size.x * 0.5f);
-        return trans;
-    }
-
     const Character::HardpointList *Character::hardpoints() const
     {
         return &_hardpoints;

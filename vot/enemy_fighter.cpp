@@ -52,15 +52,12 @@ namespace vot
                 {
                     continue;
                 }
-                auto trans = _controlling->forward_center_trans();
+                auto trans = _controlling->getTransform();
                 trans.rotate(i * 22.5f);
                 bullet->init_transform(trans);
             }
             _cooldown = 0.5f;
         }
         _cooldown -= dt;
-
-        //auto rot_speed = 45.0f * dt;
-        //rotateBy(rot_speed);
     }
 }
