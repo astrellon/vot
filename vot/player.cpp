@@ -79,13 +79,13 @@ namespace vot
     {
         Character::translate(vector);
 
-        _powerup_hitbox.location(getPosition());
+        //_powerup_hitbox.location(getPosition());
     }
     void Player::location(const sf::Vector2f &vector)
     {
         Character::location(vector);
 
-        _powerup_hitbox.location(getPosition());
+        //_powerup_hitbox.location(getPosition());
     }
     sf::Vector2f Player::location() const
     {
@@ -235,6 +235,8 @@ namespace vot
         _homing_cooldown -= dt;
 
         Character::update(dt);
+
+        _powerup_hitbox.location(getPosition());
     }
 
     PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)

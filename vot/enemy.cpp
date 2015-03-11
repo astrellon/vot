@@ -3,68 +3,43 @@
 #include "game_system.h"
 #include "utils.h"
 #include "common.h"
+#include "icontroller.h"
 
 namespace vot
 {
     // Enemy {{{
     Enemy::Enemy(const sf::Texture &texture) :
         Character(texture),
-        _enemy_type(0u),
-        _bullet_count(0u),
-        _firing_angle(0.0f),
-        _cooldown(0.0f),
-        _index(Utils::max_uint)
+        _index(Utils::max_uint),
+        _controller(nullptr)
     {
 
     }
     Enemy::Enemy(const Enemy &clone) :
         Character(clone),
-        _enemy_type(clone._enemy_type),
-        _bullet_count(0u),
-        _firing_angle(0.0f),
-        _cooldown(0.0f),
-        _index(Utils::max_uint)
+        _index(Utils::max_uint),
+        _controller(nullptr)
     {
 
+    }
+
+    void Enemy::controller(IController *controller)
+    {
+        _controller = std::unique_ptr<IController>(controller);
+    }
+    IController *Enemy::controller() const
+    {
+        return _controller.get();
     }
 
     void Enemy::update(float dt)
     {
-        auto gs = GameSystem::main();
-        if (_enemy_type == 0u)
+        if (_controller != nullptr)
         {
-            // Arena
-            if (_cooldown <= 0.0f)
-            {
-                for (auto i = 0; i < 16; i++)
-                {
-                    auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_red_circle", Group::ENEMY);
-                    if (bullet == nullptr)
-                    {
-                        continue;
-                    }
-                    auto trans = forward_center_trans();
-                    trans.rotate(i * 22.5f);
-                    bullet->init_transform(trans);
-                }
-                _cooldown = 0.5f;
-            }
-            _cooldown -= dt;
-
-            //auto rot_speed = 45.0f * dt;
-            //rotateBy(rot_speed);
+            _controller->update(dt);
         }
 
         Character::update(dt);
-    }
-
-    void Enemy::enemy_type(uint32_t value)
-    {
-        _enemy_type = value;
-    }
-    uint32_t Enemy::enemy_type() const
-    {
-        return _enemy_type;
     }
     
     void Enemy::index(uint32_t value)

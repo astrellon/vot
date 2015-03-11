@@ -7,6 +7,7 @@
 
 #include "object_manager.h"
 #include "character.h"
+#include "icontroller.h"
 
 namespace vot
 {
@@ -17,20 +18,18 @@ namespace vot
             Enemy(const sf::Texture &texture);
             Enemy(const Enemy &clone);
 
-            void update(float dt);
+            void controller(IController *controller);
+            IController *controller() const;
 
-            void enemy_type(uint32_t value);
-            uint32_t enemy_type() const;
+            void update(float dt);
 
             void index(uint32_t value);
             uint32_t index() const;
 
         private:
-            uint32_t _enemy_type;
-            uint32_t _bullet_count;
-            float _firing_angle;
-            float _cooldown;
             uint32_t _index;
+
+            std::unique_ptr<IController> _controller;
     };
     // }}}
 

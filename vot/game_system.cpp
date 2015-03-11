@@ -6,6 +6,7 @@
 #include "texture_manager.h"
 #include "utils.h"
 #include "common.h"
+#include "enemy_fighter.h"
 
 namespace vot
 {
@@ -83,6 +84,7 @@ namespace vot
             if (_spawn_timer > 3.0f)
             {
                 auto enemy = enemy_manager().spawn_enemy("enemy1");
+                enemy->controller(new EnemyFighter(enemy));
                 enemy->translate(Utils::rand_vec(-50.0f, 50.0f));
                 _spawn_timer = 0.0f;
 

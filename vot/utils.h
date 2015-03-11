@@ -13,19 +13,19 @@ namespace vot
 {
     class AnglePair
     {
-    public:
-        inline AnglePair(float to_angle, float delta_angle) :
-            _to_angle(to_angle),
-            _delta_angle(delta_angle)
-        {
+        public:
+            inline AnglePair(float to_angle, float delta_angle) :
+                _to_angle(to_angle),
+                _delta_angle(delta_angle)
+            {
 
-        }
-        inline AnglePair(double to_angle, double delta_angle) :
-            _to_angle(static_cast<float>(to_angle)),
-            _delta_angle(static_cast<float>(delta_angle))
-        {
+            }
+            inline AnglePair(double to_angle, double delta_angle) :
+                _to_angle(static_cast<float>(to_angle)),
+                _delta_angle(static_cast<float>(delta_angle))
+            {
 
-        }
+            }
             inline float to_angle() const
             {
                 return _to_angle;
@@ -43,7 +43,6 @@ namespace vot
     class Utils
     {
         public:
-
             static float degrees_to_radians;
             static float radians_to_degrees;
             static float pi;
@@ -73,7 +72,6 @@ namespace vot
             }
             static inline sf::Vector2f para_lerp(const sf::Vector2f &init, const sf::Vector2f &target, float t)
             {
-
                 float x = para_lerp(init.x, target.x, t);
                 float y = para_lerp(init.y, target.y, t);
                 return sf::Vector2f(x, y);
@@ -102,6 +100,10 @@ namespace vot
             {
                 return vec1.x * vec2.x + vec1.y * vec2.y;
             }
+            static inline float vector_length(const sf::Vector2f &vec)
+            {
+                return sqrt(vec.x * vec.x + vec.y * vec.y);
+            }
 
             static bool ray_circle_intersect(const Ray &ray, const Circle &circle, 
                 sf::Vector2f points[2], sf::Vector2f normals[2]);
@@ -116,7 +118,6 @@ namespace vot
             }
 
         private:
-
             static std::random_device _rd;
             static std::mt19937 _rand;
 

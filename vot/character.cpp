@@ -31,12 +31,12 @@ namespace vot
         auto x = vector.x * matrix[0] - vector.y * matrix[1];
         auto y = -vector.x * matrix[4] + vector.y * matrix[5];
         move(x, y);
-        _hitbox.location(getPosition());
+        //_hitbox.location(getPosition());
     }
     void Character::location(const sf::Vector2f &vector)
     {
         setPosition(vector);
-        _hitbox.location(vector);
+        //_hitbox.location(vector);
     }
     sf::Vector2f Character::location() const
     {
@@ -69,6 +69,8 @@ namespace vot
             auto hardpoint = _hardpoints[i].get(); 
             hardpoint->update(dt);
         }
+
+        _hitbox.location(getPosition());
     }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
