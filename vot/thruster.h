@@ -17,7 +17,7 @@ namespace vot
             void thrust_size(float size);
             float thrust_size() const;
 
-            void calc_thrust(const sf::Vector2f &acc);
+            void calc_thrust(const sf::Vector2f &acc, float rot_acc);
             void thrust_amount(float amount);
             float thrust_amount() const;
 

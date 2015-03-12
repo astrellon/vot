@@ -9,7 +9,10 @@ namespace vot
         _max_life(10.0f),
         _is_dead(false),
         _id(0u),
-        _max_speed(250.0f)
+        _max_speed(250.0f),
+        _rot_acceleration(0.0f),
+        _rot_velocity(0.0f),
+        _max_rot_speed(90.0f)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -21,7 +24,10 @@ namespace vot
         _max_life(clone._max_life),
         _is_dead(clone._is_dead),
         _id(0u),
-        _max_speed(clone._max_speed)
+        _max_speed(clone._max_speed),
+        _rot_acceleration(0.0f),
+        _rot_velocity(0.0f),
+        _max_rot_speed(clone._max_rot_speed)
     {
 
     }
@@ -70,7 +76,8 @@ namespace vot
             hardpoint->update(dt);
         }
 
-        _velocity += _acceleration * dt;
+        auto world_acceleration = Utils::transform_direction(getTransform(), _acceleration);
+        _velocity += world_acceleration * dt;
         auto length = Utils::vector_length(_velocity);
         if (length > _max_speed)
         {
@@ -82,16 +89,22 @@ namespace vot
         _hitbox.location(getPosition());
 
         auto unit_acc = _acceleration;
-        auto len_acc = Utils::vector_length(_acceleration);
+        auto len_acc = Utils::vector_length(world_acceleration);
         if (len_acc > 0.0f)
         {
             unit_acc /= len_acc;
         }
 
+        _rot_velocity += _rot_acceleration * dt;
+        if (_rot_velocity > _max_rot_speed)  { _rot_velocity = _max_rot_speed; }
+        if (_rot_velocity < -_max_rot_speed) { _rot_velocity = -_max_rot_speed; }
+
+        rotateBy(_rot_velocity * dt);
+
         for (auto i = 0u; i < _thrusters.size(); i++)
         {
             auto thruster = _thrusters[i].get();
-            thruster->calc_thrust(unit_acc);
+            thruster->calc_thrust(unit_acc, _rot_acceleration);
         }
     }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -205,7 +218,8 @@ namespace vot
 
     void Character::acceleration(const sf::Vector2f &acc)
     {
-        _acceleration = Utils::transform_direction(getTransform(), acc);
+        //_acceleration = Utils::transform_direction(getTransform(), acc);
+        _acceleration = acc;
     }
     sf::Vector2f Character::acceleration() const
     {
@@ -224,5 +238,28 @@ namespace vot
     float Character::max_speed() const
     {
         return _max_speed;
+    }
+
+    void Character::rot_acceleration(float acc)
+    {
+        _rot_acceleration = acc;
+    }
+    float Character::rot_acceleration() const
+    {
+        return _rot_acceleration;
+    }
+
+    float Character::rot_velocity() const
+    {
+        return _rot_velocity;
+    }
+
+    void Character::max_rot_speed(float speed)
+    {
+        _max_rot_speed = speed;
+    }
+    float Character::max_rot_speed() const
+    {
+        return _max_rot_speed;
     }
 }

@@ -34,18 +34,26 @@ namespace vot
         return _thrust_size;
     }
 
-    void Thruster::calc_thrust(const sf::Vector2f &acc)
+    void Thruster::calc_thrust(const sf::Vector2f &acc, float rot_acc)
     {
-        auto direction = Utils::transform_direction(_parent->getTransform() * getTransform(), sf::Vector2f(0, 1));
+        auto direction = Utils::transform_direction(getTransform(), sf::Vector2f(0, 1));
+        direction = Utils::vector_unit(direction);
         auto dot = Utils::vector_dot(acc, direction);
+
+        auto amount = 0.0f;
         if (dot > 0)
         {
-            thrust_amount(dot);
+            amount += dot;
         }
-        else
+
+        auto to_parent = Utils::vector_unit(getPosition());
+        auto cross = Utils::vector_cross_amount(to_parent, direction);
+        if ((cross < 0 && rot_acc < 0) || (cross > 0 && rot_acc > 0))
         {
-            thrust_amount(0.0f);
+            amount += Utils::abs(cross);
         }
+
+        thrust_amount(amount);
     }
     void Thruster::thrust_amount(float amount)
     {

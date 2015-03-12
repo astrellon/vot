@@ -65,6 +65,14 @@ namespace vot
             void max_speed(float speed);
             float max_speed() const;
 
+            void rot_acceleration(float acc);
+            float rot_acceleration() const;
+
+            float rot_velocity() const;
+
+            void max_rot_speed(float speed);
+            float max_rot_speed() const;
+
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
@@ -79,5 +87,9 @@ namespace vot
             sf::Vector2f _acceleration;
             sf::Vector2f _velocity;
             float _max_speed;
+
+            float _rot_acceleration;
+            float _rot_velocity;
+            float _max_rot_speed;
     };
 }

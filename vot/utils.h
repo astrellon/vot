@@ -104,6 +104,10 @@ namespace vot
             {
                 return sqrt(vec.x * vec.x + vec.y * vec.y);
             }
+            static inline sf::Vector2f vector_unit(const sf::Vector2f &vec)
+            {
+                return vec * (1.0f / vector_length(vec));
+            }
 
             static bool ray_circle_intersect(const Ray &ray, const Circle &circle, 
                 sf::Vector2f points[2], sf::Vector2f normals[2]);
@@ -123,6 +127,11 @@ namespace vot
                 auto x = vector.x * matrix[0] - vector.y * matrix[1];
                 auto y = -vector.x * matrix[4] + vector.y * matrix[5];
                 return sf::Vector2f(x, y);
+            }
+
+            static inline float vector_cross_amount(const sf::Vector2f &vec1, const sf::Vector2f &vec2)
+            {
+                return vec1.x * vec2.y - vec1.y * vec2.x;
             }
 
         private:

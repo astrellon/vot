@@ -66,6 +66,34 @@ namespace vot
         auto thruster = new Thruster();
         thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(28, 0);
+        thruster->setRotation(0.0f);
+        add_thruster(thruster);
+
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(-28, 0);
+        thruster->setRotation(180.0f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(28, 0);
+        thruster->setRotation(180.0f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(-28, 0);
+        thruster->setRotation(0.0f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-8, 14);
         thruster->setRotation(180.0f);
         add_thruster(thruster);
@@ -108,6 +136,7 @@ namespace vot
         thruster->setRotation(90.0f);
         thruster->thrust_size(0.35f);
         add_thruster(thruster);
+
         /*
         auto beam_blueprint = gs->beam_manager().find_src_beam("beam1");
         auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
@@ -147,34 +176,40 @@ namespace vot
     {
         auto gs = GameSystem::main();
 
-        auto speed = 1000.0f;
-        auto rot_speed = 180.0f * dt;
+        auto boost_speed = 1000.0f;
+        auto speed = 600.0f;
+        auto rot_speed = 180.0f;
         // Keyboard input {{{
-        acceleration(sf::Vector2f(0, 0));
+        sf::Vector2f acc;
+        float rot_acc = 0.0f;
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            acceleration(sf::Vector2f(-speed, 0.0f));
+            acc.x -= speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            acceleration(sf::Vector2f(speed, 0.0f));
+            acc.x += speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            acceleration(sf::Vector2f(0.0f, speed));
+            acc.y += speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            acceleration(sf::Vector2f(0.0f, -speed));
+            acc.y -= boost_speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
-            rotateBy(-rot_speed);
+            rot_acc -= rot_speed;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
-            rotateBy(rot_speed);
+            rot_acc += rot_speed;
         }
+
+        acceleration(acc);
+        rot_acceleration(rot_acc);
 
         if (gs->is_key_pressed(sf::Keyboard::T))
         {
@@ -275,6 +310,7 @@ namespace vot
         if (_look_at_target && _target != nullptr)
         {
             auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
+            rot_speed *= dt;
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
                 rotation(angles.to_angle());
