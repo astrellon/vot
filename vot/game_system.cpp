@@ -73,7 +73,7 @@ namespace vot
     void GameSystem::update(float dt)
     {
         _update_counter++;
-        if (_player == NULL)
+        if (_player == nullptr)
         {
             return;
         }

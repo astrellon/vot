@@ -83,6 +83,7 @@ namespace vot
             try_load("beam_glow", "beam_glow.png");
             try_load("beam_turret", "beam_turret.png");
             try_load("bullet_turret", "bullet_turret.png");
+            try_load("thrust", "fire15.png");
         }
         catch (...)
         {

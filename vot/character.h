@@ -7,6 +7,7 @@
 
 #include "circle.h"
 #include "hardpoint.h"
+#include "thruster.h"
 
 namespace vot
 {
@@ -51,6 +52,11 @@ namespace vot
             
             void add_hardpoint(Hardpoint *point);
 
+            typedef std::vector<std::unique_ptr<Thruster> > ThrusterList;
+            const ThrusterList *thrusters() const;
+
+            void add_thruster(Thruster *thruster);
+
             void acceleration(const sf::Vector2f &acc);
             sf::Vector2f acceleration() const;
 
@@ -68,6 +74,7 @@ namespace vot
             uint16_t _id;
 
             HardpointList _hardpoints;
+            ThrusterList _thrusters;
 
             sf::Vector2f _acceleration;
             sf::Vector2f _velocity;

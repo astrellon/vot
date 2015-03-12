@@ -117,6 +117,14 @@ namespace vot
                 return value;
             }
 
+            static inline sf::Vector2f transform_direction(const sf::Transform &trans, const sf::Vector2f &vector)
+            {
+                auto matrix = trans.getMatrix();
+                auto x = vector.x * matrix[0] - vector.y * matrix[1];
+                auto y = -vector.x * matrix[4] + vector.y * matrix[5];
+                return sf::Vector2f(x, y);
+            }
+
         private:
             static std::random_device _rd;
             static std::mt19937 _rand;

@@ -29,10 +29,8 @@ namespace vot
     void Character::translate(const sf::Vector2f &vector)
     {
         // Transform move vector by the sprites rotation matrix.
-        auto matrix = getTransform().getMatrix();
-        auto x = vector.x * matrix[0] - vector.y * matrix[1];
-        auto y = -vector.x * matrix[4] + vector.y * matrix[5];
-        move(x, y);
+        auto local_direction = Utils::transform_direction(getTransform(), vector);
+        move(local_direction);
         //_hitbox.location(getPosition());
     }
     void Character::location(const sf::Vector2f &vector)
@@ -82,6 +80,19 @@ namespace vot
         move(_velocity * dt);
 
         _hitbox.location(getPosition());
+
+        auto unit_acc = _acceleration;
+        auto len_acc = Utils::vector_length(_acceleration);
+        if (len_acc > 0.0f)
+        {
+            unit_acc /= len_acc;
+        }
+
+        for (auto i = 0u; i < _thrusters.size(); i++)
+        {
+            auto thruster = _thrusters[i].get();
+            thruster->calc_thrust(unit_acc);
+        }
     }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
@@ -101,6 +112,14 @@ namespace vot
         for (auto i = 0u; i < _hardpoints.size(); i++)
         {
             target.draw(*_hardpoints[i].get(), states);
+        }
+        for (auto i = 0u; i < _thrusters.size(); i++)
+        {
+            auto thruster = _thrusters[i].get();
+            if (thruster->thrust_amount() > 0.0f)
+            {
+                target.draw(*thruster, states);
+            }
         }
     }
 
@@ -174,12 +193,19 @@ namespace vot
         _hardpoints.push_back(std::unique_ptr<Hardpoint>(point));
     }
 
+    const Character::ThrusterList *Character::thrusters() const
+    {
+        return &_thrusters;
+    }
+    void Character::add_thruster(Thruster *thruster)
+    {
+        thruster->parent(this);
+        _thrusters.push_back(std::unique_ptr<Thruster>(thruster));
+    }
+
     void Character::acceleration(const sf::Vector2f &acc)
     {
-        auto matrix = getTransform().getMatrix();
-        auto x = acc.x * matrix[0] - acc.y * matrix[1];
-        auto y = -acc.x * matrix[4] + acc.y * matrix[5];
-        _acceleration = sf::Vector2f(x, y);
+        _acceleration = Utils::transform_direction(getTransform(), acc);
     }
     sf::Vector2f Character::acceleration() const
     {

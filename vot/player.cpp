@@ -60,6 +60,54 @@ namespace vot
         add_hardpoint_placement(new HardpointPlacement(-20, 10, 75, 270));
 
         create_new_hardpoint(Powerup::BULLET);
+        
+        auto thrust_texture = TextureManager::texture("thrust");
+        auto size = thrust_texture->getSize();
+        auto thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(-8, 14);
+        thruster->setRotation(180.0f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(8, 14);
+        thruster->setRotation(180.0f);
+        add_thruster(thruster);
+
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(8, -8);
+        thruster->setRotation(0.0f);
+        thruster->thrust_size(0.35f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(-8, -8);
+        thruster->setRotation(0.0f);
+        thruster->thrust_size(0.35f);
+        add_thruster(thruster);
+
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(-28, 3);
+        thruster->setRotation(270.0f);
+        thruster->thrust_size(0.35f);
+        add_thruster(thruster);
+        
+        thruster = new Thruster();
+        thruster->setTexture(*thrust_texture);
+        thruster->setOrigin(size.x * 0.5f, size.y);
+        thruster->setPosition(28, 3);
+        thruster->setRotation(90.0f);
+        thruster->thrust_size(0.35f);
+        add_thruster(thruster);
         /*
         auto beam_blueprint = gs->beam_manager().find_src_beam("beam1");
         auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
