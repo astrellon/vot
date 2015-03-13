@@ -73,6 +73,12 @@ namespace vot
             void max_rot_speed(float speed);
             float max_rot_speed() const;
 
+            void translate_assist(bool assist);
+            bool translate_assist() const;
+
+            void rotation_assist(bool assist);
+            bool rotation_assist() const;
+
         private:
             sf::Sprite _sprite;
             Circle _hitbox;
@@ -91,5 +97,8 @@ namespace vot
             float _rot_acceleration;
             float _rot_velocity;
             float _max_rot_speed;
+            
+            bool _translate_assist;
+            bool _rotation_assist;
     };
 }

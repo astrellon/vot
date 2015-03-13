@@ -1,5 +1,7 @@
 #include "character.h"
 
+#include <iostream>
+
 namespace vot
 {
     Character::Character(const sf::Texture &texture) :
@@ -12,7 +14,9 @@ namespace vot
         _max_speed(250.0f),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
-        _max_rot_speed(90.0f)
+        _max_rot_speed(90.0f),
+        _translate_assist(true),
+        _rotation_assist(true)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -27,7 +31,9 @@ namespace vot
         _max_speed(clone._max_speed),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
-        _max_rot_speed(clone._max_rot_speed)
+        _max_rot_speed(clone._max_rot_speed),
+        _translate_assist(clone._translate_assist),
+        _rotation_assist(clone._rotation_assist)
     {
 
     }
@@ -84,7 +90,15 @@ namespace vot
             _velocity /= length;
             _velocity *= _max_speed;
         }
-        move(_velocity * dt);
+
+        auto dt_velocity = _velocity * dt;
+        if (_acceleration.x == 0.0f && _acceleration.y == 0.0f && 
+                _translate_assist && Utils::vector_dot(dt_velocity, dt_velocity) < 2.0f)
+        {
+            _velocity.x = _velocity.y = 0.0f;
+            dt_velocity.x = dt_velocity.y = 0.0f;
+        }
+        move(dt_velocity);
 
         _hitbox.location(getPosition());
 
@@ -99,7 +113,14 @@ namespace vot
         if (_rot_velocity > _max_rot_speed)  { _rot_velocity = _max_rot_speed; }
         if (_rot_velocity < -_max_rot_speed) { _rot_velocity = -_max_rot_speed; }
 
-        rotateBy(_rot_velocity * dt);
+        auto dt_rot_velocity = _rot_velocity * dt;
+        if (_rot_acceleration == 0.0f && _rotation_assist && Utils::abs(dt_rot_velocity) < 1.0f)
+        {
+            _rot_velocity = 0.0f;
+            dt_rot_velocity = 0.0f;
+        }
+
+        rotateBy(dt_rot_velocity);
 
         for (auto i = 0u; i < _thrusters.size(); i++)
         {
@@ -261,5 +282,23 @@ namespace vot
     float Character::max_rot_speed() const
     {
         return _max_rot_speed;
+    }
+
+    void Character::translate_assist(bool assist)
+    {
+        _translate_assist = assist;
+    }
+    bool Character::translate_assist() const
+    {
+        return _translate_assist;
+    }
+
+    void Character::rotation_assist(bool assist)
+    {
+        _rotation_assist = assist;
+    }
+    bool Character::rotation_assist() const
+    {
+        return _rotation_assist;
     }
 }

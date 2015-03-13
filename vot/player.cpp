@@ -23,6 +23,7 @@ namespace vot
 
     void Player::init()
     {
+        /*
         auto gs = GameSystem::main();
 
         auto beam_turret_texture = TextureManager::texture("beam_turret");
@@ -30,8 +31,7 @@ namespace vot
 
         auto homing_bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
         auto pattern_bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-
-        /*
+        
         auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
         pattern_turret->setup(-16, 4, -90.0f, 180.0f, 300.0f);
         pattern_turret->texture(bullet_turret_texture);
@@ -179,6 +179,7 @@ namespace vot
         auto boost_speed = 1000.0f;
         auto speed = 600.0f;
         auto rot_speed = 180.0f;
+
         // Keyboard input {{{
         sf::Vector2f acc;
         float rot_acc = 0.0f;
@@ -206,6 +207,20 @@ namespace vot
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
             rot_acc += rot_speed;
+        }
+
+        if (rotation_assist() && rot_acc == 0.0f && Utils::abs(rot_velocity()) > 0.5f)
+        {
+            auto rot_velo = rot_velocity(); 
+            rot_acc = rot_velo > 0.0f ? -rot_speed : (rot_velo < 0.0f ? rot_speed : 0.0f);  
+        }
+
+        auto velo = velocity() * dt;
+        std::cout << "Velo: " << acc.x << ", " << acc.y << " | " << velo.x << ", " << velo.y << "\n";
+        if (translate_assist() && acc.x == 0.0f && acc.y == 0.0f && Utils::vector_dot(velo, velo) > 2.0f)
+        {
+            acc.x = velo.x > 0.0f ? -speed : speed;
+            acc.y = velo.y > 0.0f ? -speed : speed;
         }
 
         acceleration(acc);
