@@ -21,6 +21,7 @@ namespace vot
     {
         auto size = 512.0f;
         _target.create(static_cast<uint32_t>(size), static_cast<uint32_t>(size));
+        _target.clear();
 
         auto blue_star = TextureManager::texture("blue_star");
         sf::Sprite blue_star_sprite(*blue_star);

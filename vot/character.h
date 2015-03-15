@@ -70,6 +70,9 @@ namespace vot
 
             float rot_velocity() const;
 
+            void rot_speed(float speed);
+            float rot_speed() const;
+            
             void max_rot_speed(float speed);
             float max_rot_speed() const;
 
@@ -96,6 +99,7 @@ namespace vot
 
             float _rot_acceleration;
             float _rot_velocity;
+            float _rot_speed;
             float _max_rot_speed;
             
             bool _translate_assist;

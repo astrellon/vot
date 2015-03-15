@@ -14,6 +14,7 @@ namespace vot
         _max_speed(250.0f),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
+        _rot_speed(180.0f),
         _max_rot_speed(90.0f),
         _translate_assist(true),
         _rotation_assist(true)
@@ -31,6 +32,7 @@ namespace vot
         _max_speed(clone._max_speed),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
+        _rot_speed(clone._rot_speed),
         _max_rot_speed(clone._max_rot_speed),
         _translate_assist(clone._translate_assist),
         _rotation_assist(clone._rotation_assist)
@@ -76,12 +78,15 @@ namespace vot
 
     void Character::update(float dt)
     {
+        // Update hardpoints {{{
         for (auto i = 0u; i < _hardpoints.size(); i++)
         {
             auto hardpoint = _hardpoints[i].get(); 
             hardpoint->update(dt);
         }
+        // }}}
 
+        // Velocity {{{
         auto world_acceleration = Utils::transform_direction(getTransform(), _acceleration);
         _velocity += world_acceleration * dt;
         auto length = Utils::vector_length(_velocity);
@@ -93,7 +98,7 @@ namespace vot
 
         auto dt_velocity = _velocity * dt;
         if (_acceleration.x == 0.0f && _acceleration.y == 0.0f && 
-                _translate_assist && Utils::vector_dot(dt_velocity, dt_velocity) < 2.0f)
+                _translate_assist && Utils::vector_dot(_velocity, _velocity) < 10.0f)
         {
             _velocity.x = _velocity.y = 0.0f;
             dt_velocity.x = dt_velocity.y = 0.0f;
@@ -108,25 +113,36 @@ namespace vot
         {
             unit_acc /= len_acc;
         }
+        // }}}
+
+        // Rotational velocity {{{
+        if (_rot_acceleration == 0.0f && _rotation_assist)
+        {
+            if (Utils::abs(_rot_velocity) < 0.5f)
+            {
+                _rot_velocity = 0.0f;
+            }
+            else
+            {
+                _rot_acceleration = _rot_velocity > 0.0f ? -_rot_speed : (_rot_velocity < 0.0f ? _rot_speed : 0.0f);  
+            }
+        }
 
         _rot_velocity += _rot_acceleration * dt;
         if (_rot_velocity > _max_rot_speed)  { _rot_velocity = _max_rot_speed; }
         if (_rot_velocity < -_max_rot_speed) { _rot_velocity = -_max_rot_speed; }
 
         auto dt_rot_velocity = _rot_velocity * dt;
-        if (_rot_acceleration == 0.0f && _rotation_assist && Utils::abs(dt_rot_velocity) < 1.0f)
-        {
-            _rot_velocity = 0.0f;
-            dt_rot_velocity = 0.0f;
-        }
-
         rotateBy(dt_rot_velocity);
+        // }}}
 
+        // Update thrusters {{{
         for (auto i = 0u; i < _thrusters.size(); i++)
         {
             auto thruster = _thrusters[i].get();
             thruster->calc_thrust(unit_acc, _rot_acceleration);
         }
+        // }}}
     }
     void Character::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
@@ -273,6 +289,15 @@ namespace vot
     float Character::rot_velocity() const
     {
         return _rot_velocity;
+    }
+
+    void Character::rot_speed(float speed)
+    {
+        _rot_speed = speed;
+    }
+    float Character::rot_speed() const
+    {
+        return _rot_speed;
     }
 
     void Character::max_rot_speed(float speed)

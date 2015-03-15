@@ -178,7 +178,7 @@ namespace vot
 
         auto boost_speed = 1000.0f;
         auto speed = 600.0f;
-        auto rot_speed = 180.0f;
+        //auto rot_speed = 180.0f;
 
         // Keyboard input {{{
         sf::Vector2f acc;
@@ -202,21 +202,15 @@ namespace vot
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
-            rot_acc -= rot_speed;
+            rot_acc -= rot_speed();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
-            rot_acc += rot_speed;
+            rot_acc += rot_speed();
         }
 
-        if (rotation_assist() && rot_acc == 0.0f && Utils::abs(rot_velocity()) > 0.5f)
-        {
-            auto rot_velo = rot_velocity(); 
-            rot_acc = rot_velo > 0.0f ? -rot_speed : (rot_velo < 0.0f ? rot_speed : 0.0f);  
-        }
-
-        auto velo = velocity() * dt;
-        std::cout << "Velo: " << acc.x << ", " << acc.y << " | " << velo.x << ", " << velo.y << "\n";
+        auto velo = velocity();
+        //std::cout << "Velo: " << acc.x << ", " << acc.y << " | " << velo.x << ", " << velo.y << "\n";
         if (translate_assist() && acc.x == 0.0f && acc.y == 0.0f && Utils::vector_dot(velo, velo) > 2.0f)
         {
             acc.x = velo.x > 0.0f ? -speed : speed;
