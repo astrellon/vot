@@ -176,29 +176,25 @@ namespace vot
     {
         auto gs = GameSystem::main();
 
-        auto boost_speed = 1000.0f;
-        auto speed = 600.0f;
-        //auto rot_speed = 180.0f;
-
         // Keyboard input {{{
         sf::Vector2f acc;
         float rot_acc = 0.0f;
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            acc.x -= speed;
+            acc.x -= strafe_speed();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            acc.x += speed;
+            acc.x += strafe_speed();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            acc.y += speed;
+            acc.y += backwards_speed();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         {
-            acc.y -= boost_speed;
+            acc.y -= forwards_speed();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         {
@@ -208,15 +204,7 @@ namespace vot
         {
             rot_acc += rot_speed();
         }
-
-        auto velo = velocity();
-        //std::cout << "Velo: " << acc.x << ", " << acc.y << " | " << velo.x << ", " << velo.y << "\n";
-        if (translate_assist() && acc.x == 0.0f && acc.y == 0.0f && Utils::vector_dot(velo, velo) > 2.0f)
-        {
-            acc.x = velo.x > 0.0f ? -speed : speed;
-            acc.y = velo.y > 0.0f ? -speed : speed;
-        }
-
+        
         acceleration(acc);
         rot_acceleration(rot_acc);
 
@@ -246,7 +234,7 @@ namespace vot
             }
         }
 
-        /*
+        /* {{{
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             if (_cooldown <= 0.0f)
@@ -314,19 +302,20 @@ namespace vot
                 }
             }
         }
-        */
+        }}}*/
 
         if (_look_at_target && _target != nullptr)
         {
+            auto rot_spd = rot_speed();
             auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
-            rot_speed *= dt;
-            if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
+            rot_spd *= dt;
+            if (angles.delta_angle() < rot_spd && angles.delta_angle() > -rot_spd)
             {
                 rotation(angles.to_angle());
             }
             else
             {
-                rotateBy(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
+                rotateBy(angles.delta_angle() > 0 ? -rot_spd : rot_spd);
             }
         }
 

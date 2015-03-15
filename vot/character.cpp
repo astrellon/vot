@@ -12,6 +12,9 @@ namespace vot
         _is_dead(false),
         _id(0u),
         _max_speed(250.0f),
+        _strafe_speed(400.0f),
+        _forwards_speed(1000.0f),
+        _backwards_speed(600.0f),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
         _rot_speed(180.0f),
@@ -30,6 +33,9 @@ namespace vot
         _is_dead(clone._is_dead),
         _id(0u),
         _max_speed(clone._max_speed),
+        _strafe_speed(clone._strafe_speed),
+        _forwards_speed(clone._forwards_speed),
+        _backwards_speed(clone._backwards_speed),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
         _rot_speed(clone._rot_speed),
@@ -50,7 +56,6 @@ namespace vot
     void Character::location(const sf::Vector2f &vector)
     {
         setPosition(vector);
-        //_hitbox.location(vector);
     }
     sf::Vector2f Character::location() const
     {
@@ -87,8 +92,38 @@ namespace vot
         // }}}
 
         // Velocity {{{
+        if (_translate_assist && _acceleration.x == 0.0f && _acceleration.y == 0.0f)
+        {
+            if (Utils::vector_dot(_velocity, _velocity) < 2.0f)
+            {
+                _velocity.x = _velocity.y = 0.0f;
+            }
+            else
+            {
+                auto local_velocity = Utils::transform_direction(getInverseTransform(), _velocity); 
+                _acceleration = local_velocity / -dt;
+                if (_acceleration.x > _strafe_speed)
+                {
+                    _acceleration.x = _strafe_speed;
+                }
+                if (_acceleration.x < -_strafe_speed)
+                {
+                    _acceleration.x = -_strafe_speed;
+                }
+                if (_acceleration.y > _backwards_speed)
+                {
+                    _acceleration.y = _backwards_speed;
+                }
+                if (_acceleration.y < -_forwards_speed)
+                {
+                    _acceleration.y = -_forwards_speed;
+                }
+            }
+        }
         auto world_acceleration = Utils::transform_direction(getTransform(), _acceleration);
+
         _velocity += world_acceleration * dt;
+
         auto length = Utils::vector_length(_velocity);
         if (length > _max_speed)
         {
@@ -275,6 +310,33 @@ namespace vot
     float Character::max_speed() const
     {
         return _max_speed;
+    }
+
+    void Character::strafe_speed(float speed)
+    {
+        _strafe_speed = speed;
+    }
+    float Character::strafe_speed() const
+    {
+        return _strafe_speed;
+    }
+
+    void Character::forwards_speed(float speed)
+    {
+        _forwards_speed = speed;
+    }
+    float Character::forwards_speed() const
+    {
+        return _forwards_speed;
+    }
+
+    void Character::backwards_speed(float speed)
+    {
+        _backwards_speed = speed;
+    }
+    float Character::backwards_speed() const
+    {
+        return _backwards_speed;
     }
 
     void Character::rot_acceleration(float acc)

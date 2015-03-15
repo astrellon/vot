@@ -65,6 +65,15 @@ namespace vot
             void max_speed(float speed);
             float max_speed() const;
 
+            void strafe_speed(float speed);
+            float strafe_speed() const;
+
+            void forwards_speed(float speed);
+            float forwards_speed() const;
+
+            void backwards_speed(float speed);
+            float backwards_speed() const;
+
             void rot_acceleration(float acc);
             float rot_acceleration() const;
 
@@ -96,6 +105,9 @@ namespace vot
             sf::Vector2f _acceleration;
             sf::Vector2f _velocity;
             float _max_speed;
+            float _strafe_speed;
+            float _forwards_speed;
+            float _backwards_speed;
 
             float _rot_acceleration;
             float _rot_velocity;
