@@ -66,8 +66,14 @@ namespace vot
             void auto_remove(bool value);
             bool auto_remove() const;
 
+            void spawning_active(bool active);
+            bool spawning_active() const;
+
             void speed_factor(float value);
             float speed_factor() const;
+
+            void spawn_rate(float dt);
+            float spawn_rate() const;
 
             bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -78,9 +84,12 @@ namespace vot
             bool _loop_system;
             bool _auto_remove;
             bool _active;
+            bool _spawning_active;
 
             uint32_t _system_type;
             float _speed_factor;
+            float _spawn_rate;
+            float _spawn_cooldown;
 
             void init_particle(Particle &particle);
     };

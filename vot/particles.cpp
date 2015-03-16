@@ -112,8 +112,11 @@ namespace vot
         _loop_system(false),
         _auto_remove(true),
         _active(true),
+        _spawning_active(true),
         _system_type(0u),
-        _speed_factor(1.0f)
+        _speed_factor(1.0f),
+        _spawn_rate(0.0f),
+        _spawn_cooldown(0.0f)
     {
     }
 
@@ -154,6 +157,15 @@ namespace vot
         return _auto_remove;
     }
 
+    void ParticleSystem::spawning_active(bool active)
+    {
+        _spawning_active = active;
+    }
+    bool ParticleSystem::spawning_active() const
+    {
+        return _spawning_active;
+    }
+
     void ParticleSystem::speed_factor(float value)
     {
         _speed_factor = value;
@@ -161,6 +173,15 @@ namespace vot
     float ParticleSystem::speed_factor() const
     {
         return _speed_factor;
+    }
+
+    void ParticleSystem::spawn_rate(float value)
+    {
+        _spawn_rate = value;
+    }
+    float ParticleSystem::spawn_rate() const
+    {
+        return _spawn_rate;
     }
 
     bool ParticleSystem::update(float dt)
@@ -180,8 +201,13 @@ namespace vot
             {
                 if (_loop_system)
                 {
-                    particle.reset();
-                    init_particle(particle);
+                    if (_spawning_active && _spawn_cooldown <= 0.0f)
+                    {
+                        particle.reset();
+                        init_particle(particle);
+
+                        _spawn_cooldown = _spawn_rate;
+                    }
                 }
             }
             else
@@ -189,6 +215,8 @@ namespace vot
                 ++active;
             }
         }
+
+        _spawn_cooldown -= dt;
 
         _active = active > 0u;
         return active > 0u;
@@ -236,6 +264,12 @@ namespace vot
 
             auto lifetime_offset = Utils::randf(0, 1.0f);
             particle.lifetime(-lifetime_offset);
+        }
+        else if (_system_type == 2u)
+        {
+            particle.positions(sf::Vector2f(0, 0), sf::Vector2f(20, 0));
+            particle.scales(0.7f, 0.05f);
+            particle.texture(_texture);
         }
     }
     // }}}

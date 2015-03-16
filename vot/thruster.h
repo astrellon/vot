@@ -2,11 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "particles.h"
+
 namespace vot
 {
     class Character;
+    class ParticleSystem;
 
-    class Thruster : public sf::Sprite
+    class Thruster : public sf::Drawable, public sf::Transformable
     {
         public:
             Thruster();
@@ -25,6 +28,8 @@ namespace vot
             float max_thrust() const;
 
             sf::Vector2f forwards() const;
+
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
             Character *_parent;

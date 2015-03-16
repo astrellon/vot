@@ -50,6 +50,12 @@ int main()
     vot::TextureManager::main()->display("Main4");
     game_system.init();
 
+    auto bullet = vot::TextureManager::texture("bullet_blue_circle");
+    auto system = game_system.particle_manager().spawn_system(*bullet, 10u);
+    system->system_type(2u);
+    system->loop_system(true);
+    system->spawn_rate(1.0f);
+
     /*
     // Load a music to play
     sf::Music music;

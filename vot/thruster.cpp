@@ -82,10 +82,17 @@ namespace vot
 
     void Thruster::update_sprite()
     {
+        /*
         auto scale = _thrust_amount * _thrust_size + _thrust_size;
         auto alpha = static_cast<uint8_t>(_thrust_amount * 255.0f);
 
         setScale(scale, scale);
         setColor(sf::Color(255u, 255u, 255u, alpha));
+        */
+    }
+
+    void Thruster::draw( sf::RenderTarget &target, sf::RenderStates states ) const
+    {
+
     }
 }

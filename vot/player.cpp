@@ -64,49 +64,42 @@ namespace vot
         auto thrust_texture = TextureManager::texture("thrust");
         auto size = thrust_texture->getSize();
         auto thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(28, 0);
         thruster->setRotation(0.0f);
         add_thruster(thruster);
 
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-28, 0);
         thruster->setRotation(180.0f);
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(28, 0);
         thruster->setRotation(180.0f);
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-28, 0);
         thruster->setRotation(0.0f);
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-8, 14);
         thruster->setRotation(180.0f);
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(8, 14);
         thruster->setRotation(180.0f);
         add_thruster(thruster);
 
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(8, -8);
         thruster->setRotation(0.0f);
@@ -114,7 +107,6 @@ namespace vot
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-8, -8);
         thruster->setRotation(0.0f);
@@ -122,7 +114,6 @@ namespace vot
         add_thruster(thruster);
 
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(-28, 3);
         thruster->setRotation(270.0f);
@@ -130,7 +121,6 @@ namespace vot
         add_thruster(thruster);
         
         thruster = new Thruster();
-        thruster->setTexture(*thrust_texture);
         thruster->setOrigin(size.x * 0.5f, size.y);
         thruster->setPosition(28, 3);
         thruster->setRotation(90.0f);
