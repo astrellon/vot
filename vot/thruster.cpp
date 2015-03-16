@@ -11,7 +11,8 @@ namespace vot
     Thruster::Thruster() :
         _parent(nullptr),
         _thrust_size(0.5f),
-        _thrust_amount(0.0f)
+        _thrust_amount(0.0f),
+        _max_thrust(1000.0f)
     {
 
     }
@@ -34,16 +35,30 @@ namespace vot
         return _thrust_size;
     }
 
-    void Thruster::calc_thrust(const sf::Vector2f &acc, float rot_acc)
+    void Thruster::max_thrust(float size)
+    {
+        _max_thrust = size;
+    }
+    float Thruster::max_thrust() const
+    {
+        return _max_thrust;
+    }
+
+    sf::Vector2f Thruster::forwards() const
     {
         auto direction = Utils::transform_direction(getTransform(), sf::Vector2f(0, 1));
-        direction = Utils::vector_unit(direction);
+        return Utils::vector_unit(direction);
+    }
+
+    void Thruster::calc_thrust(const sf::Vector2f &acc, float rot_acc)
+    {
+        auto direction = forwards();
         auto dot = Utils::vector_dot(acc, direction);
 
         auto amount = 0.0f;
         if (dot > 0)
         {
-            amount += dot;
+            amount += dot / _max_thrust;
         }
 
         auto to_parent = Utils::vector_unit(getPosition());

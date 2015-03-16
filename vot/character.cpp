@@ -142,12 +142,14 @@ namespace vot
 
         _hitbox.location(getPosition());
 
+        /*
         auto unit_acc = _acceleration;
         auto len_acc = Utils::vector_length(world_acceleration);
         if (len_acc > 0.0f)
         {
             unit_acc /= len_acc;
         }
+        */
         // }}}
 
         // Rotational velocity {{{
@@ -175,7 +177,7 @@ namespace vot
         for (auto i = 0u; i < _thrusters.size(); i++)
         {
             auto thruster = _thrusters[i].get();
-            thruster->calc_thrust(unit_acc, _rot_acceleration);
+            thruster->calc_thrust(_acceleration, _rot_acceleration);
         }
         // }}}
     }
@@ -285,6 +287,23 @@ namespace vot
     void Character::add_thruster(Thruster *thruster)
     {
         thruster->parent(this);
+        auto direction = thruster->forwards();
+        auto dot = Utils::vector_dot(direction, sf::Vector2f(0, 1));
+        auto max_thrust = 0.0f;
+        if (dot > 0.0f)
+        {
+            max_thrust += dot * backwards_speed();
+        }
+        else if (dot < 0.0f)
+        {
+            max_thrust += -dot * forwards_speed();
+        }
+
+        dot = Utils::vector_dot(direction, sf::Vector2f(1, 0));
+        max_thrust += Utils::abs(dot) * strafe_speed();
+
+        thruster->max_thrust(max_thrust);
+
         _thrusters.push_back(std::unique_ptr<Thruster>(thruster));
     }
 

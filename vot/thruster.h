@@ -21,10 +21,16 @@ namespace vot
             void thrust_amount(float amount);
             float thrust_amount() const;
 
+            void max_thrust(float amount);
+            float max_thrust() const;
+
+            sf::Vector2f forwards() const;
+
         private:
             Character *_parent;
             float _thrust_size;
             float _thrust_amount;
+            float _max_thrust;
 
             void update_sprite();
     };
