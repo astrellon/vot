@@ -72,8 +72,14 @@ namespace vot
             void speed_factor(float value);
             float speed_factor() const;
 
+            void scale_factor(float value);
+            float scale_factor() const;
+
             void spawn_rate(float dt);
             float spawn_rate() const;
+
+            void spawn_rotation_offset(float offset);
+            float spawn_rotation_offset() const;
 
             bool update(float dt);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -88,10 +94,12 @@ namespace vot
 
             uint32_t _system_type;
             float _speed_factor;
+            float _scale_factor;
             float _spawn_rate;
             float _spawn_cooldown;
+            float _spawn_rotation_offset;
 
-            void init_particle(Particle &particle);
+            void init_particle(Particle &particle, bool on_init);
     };
     // }}}
     

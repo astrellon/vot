@@ -115,8 +115,10 @@ namespace vot
         _spawning_active(true),
         _system_type(0u),
         _speed_factor(1.0f),
+        _scale_factor(1.0f),
         _spawn_rate(0.0f),
-        _spawn_cooldown(0.0f)
+        _spawn_cooldown(0.0f),
+        _spawn_rotation_offset(0.0f)
     {
     }
 
@@ -126,7 +128,7 @@ namespace vot
         for (auto i = 0u; i < _particles.size(); i++)
         {
             _particles[i] = Particle();
-            init_particle(_particles[i]);
+            init_particle(_particles[i], true);
         }
     }
 
@@ -175,6 +177,15 @@ namespace vot
         return _speed_factor;
     }
 
+    void ParticleSystem::scale_factor(float value)
+    {
+        _scale_factor = value;
+    }
+    float ParticleSystem::scale_factor() const
+    {
+        return _scale_factor;
+    }
+
     void ParticleSystem::spawn_rate(float value)
     {
         _spawn_rate = value;
@@ -182,6 +193,15 @@ namespace vot
     float ParticleSystem::spawn_rate() const
     {
         return _spawn_rate;
+    }
+
+    void ParticleSystem::spawn_rotation_offset(float value)
+    {
+        _spawn_rotation_offset = value;
+    }
+    float ParticleSystem::spawn_rotation_offset() const
+    {
+        return _spawn_rotation_offset;
     }
 
     bool ParticleSystem::update(float dt)
@@ -204,7 +224,7 @@ namespace vot
                     if (_spawning_active && _spawn_cooldown <= 0.0f)
                     {
                         particle.reset();
-                        init_particle(particle);
+                        init_particle(particle, false);
 
                         _spawn_cooldown = _spawn_rate;
                     }
@@ -218,6 +238,10 @@ namespace vot
 
         _spawn_cooldown -= dt;
 
+        if (_spawn_rate > 0.0f && _loop_system)
+        {
+            return true;
+        }
         _active = active > 0u;
         return active > 0u;
     }
@@ -229,7 +253,7 @@ namespace vot
 
         for (auto particle : _particles)
         {
-            if (particle.lifetime() < 0.0f)
+            if (particle.lifetime() < 0.0f || !particle.active())
             {
                 continue;
             }
@@ -237,7 +261,7 @@ namespace vot
         }
     }
 
-    void ParticleSystem::init_particle(Particle &particle)
+    void ParticleSystem::init_particle(Particle &particle, bool on_init)
     {
         if (_system_type == 0u)
         {
@@ -267,9 +291,19 @@ namespace vot
         }
         else if (_system_type == 2u)
         {
-            particle.positions(sf::Vector2f(0, 0), sf::Vector2f(20, 0));
-            particle.scales(0.7f, 0.05f);
+            auto angle = _spawn_rotation_offset;
+            auto dist = Utils::randf(28, 32);
+            auto x = cos(angle) * dist;
+            auto y = sin(angle) * dist;
+
+            particle.positions(sf::Vector2f(0, 0), sf::Vector2f(x, y));
+            particle.scales(0.7f * _scale_factor, 0.05f * _scale_factor);
             particle.texture(_texture);
+            particle.total_lifetime(0.5f);
+            if (on_init)
+            {
+                particle.active(false);
+            }
         }
     }
     // }}}

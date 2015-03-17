@@ -200,14 +200,6 @@ namespace vot
         {
             target.draw(*_hardpoints[i].get(), states);
         }
-        for (auto i = 0u; i < _thrusters.size(); i++)
-        {
-            auto thruster = _thrusters[i].get();
-            if (thruster->thrust_amount() > 0.0f)
-            {
-                target.draw(*thruster, states);
-            }
-        }
     }
 
     Circle &Character::hitbox()

@@ -9,7 +9,7 @@ namespace vot
     class Character;
     class ParticleSystem;
 
-    class Thruster : public sf::Drawable, public sf::Transformable
+    class Thruster : public sf::Transformable
     {
         public:
             Thruster();
@@ -29,13 +29,12 @@ namespace vot
 
             sf::Vector2f forwards() const;
 
-            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-
         private:
             Character *_parent;
             float _thrust_size;
             float _thrust_amount;
             float _max_thrust;
+            ParticleSystem *_system;
 
             void update_sprite();
     };

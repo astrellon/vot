@@ -2,6 +2,8 @@
 
 #include "character.h"
 #include "utils.h"
+#include "game_system.h"
+#include "texture_manager.h"
 
 #include <stdint.h>
 #include <iostream>
@@ -14,7 +16,13 @@ namespace vot
         _thrust_amount(0.0f),
         _max_thrust(1000.0f)
     {
-
+        auto thrust = TextureManager::texture("bullet_blue_circle");
+        _system = GameSystem::main()->particle_manager().spawn_system(*thrust, 20u);
+        _system->system_type(2u);
+        _system->loop_system(true);
+        _system->spawn_rate(0.05f);
+        _system->spawning_active(false);
+        _system->init();
     }
 
     void Thruster::parent(Character *character)
@@ -83,16 +91,19 @@ namespace vot
     void Thruster::update_sprite()
     {
         /*
-        auto scale = _thrust_amount * _thrust_size + _thrust_size;
         auto alpha = static_cast<uint8_t>(_thrust_amount * 255.0f);
 
         setScale(scale, scale);
         setColor(sf::Color(255u, 255u, 255u, alpha));
         */
-    }
 
-    void Thruster::draw( sf::RenderTarget &target, sf::RenderStates states ) const
-    {
-
+        auto scale = _thrust_amount * _thrust_size + _thrust_size;
+        auto trans = parent()->getTransform() * getTransform();
+        auto global_position = trans.transformPoint(sf::Vector2f(0, 0));
+        auto global_rotation = getRotation() + parent()->getRotation();
+        _system->spawn_rotation_offset(Utils::degrees_to_radians * (global_rotation - 90.0f));
+        _system->scale_factor(scale);
+        _system->spawning_active(_thrust_amount > 0.05f);
+        _system->setPosition(global_position);
     }
 }
