@@ -23,36 +23,6 @@ namespace vot
 
     void Player::init()
     {
-        /*
-        auto gs = GameSystem::main();
-
-        auto beam_turret_texture = TextureManager::texture("beam_turret");
-        auto bullet_turret_texture = TextureManager::texture("bullet_turret");
-
-        auto homing_bullet = gs->bullet_manager().find_src_homing_bullet("homing_blue");
-        auto pattern_bullet = gs->bullet_manager().find_src_pattern_bullet("player_bullet_small");
-        
-        auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setup(-16, 4, -90.0f, 180.0f, 300.0f);
-        pattern_turret->texture(bullet_turret_texture);
-        add_hardpoint(pattern_turret);
-        
-        pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setup(16, 4, -90.0f, 240.0f, 0.0f);
-        pattern_turret->texture(bullet_turret_texture);
-        add_hardpoint(pattern_turret);
-        
-        pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setup(20, 10, -90.0f, 270.0f, 45.0f);
-        pattern_turret->texture(bullet_turret_texture);
-        add_hardpoint(pattern_turret);
-
-        pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
-        pattern_turret->setup(-20, 10, -90.0f, 75.0f, 270.0f);
-        pattern_turret->texture(bullet_turret_texture);
-        add_hardpoint(pattern_turret);
-        */
-
         add_hardpoint_placement(new HardpointPlacement(0, 8, 225, 315));
         add_hardpoint_placement(new HardpointPlacement(-16, 4, 180, 300));
         add_hardpoint_placement(new HardpointPlacement(16, 4, 240, 0));
@@ -61,95 +31,20 @@ namespace vot
 
         create_new_hardpoint(Powerup::BULLET);
         
-        auto thruster = new Thruster();
-        thruster->setPosition(28, 0);
-        thruster->setRotation(0.0f);
-        add_thruster(thruster);
+        add_thruster_placement(28, 0, 0, 0.35f);
+        add_thruster_placement(28, 0, 180, 0.35f);
+        add_thruster_placement(-28, 0, 180, 0.35f);
+        add_thruster_placement(-28, 0, 0, 0.35f);
 
-        thruster = new Thruster();
-        thruster->setPosition(-28, 0);
-        thruster->setRotation(180.0f);
-        add_thruster(thruster);
+        add_thruster_placement(-8, 14, 180, 0.5f);
+        add_thruster_placement(8, 14, 180, 0.5f);
+        add_thruster_placement(8, -8, 0, 0.35f);
+        add_thruster_placement(-8, -8, 0, 0.35f);
         
-        thruster = new Thruster();
-        thruster->setPosition(28, 0);
-        thruster->setRotation(180.0f);
-        add_thruster(thruster);
-        
-        thruster = new Thruster();
-        thruster->setPosition(-28, 0);
-        thruster->setRotation(0.0f);
-        add_thruster(thruster);
-        
-        thruster = new Thruster();
-        thruster->setPosition(-8, 14);
-        thruster->setRotation(180.0f);
-        add_thruster(thruster);
-        
-        thruster = new Thruster();
-        thruster->setPosition(8, 14);
-        thruster->setRotation(180.0f);
-        add_thruster(thruster);
-
-        thruster = new Thruster();
-        thruster->setPosition(8, -8);
-        thruster->setRotation(0.0f);
-        thruster->thrust_size(0.35f);
-        add_thruster(thruster);
-        
-        thruster = new Thruster();
-        thruster->setPosition(-8, -8);
-        thruster->setRotation(0.0f);
-        thruster->thrust_size(0.35f);
-        add_thruster(thruster);
-
-        thruster = new Thruster();
-        thruster->setPosition(-28, 3);
-        thruster->setRotation(270.0f);
-        thruster->thrust_size(0.35f);
-        add_thruster(thruster);
-        
-        thruster = new Thruster();
-        thruster->setPosition(28, 3);
-        thruster->setRotation(90.0f);
-        thruster->thrust_size(0.35f);
-        add_thruster(thruster);
-
-        /*
-        auto beam_blueprint = gs->beam_manager().find_src_beam("beam1");
-        auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
-        beam_turret->setPosition(18, -10);
-        beam_turret->setRotation(-90.0f);
-
-        beam_turret->texture(beam_turret_texture);
-        add_hardpoint(beam_turret);
-        
-        beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
-        beam_turret->setPosition(-18, -10);
-        beam_turret->setRotation(-90.0f);
-
-        beam_turret->texture(beam_turret_texture);
-        add_hardpoint(beam_turret);
-        */
+        add_thruster_placement(-28, 3, 270, 0.35f);
+        add_thruster_placement(28, 3, 90, 0.35f);
     }
-
-    void Player::translate(const sf::Vector2f &vector)
-    {
-        Character::translate(vector);
-
-        //_powerup_hitbox.location(getPosition());
-    }
-    void Player::location(const sf::Vector2f &vector)
-    {
-        Character::location(vector);
-
-        //_powerup_hitbox.location(getPosition());
-    }
-    sf::Vector2f Player::location() const
-    {
-        return Character::location();
-    }
-
+    
     void Player::update(float dt)
     {
         auto gs = GameSystem::main();
@@ -305,42 +200,6 @@ namespace vot
         _powerup_hitbox.location(getPosition());
     }
 
-    /*
-    PatternBullet *Player::spawn_pattern_bullet(const std::string &name, uint32_t pattern_type)
-    {
-        auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(name, Group::PLAYER); 
-        bullet->pattern_type(pattern_type);
-        return bullet;
-    }
-    void Player::spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y)
-    {
-        auto bullet = spawn_pattern_bullet(name, pattern_type);
-        auto trans = forward_center_trans();
-        trans.translate(y, x);
-        bullet->init_transform(trans);
-
-        bullet = spawn_pattern_bullet(name, pattern_type);
-        trans = forward_center_trans();
-        trans.translate(y, -x);
-        bullet->init_transform(trans);
-    }
-    HomingBullet *Player::spawn_homing_bullet()
-    {
-        return GameSystem::main()->bullet_manager().spawn_homing_bullet("homing_blue", Group::PLAYER);
-    }
-    void Player::spawn_homing_bullet_pair(float offset_angle)
-    {
-        auto homing_bullet = spawn_homing_bullet();
-        auto angle = rotation() - 90.0f;
-        homing_bullet->setup(location(), angle + offset_angle);
-        homing_bullet->target(_target);
-
-        homing_bullet = spawn_homing_bullet();
-        homing_bullet->setup(location(), angle - offset_angle);
-        homing_bullet->target(_target);
-    }
-    */
-    
     void Player::target(Enemy *value)
     {
         _target = value;
@@ -372,19 +231,6 @@ namespace vot
 
     void Player::add_powerup(const Powerup &powerup)
     {
-        /*
-        auto new_value = _powerups[powerup.type()] + powerup.value();
-        if (new_value > 5)
-        {
-            new_value = 0;
-        }
-        if (new_value < 0)
-        {
-            new_value = 0;
-        }
-
-        _powerups[powerup.type()] = new_value;
-        */
         create_new_hardpoint(powerup.type());
     }
     void Player::create_new_hardpoint(Powerup::Type type)
@@ -428,10 +274,30 @@ namespace vot
             empty_placement->hardpoint(beam_turret);
             add_hardpoint(beam_turret);
         }
+        if (type == Powerup::HOMING)
+        {
+            auto homing_blueprint = GameSystem::main()->bullet_manager().find_src_homing_bullet("homing_blue");
+            auto homing_turret = new HomingBulletHardpoint(*homing_blueprint, Group::PLAYER);
+
+            auto bullet_turret_texture = TextureManager::texture("bullet_turret");
+            homing_turret->texture(bullet_turret_texture);
+            homing_turret->target(_target);
+
+            empty_placement->hardpoint(homing_turret);
+            add_hardpoint(homing_turret);
+        }
     }
 
     void Player::add_hardpoint_placement(HardpointPlacement *placement)
     {
         _hardpoint_placements.push_back(std::unique_ptr<HardpointPlacement>(placement));
+    }
+    void Player::add_thruster_placement(float x, float y, float rotation, float size)
+    {
+        auto thruster = new Thruster();
+        thruster->setPosition(x, y);
+        thruster->setRotation(rotation);
+        thruster->thrust_size(size);
+        add_thruster(thruster);
     }
 }

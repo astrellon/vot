@@ -24,10 +24,6 @@ namespace vot
 
             void init();
             
-            virtual void translate(const sf::Vector2f &vector);
-            virtual void location(const sf::Vector2f &vector);
-            virtual sf::Vector2f location() const;
-            
             void target(Enemy *value);
             Enemy *target() const;
 
@@ -39,6 +35,7 @@ namespace vot
             void add_powerup(const Powerup &powerup);
 
             void add_hardpoint_placement(HardpointPlacement *placement);
+            void add_thruster_placement(float x, float y, float rotation, float size);
 
         private:
             float _cooldown;
@@ -53,13 +50,5 @@ namespace vot
             std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
 
             void create_new_hardpoint(Powerup::Type type);
-
-            /*
-            PatternBullet *spawn_pattern_bullet(const std::string &name, uint32_t pattern_type);
-            void spawn_pattern_bullet_pair(const std::string &name, uint32_t pattern_type, float x, float y);
-            HomingBullet *spawn_homing_bullet();
-            void spawn_homing_bullet_pair(float offset_angle);
-            */
-            
     };
 }
