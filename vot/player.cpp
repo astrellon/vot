@@ -78,9 +78,6 @@ namespace vot
             rot_acc += rot_speed();
         }
         
-        acceleration(acc);
-        rot_acceleration(rot_acc);
-
         if (gs->is_key_pressed(sf::Keyboard::T))
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
@@ -107,76 +104,6 @@ namespace vot
             }
         }
 
-        /* {{{
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        {
-            if (_cooldown <= 0.0f)
-            {
-                _cooldown = 0.3f;
-                auto bullet_level = _powerups[Powerup::BULLET]; 
-
-                if (bullet_level == 0)
-                {
-                    auto bullet = spawn_pattern_bullet("player_bullet_small", 2u);
-                    auto trans = forward_center_trans();
-                    bullet->init_transform(trans);
-                }
-                else
-                {
-                    spawn_pattern_bullet_pair("player_bullet_small", 2u, 4.0f, 0.0f);
-                    if (bullet_level > 1)
-                    {
-                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 30.0f, -20.0f);
-                        _cooldown = 0.25f;
-                    }
-                    if (bullet_level > 2)
-                    {
-                        spawn_pattern_bullet_pair("player_bullet_small", 2u, 34.0f, -20.0f);
-                        _cooldown = 0.20f;
-                    }
-                    if (bullet_level > 3)
-                    {
-                        _cooldown = 0.15f;
-                    }
-                }
-            }
-            
-            auto homing_level = _powerups[Powerup::HOMING]; 
-            if (_homing_cooldown <= 0.0f && homing_level > 0)
-            {
-                _homing_cooldown = 0.75f;
-                if (homing_level == 1)
-                {
-                    auto homing_bullet = spawn_homing_bullet();
-                    auto angle = rotation() - 90.0f;
-                    homing_bullet->setup(location(), angle);
-                    homing_bullet->target(_target);
-                }
-                else
-                {
-                    spawn_homing_bullet_pair(80.0f);
-
-                    if (homing_level == 3 || homing_level > 4)
-                    {
-                        auto homing_bullet = spawn_homing_bullet();
-                        auto angle = rotation() - 90.0f;
-                        homing_bullet->setup(location(), angle);
-                        homing_bullet->target(_target);
-                    }
-                    if (homing_level > 3)
-                    {
-                        spawn_homing_bullet_pair(100.0f);
-                        _homing_cooldown = 0.7f;
-                    }
-                    if (homing_level > 5)
-                    {
-                        _homing_cooldown = 0.65f;
-                    }
-                }
-            }
-        }
-        }}}*/
-
         if (_look_at_target && _target != nullptr)
         {
             auto rot_spd = rot_speed();
@@ -185,12 +112,17 @@ namespace vot
             if (angles.delta_angle() < rot_spd && angles.delta_angle() > -rot_spd)
             {
                 rotation(angles.to_angle());
+                //rot_acc -= angles.delta_angle();
             }
             else
             {
-                rotateBy(angles.delta_angle() > 0 ? -rot_spd : rot_spd);
+                rot_acc += (angles.delta_angle() > 0) ? -rot_speed() : rot_speed();
+                //rotateBy(angles.delta_angle() > 0 ? -rot_spd : rot_spd);
             }
         }
+
+        acceleration(acc);
+        rot_acceleration(rot_acc);
 
         _cooldown -= dt;
         _homing_cooldown -= dt;
