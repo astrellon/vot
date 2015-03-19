@@ -140,19 +140,6 @@ namespace vot
             {
                 rot_acc += dir_speed;
             }
-            //rot_spd *= dt;
-            /*
-            if (angles.delta_angle() < rot_spd && angles.delta_angle() > -rot_spd)
-            {
-                //rotation(angles.to_angle());
-                //rot_acc -= angles.delta_angle();
-            }
-            else
-            {
-                rot_acc += (angles.delta_angle() > 0) ? -rot_speed() : rot_speed();
-                //rotateBy(angles.delta_angle() > 0 ? -rot_spd : rot_spd);
-            }
-            */
         }
 
         acceleration(acc);

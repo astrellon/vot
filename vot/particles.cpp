@@ -297,9 +297,9 @@ namespace vot
             auto y = sin(angle) * dist;
 
             particle.positions(sf::Vector2f(0, 0), sf::Vector2f(x, y));
-            particle.scales(0.7f * _scale_factor, 0.05f * _scale_factor);
+            particle.scales(1.0f * _scale_factor, 0.15f * _scale_factor);
             particle.texture(_texture);
-            particle.total_lifetime(0.5f);
+            particle.total_lifetime(0.25f);
             if (on_init)
             {
                 particle.active(false);
