@@ -106,12 +106,45 @@ namespace vot
 
         if (_look_at_target && _target != nullptr)
         {
-            auto rot_spd = rot_speed();
+            auto time_to_stop = 0.0f;
+            if (rot_acceleration() != 0.0f)
+            {
+                time_to_stop = rot_velocity() / rot_acceleration();
+            }
+            auto distance_to_stop = rot_velocity() * time_to_stop + 0.5f * rot_acceleration() * time_to_stop * time_to_stop;
+
             auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
-            rot_spd *= dt;
+
+            auto abs_delta = Utils::abs(angles.delta_angle());
+            auto diff = abs_delta - Utils::abs(distance_to_stop);
+            auto dir_speed = (angles.delta_angle() > 0) ? -rot_speed() : rot_speed();
+            if (abs_delta > 0.1f && Utils::abs(rot_velocity()) < 0.1f)
+            {
+                if (diff > 0.1f)
+                {
+                    rot_acc -= dir_speed;
+                }
+                else if (diff < -0.1f)
+                {
+                    rot_acc += dir_speed;
+                }
+            }
+            else if (diff < 0)
+            {
+                if (diff < -0.1f)
+                {
+                    rot_acc -= dir_speed;
+                }
+            }
+            else if (diff > 0.1f)
+            {
+                rot_acc += dir_speed;
+            }
+            //rot_spd *= dt;
+            /*
             if (angles.delta_angle() < rot_spd && angles.delta_angle() > -rot_spd)
             {
-                rotation(angles.to_angle());
+                //rotation(angles.to_angle());
                 //rot_acc -= angles.delta_angle();
             }
             else
@@ -119,6 +152,7 @@ namespace vot
                 rot_acc += (angles.delta_angle() > 0) ? -rot_speed() : rot_speed();
                 //rotateBy(angles.delta_angle() > 0 ? -rot_spd : rot_spd);
             }
+            */
         }
 
         acceleration(acc);
