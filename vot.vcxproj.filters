@@ -50,10 +50,22 @@
     <ClCompile Include="vot\hardpoint.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\enemy_fighter.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\thruster.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\button.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
       <UniqueIdentifier>{82e2ea4a-9eb9-4429-a989-62a5be8d9ace}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vot\ui">
+      <UniqueIdentifier>{27b5dbec-e7f0-4c00-b46e-ee00cb85af3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +122,21 @@
     </ClInclude>
     <ClInclude Include="vot\hardpoint.h">
       <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\enemy_fighter.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\icontroller.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\thruster.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\button.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\main_menu.h">
+      <Filter>vot\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

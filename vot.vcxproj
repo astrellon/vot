@@ -84,6 +84,7 @@
     <ClCompile Include="vot\character.cpp" />
     <ClCompile Include="vot\circle.cpp" />
     <ClCompile Include="vot\enemy.cpp" />
+    <ClCompile Include="vot\enemy_fighter.cpp" />
     <ClCompile Include="vot\font_manager.cpp" />
     <ClCompile Include="vot\game_hud.cpp" />
     <ClCompile Include="vot\game_system.cpp" />
@@ -93,6 +94,8 @@
     <ClCompile Include="vot\powerup.cpp" />
     <ClCompile Include="vot\ray.cpp" />
     <ClCompile Include="vot\texture_manager.cpp" />
+    <ClCompile Include="vot\thruster.cpp" />
+    <ClCompile Include="vot\ui\button.cpp" />
     <ClCompile Include="vot\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -103,16 +106,21 @@
     <ClInclude Include="vot\circle.h" />
     <ClInclude Include="vot\common.h" />
     <ClInclude Include="vot\enemy.h" />
+    <ClInclude Include="vot\enemy_fighter.h" />
     <ClInclude Include="vot\font_manager.h" />
     <ClInclude Include="vot\game_hud.h" />
     <ClInclude Include="vot\game_system.h" />
     <ClInclude Include="vot\hardpoint.h" />
+    <ClInclude Include="vot\icontroller.h" />
     <ClInclude Include="vot\object_manager.h" />
     <ClInclude Include="vot\particles.h" />
     <ClInclude Include="vot\player.h" />
     <ClInclude Include="vot\powerup.h" />
     <ClInclude Include="vot\ray.h" />
     <ClInclude Include="vot\texture_manager.h" />
+    <ClInclude Include="vot\thruster.h" />
+    <ClInclude Include="vot\ui\button.h" />
+    <ClInclude Include="vot\ui\main_menu.h" />
     <ClInclude Include="vot\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
