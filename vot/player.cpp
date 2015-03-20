@@ -111,6 +111,7 @@ namespace vot
             {
                 time_to_stop = rot_velocity() / rot_acceleration();
             }
+
             auto distance_to_stop = rot_velocity() * time_to_stop + 0.5f * rot_acceleration() * time_to_stop * time_to_stop;
 
             auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);

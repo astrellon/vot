@@ -46,7 +46,7 @@ namespace vot
 
             std::map<Powerup::Type, int32_t> _powerups;
             Circle _powerup_hitbox;
-
+            
             std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
 
             void create_new_hardpoint(Powerup::Type type);
