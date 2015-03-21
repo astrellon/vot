@@ -36,7 +36,7 @@ namespace vot
 
     void GameSystem::init()
     {
-        TextureManager::main()->display("Init GS");
+        TextureManager::display("Init GS");
         create_default_bullets();
         create_default_enemies();
         create_default_powerups();
@@ -297,13 +297,11 @@ namespace vot
     }
     void GameSystem::create_default_bullets()
     {
-        auto tm = TextureManager::main();
+        auto bullet_blue_circle = TextureManager::texture("bullet_blue_circle");
+        auto bullet_red_circle = TextureManager::texture("bullet_red_circle");
+        auto bullet_blue = TextureManager::texture("bullet_blue");
 
-        auto bullet_blue_circle = tm->find_texture("bullet_blue_circle");
-        auto bullet_red_circle = tm->find_texture("bullet_red_circle");
-        auto bullet_blue = tm->find_texture("bullet_blue");
-
-        tm->display("Create bullets");
+        TextureManager::display("Create bullets");
         
         auto pattern_bullet = new PatternBullet(*bullet_blue_circle, 1.0f);
         pattern_bullet->pattern_type(0u);

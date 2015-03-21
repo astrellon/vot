@@ -59,6 +59,9 @@
     <ClCompile Include="vot\ui\button.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ui\component.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -136,6 +139,12 @@
       <Filter>vot\ui</Filter>
     </ClInclude>
     <ClInclude Include="vot\ui\main_menu.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\manager.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\component.h">
       <Filter>vot\ui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,22 +32,19 @@ int main()
         return -1;
     }
     
-    vot::TextureManager texture_manager;
-    vot::TextureManager::main(&texture_manager);
-    if (!texture_manager.load_default_textures())
+    if (!vot::TextureManager::init())
     {
         std::cout << "Failed to load textures on startup\n";
         std::cin.get();
         return -1;
     }
-    texture_manager.display("Main1");
-    vot::TextureManager::main()->display("Main2");
+    vot::TextureManager::display("Main1");
 
     vot::GameSystem game_system(window);
-    vot::TextureManager::main()->display("Main3");
+    vot::TextureManager::display("Main2");
     vot::GameSystem::main(&game_system);
 
-    vot::TextureManager::main()->display("Main4");
+    vot::TextureManager::display("Main3");
     game_system.init();
 
     /*
@@ -118,6 +115,8 @@ int main()
         // }}}
     }
     // }}}
+
+    vot::TextureManager::deinit();
 
     return EXIT_SUCCESS;
 }

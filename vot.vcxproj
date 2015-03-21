@@ -96,6 +96,7 @@
     <ClCompile Include="vot\texture_manager.cpp" />
     <ClCompile Include="vot\thruster.cpp" />
     <ClCompile Include="vot\ui\button.cpp" />
+    <ClCompile Include="vot\ui\component.cpp" />
     <ClCompile Include="vot\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +121,9 @@
     <ClInclude Include="vot\texture_manager.h" />
     <ClInclude Include="vot\thruster.h" />
     <ClInclude Include="vot\ui\button.h" />
+    <ClInclude Include="vot\ui\component.h" />
     <ClInclude Include="vot\ui\main_menu.h" />
+    <ClInclude Include="vot\ui\manager.h" />
     <ClInclude Include="vot\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

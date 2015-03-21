@@ -57,7 +57,7 @@ namespace vot
     {
         _sans = FontManager::main()->font("sans");
 
-        auto target_texture = TextureManager::main()->texture("target");
+        auto target_texture = TextureManager::texture("target");
         _target.setTexture(*target_texture);
         auto size = target_texture->getSize();
         _target.setOrigin(static_cast<float>(size.x) * 0.5f, static_cast<float>(size.y) * 0.5f);

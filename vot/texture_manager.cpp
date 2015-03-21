@@ -5,16 +5,22 @@
 
 namespace vot
 {
-    TextureManager *TextureManager::s_main = nullptr;
+    TextureManager::TextureMap TextureManager::_textures;
+    uint32_t TextureManager::_num_textures = 0u;
+    uint32_t TextureManager::_texture_load_attempt = 0u;
 
-    TextureManager::TextureManager() :
-        _num_textures(0u),
-        _texture_load_attempt(0u)
+    bool TextureManager::init()
     {
-
+        return load_default_textures();
+    }
+    void TextureManager::deinit()
+    {
+        _textures.clear();
+        _num_textures = 0u;
+        _texture_load_attempt = 0u;
     }
 
-    const TextureManager::TextureMap &TextureManager::textures() const
+    const TextureManager::TextureMap &TextureManager::textures()
     {
         return _textures;
     }
@@ -39,7 +45,7 @@ namespace vot
         return true;
     }
 
-    const sf::Texture *TextureManager::find_texture(const std::string &name) const
+    const sf::Texture *TextureManager::texture(const std::string &name)
     {
         auto find = _textures.find(name);
         if (find == _textures.end())
@@ -50,15 +56,15 @@ namespace vot
         return &find->second;
     }
 
-    uint32_t TextureManager::num_textures() const
+    uint32_t TextureManager::num_textures()
     {
         return _num_textures;
     }
-    uint32_t TextureManager::count_textures() const
+    uint32_t TextureManager::count_textures()
     {
         return _textures.size();
     }
-    uint32_t TextureManager::texture_load_attempt() const
+    uint32_t TextureManager::texture_load_attempt()
     {
         return _texture_load_attempt;
     }
@@ -104,23 +110,9 @@ namespace vot
         }
     }
 
-    void TextureManager::display(const std::string &message) const
+    void TextureManager::display(const std::string &message)
     {
         std::cout << message << " texture counts: " << num_textures() << ", " << count_textures() << ", " << texture_load_attempt() << "\n";
-    }
-
-    void TextureManager::main(TextureManager *manager)
-    {
-        s_main = manager;
-    }
-    TextureManager *TextureManager::main()
-    {
-        return s_main;
-    }
-
-    const sf::Texture *TextureManager::texture(const std::string &name)
-    {
-        return s_main->find_texture(name); 
     }
 
     bool TextureManager::load_texture_log(const std::string &name, const std::string &filename)

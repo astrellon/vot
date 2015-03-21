@@ -4,36 +4,26 @@
 
 #include <string>
 
+#include "component.h"
+
 namespace vot
 {
-    class Button : public sf::Drawable, public sf::Transformable
+    namespace ui
     {
-        public:
-            Button(const std::string &label);
+        class Button : public Component
+        {
+            public:
+                Button(const std::string &label);
 
-            enum State
-            {
-                NONE,
-                PRESSED,
-                RELEASED
-            };
+                void texture(const sf::Texture &texture);
 
-            State state() const;
+                virtual void update(float dt);
+                virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-            void has_focus(bool focus);
-            bool has_focus() const;
+            private:
+                const std::string _label;
 
-            void texture(const sf::Texture &texture);
-
-            void update(float dt);
-            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-
-        private:
-            const std::string _label;
-
-            State _state;
-            bool _has_focus;
-
-            sf::Sprite _sprite;
-    };
+                sf::Sprite _sprite;
+        };
+    }
 }
