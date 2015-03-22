@@ -62,6 +62,9 @@
     <ClCompile Include="vot\ui\component.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ui\manager.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">

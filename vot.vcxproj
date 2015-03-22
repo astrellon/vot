@@ -97,6 +97,7 @@
     <ClCompile Include="vot\thruster.cpp" />
     <ClCompile Include="vot\ui\button.cpp" />
     <ClCompile Include="vot\ui\component.cpp" />
+    <ClCompile Include="vot\ui\manager.cpp" />
     <ClCompile Include="vot\utils.cpp" />
   </ItemGroup>
   <ItemGroup>

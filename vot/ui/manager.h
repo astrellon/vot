@@ -3,35 +3,34 @@
 #include <vector>
 #include <memory>
 
+#include "component.h"
+
 namespace vot
 {
-    class Component;
-
     namespace ui
     {
         class Manager 
         {
         public:
+            static bool init();
+            static void deinit();
 
-            void add_component(Component *component);
-            void remove_component(Component *component);
+            static void add_component(Component *component);
+            static void remove_component(Component *component);
 
-            void focus(Component *component);
-            Component *focus() const;
+            static void focus(Component *component);
+            static Component *focus();
 
             typedef std::vector<std::unique_ptr<Component> > ComponentList;
-            const ComponentList *components() const;
+            static const ComponentList *components();
 
-            void update(float dt);
-
-            static void main(Manager *main);
-            static Manager *main();
+            static void update(float dt);
+            static void draw(sf::RenderTarget &target, sf::RenderStates states);
 
         private:
-            ComponentList _components;
-            Component *_has_focus;
+            static ComponentList s_components;
+            static Component *s_has_focus;
 
-            static Manager *s_main;
         };
     }
 }
