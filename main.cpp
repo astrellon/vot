@@ -8,14 +8,6 @@
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
 #include "vot/texture_manager.h"
-#include "vot/circle.h"
-#include "vot/player.h"
-#include "vot/character.h"
-#include "vot/background.h"
-#include "vot/enemy.h"
-#include "vot/game_hud.h"
-#include "vot/particles.h"
-#include "vot/utils.h"
 
 int main()
 {

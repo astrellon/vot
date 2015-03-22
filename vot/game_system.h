@@ -7,6 +7,7 @@
 
 #include "bullet.h"
 #include "player.h"
+#include "player_info.h"
 #include "enemy.h"
 #include "game_hud.h"
 #include "background.h"
@@ -42,6 +43,9 @@ namespace vot
             void player(Player *value);
             Player *player() const;
 
+            void player_info(PlayerInfo *value);
+            PlayerInfo *player_info() const;
+
             sf::View &camera();
 
             Enemy *next_target(Enemy *current);
@@ -73,6 +77,7 @@ namespace vot
 
             BulletManager _bullet_manager;
             std::unique_ptr<Player> _player;
+            std::unique_ptr<PlayerInfo> _player_info;
             EnemyManager _enemy_manager;
             ParticleSystemManager _particle_manager;
             PowerupManager _powerup_manager; 

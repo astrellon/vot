@@ -405,6 +405,15 @@ namespace vot
         return _player.get();
     }
 
+    void GameSystem::player_info(PlayerInfo *value)
+    {
+        _player_info = std::unique_ptr<PlayerInfo>(value);
+    }
+    PlayerInfo *GameSystem::player_info() const
+    {
+        return _player_info.get();
+    }
+
     sf::View &GameSystem::camera()
     {
         return _camera;
