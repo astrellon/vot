@@ -4,11 +4,20 @@
 
 namespace vot
 {
-    FontManager *FontManager::s_main = nullptr;
+    FontManager::FontMap FontManager::s_fonts;
 
-    const FontManager::FontMap &FontManager::fonts() const
+    bool FontManager::init()
     {
-        return _fonts;
+        return load_default_fonts();
+    }
+    void FontManager::deinit()
+    {
+        s_fonts.clear();
+    }
+
+    const FontManager::FontMap &FontManager::fonts()
+    {
+        return s_fonts;
     }
 
     bool FontManager::load_font(const std::string &name, const std::string &filename)
@@ -24,14 +33,14 @@ namespace vot
             return false;
         }
 
-        _fonts[name] = font;
+        s_fonts[name] = font;
         return true;
     }
 
-    const sf::Font *FontManager::font(const std::string &name) const
+    const sf::Font *FontManager::font(const std::string &name)
     {
-        auto find = _fonts.find(name);
-        if (find == _fonts.end())
+        auto find = s_fonts.find(name);
+        if (find == s_fonts.end())
         {
             return nullptr;
         }
@@ -52,15 +61,6 @@ namespace vot
             return false;
         }
         return true;
-    }
-
-    void FontManager::main(FontManager *manager)
-    {
-        s_main = manager;
-    }
-    FontManager *FontManager::main()
-    {
-        return s_main;
     }
 }
 

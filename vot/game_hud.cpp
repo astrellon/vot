@@ -15,7 +15,7 @@ namespace vot
 
     void HudMain::create()
     {
-        _sans = FontManager::main()->font("sans");
+        _sans = FontManager::font("sans");
         _health.setFont(*_sans);
         _health.setCharacterSize(13);
     }
@@ -55,7 +55,7 @@ namespace vot
 
     void HudWorld::create()
     {
-        _sans = FontManager::main()->font("sans");
+        _sans = FontManager::font("sans");
 
         auto target_texture = TextureManager::texture("target");
         _target.setTexture(*target_texture);

@@ -4,29 +4,26 @@
 
 #include <string>
 #include <map>
-#include <memory>
 
 namespace vot
 {
     class FontManager
     {
         public:
+            static bool init();
+            static void deinit();
+
             typedef std::map<std::string, sf::Font> FontMap;
-            const FontMap &fonts() const;
+            static const FontMap &fonts();
 
-            bool load_font(const std::string &name, const std::string &filename);
-            const sf::Font *font(const std::string &name) const;
+            static bool load_font(const std::string &name, const std::string &filename);
+            static const sf::Font *font(const std::string &name);
 
-            bool load_default_fonts();
-
-            static void main(FontManager *manager);
-            static FontManager *main();
+            static bool load_default_fonts();
 
         private:
 
-            FontMap _fonts;
-
-            static FontManager *s_main;
+            static FontMap s_fonts;
     };
 }
 

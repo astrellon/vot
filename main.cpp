@@ -15,9 +15,7 @@ int main()
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
 
-    vot::FontManager font_manager;
-    vot::FontManager::main(&font_manager);
-    if (!font_manager.load_default_fonts())
+    if (!vot::FontManager::init())
     {
         std::cout << "Failed to load fonts on startup\n";
         std::cin.get();
@@ -108,6 +106,7 @@ int main()
     }
     // }}}
 
+    vot::FontManager::deinit();
     vot::TextureManager::deinit();
 
     return EXIT_SUCCESS;
