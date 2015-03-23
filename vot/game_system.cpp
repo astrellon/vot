@@ -448,6 +448,23 @@ namespace vot
         return nullptr;
     }
 
+    void GameSystem::process_event(const sf::Event &event)
+    {
+        if (event.type == sf::Event::KeyPressed)
+        {
+            key_pressed(event.key.code);
+        }
+        if (event.type == sf::Event::KeyReleased)
+        {
+            key_released(event.key.code);
+        }
+
+        if (event.type == sf::Event::Resized)
+        {
+            on_resize(event.size.width, event.size.height);
+        }
+    }
+
     void GameSystem::key_pressed(sf::Keyboard::Key key)
     {
         _keys_pressed[key] = _update_counter + 1;

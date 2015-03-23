@@ -8,6 +8,7 @@
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
 #include "vot/texture_manager.h"
+#include "vot/ui/manager.h"
 
 int main()
 {
@@ -29,6 +30,13 @@ int main()
         return -1;
     }
     vot::TextureManager::display("Main1");
+
+    if (!vot::ui::Manager::init())
+    {
+        std::cout << "Failed to initialise UI\n";
+        std::cin.get();
+        return -1;
+    }
 
     vot::GameSystem game_system(window);
     vot::TextureManager::display("Main2");
@@ -61,28 +69,7 @@ int main()
                 window.close();
             }
 
-            if (event.type == sf::Event::KeyPressed)
-            {
-                game_system.key_pressed(event.key.code);
-
-                if (event.key.code == sf::Keyboard::J)
-                {
-                    auto texture = vot::TextureManager::texture("bullet_blue_circle");
-                    auto system = game_system.particle_manager().spawn_system(*texture, 20);
-                    system->setPosition(0, 0);
-                    system->system_type(1u);
-                    system->init();
-                }
-            }
-            if (event.type == sf::Event::KeyReleased)
-            {
-                game_system.key_released(event.key.code);
-            }
-
-            if (event.type == sf::Event::Resized)
-            {
-                game_system.on_resize(event.size.width, event.size.height);
-            }
+            game_system.process_event(event);
         }
         // }}}
         
@@ -106,6 +93,7 @@ int main()
     }
     // }}}
 
+    vot::ui::Manager::deinit();
     vot::FontManager::deinit();
     vot::TextureManager::deinit();
 

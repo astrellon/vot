@@ -17,13 +17,18 @@ namespace vot
 
                 void texture(const sf::Texture &texture);
 
+                void label(const std::string &label);
+                const std::string &label() const;
+
                 virtual void update(float dt);
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             private:
-                const std::string _label;
-
+                std::string _label;
+                sf::Text _label_graphic;
                 sf::Sprite _sprite;
+
+                void update_label_position();
         };
     }
 }

@@ -19,11 +19,18 @@ namespace vot
 
         void Manager::add_component(Component *component)
         {
-
+            s_components.push_back(std::unique_ptr<Component>(component));
         }
         void Manager::remove_component(Component *component)
         {
-
+            for (auto i = 0u; i < s_components.size(); i++)
+            {
+                if (s_components[i].get() == component)
+                {
+                    s_components.erase(s_components.begin() + i);
+                    break;
+                }
+            }
         }
 
         void Manager::focus(Component *component)
@@ -45,6 +52,15 @@ namespace vot
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
+                comp->update(dt);
+            }
+        }
+        void Manager::draw(sf::RenderTarget &target, sf::RenderStates states)
+        {
+            for (auto i = 0u; i < s_components.size(); i++)
+            {
+                auto comp = s_components[i].get();
+                target.draw(*comp, states);
             }
         }
     }

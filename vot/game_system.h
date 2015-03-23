@@ -62,6 +62,8 @@ namespace vot
                 RELEASED
             };
 
+            void process_event(const sf::Event &event);
+
             void key_pressed(sf::Keyboard::Key key);
             bool is_key_pressed(sf::Keyboard::Key key) const;
             void key_released(sf::Keyboard::Key key);
