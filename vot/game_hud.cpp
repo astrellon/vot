@@ -22,7 +22,7 @@ namespace vot
 
     void HudMain::update(float dt)
     {
-        auto gs = GameSystem::main();
+        auto gs = GameSystem::game();
 
         std::stringstream health;
         health << "Health: " << gs->player()->life();
@@ -65,7 +65,7 @@ namespace vot
 
     void HudWorld::update(float dt)
     {
-        auto gs = GameSystem::main();
+        auto gs = GameSystem::game();
         auto player = gs->player();
         _has_target = false;
 

@@ -17,7 +17,7 @@ namespace vot
         _max_thrust(1000.0f)
     {
         auto thrust = TextureManager::texture("bullet_blue_circle");
-        _system = GameSystem::main()->particle_manager().spawn_system(*thrust, 20u);
+        _system = GameSystem::particle_manager()->spawn_system(*thrust, 20u);
         _system->system_type(2u);
         _system->loop_system(true);
         _system->spawn_rate(0.025f);

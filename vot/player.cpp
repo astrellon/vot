@@ -47,7 +47,7 @@ namespace vot
     
     void Player::update(float dt)
     {
-        auto gs = GameSystem::main();
+        auto gs = GameSystem::game();
 
         // Keyboard input {{{
         sf::Vector2f acc;
@@ -78,7 +78,7 @@ namespace vot
             rot_acc += rot_speed();
         }
         
-        if (gs->is_key_pressed(sf::Keyboard::T))
+        if (GameSystem::is_key_pressed(sf::Keyboard::T))
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             {
@@ -89,7 +89,7 @@ namespace vot
                 target(gs->next_target(_target));
             }
         }
-        if (gs->is_key_pressed(sf::Keyboard::Z))
+        if (GameSystem::is_key_pressed(sf::Keyboard::Z))
         {
             _look_at_target = !_look_at_target;
         }
@@ -207,7 +207,7 @@ namespace vot
 
         if (type == Powerup::BULLET)
         {
-            auto pattern_bullet = GameSystem::main()->bullet_manager().find_src_pattern_bullet("player_bullet_small");
+            auto pattern_bullet = GameSystem::bullet_manager()->find_src_pattern_bullet("player_bullet_small");
             auto pattern_turret = new PatternBulletHardpoint(*pattern_bullet, Group::PLAYER);
             auto bullet_turret_texture = TextureManager::texture("bullet_turret");
             pattern_turret->texture(bullet_turret_texture);
@@ -218,7 +218,7 @@ namespace vot
         }
         if (type == Powerup::BEAM)
         {
-            auto beam_blueprint = GameSystem::main()->beam_manager().find_src_beam("beam1");
+            auto beam_blueprint = GameSystem::beam_manager()->find_src_beam("beam1");
             auto beam_turret = new BeamHardpoint(*beam_blueprint, Group::PLAYER);
 
             auto beam_turret_texture = TextureManager::texture("beam_turret");
@@ -230,7 +230,7 @@ namespace vot
         }
         if (type == Powerup::HOMING)
         {
-            auto homing_blueprint = GameSystem::main()->bullet_manager().find_src_homing_bullet("homing_blue");
+            auto homing_blueprint = GameSystem::bullet_manager()->find_src_homing_bullet("homing_blue");
             auto homing_turret = new HomingBulletHardpoint(*homing_blueprint, Group::PLAYER);
 
             auto bullet_turret_texture = TextureManager::texture("bullet_turret");

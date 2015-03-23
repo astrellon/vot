@@ -52,7 +52,7 @@ namespace vot
     {
         _lifetime += dt;
 
-        auto view = GameSystem::main()->camera();
+        auto view = GameSystem::game()->camera();
         auto view_angle = view.getRotation(); 
         setRotation(view_angle);
     }

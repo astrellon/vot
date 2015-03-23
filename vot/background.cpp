@@ -76,7 +76,7 @@ namespace vot
 
     void Background::update(float dt)
     {
-        auto camera = GameSystem::main()->camera();
+        auto camera = GameSystem::game()->camera();
         auto cam_pos = camera.getCenter();
         auto pos = cam_pos;
         pos.x *= -_speed;

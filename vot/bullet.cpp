@@ -303,7 +303,7 @@ namespace vot
         
         if (_target == nullptr || _target->is_dead())
         {
-            _target = GameSystem::main()->next_target(nullptr);
+            _target = GameSystem::game()->next_target(nullptr);
             if (_target == nullptr)
             {
                 return;

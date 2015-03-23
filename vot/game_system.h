@@ -2,58 +2,32 @@
 
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
-#include <memory>
-#include <random>
 
 #include "bullet.h"
-#include "player.h"
-#include "player_info.h"
 #include "enemy.h"
-#include "game_hud.h"
-#include "background.h"
-#include "particles.h"
 #include "powerup.h"
+#include "particles.h"
 #include "beam.h"
+#include "game.h"
 
 namespace vot
 {
-    class GameSystem : public sf::Drawable
+    class GameSystem
     {
         public:
-            GameSystem(sf::RenderWindow &window);
+            static bool init(sf::RenderWindow &window);
+            static void deinit();
 
-            void init();
+            static sf::RenderWindow &window();
 
-            sf::RenderWindow &window() const;
+            static BulletManager *bullet_manager();
+            static EnemyManager *enemy_manager();
+            static ParticleSystemManager *particle_manager();
+            static PowerupManager *powerup_manager();
+            static BeamManager *beam_manager();
 
-            BulletManager &bullet_manager();
-            void create_default_bullets();
-
-            EnemyManager &enemy_manager();
-            void create_default_enemies();
-
-            ParticleSystemManager &particle_manager();
-
-            PowerupManager &powerup_manager();
-            void create_default_powerups();
-
-            BeamManager &beam_manager();
-            void create_default_beams();
-
-            void player(Player *value);
-            Player *player() const;
-
-            void player_info(PlayerInfo *value);
-            PlayerInfo *player_info() const;
-
-            sf::View &camera();
-
-            Enemy *next_target(Enemy *current);
-
-            void on_resize(uint32_t width, uint32_t height);
-
-            void update(float dt);
-            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+            static void update(float dt);
+            static void draw(sf::RenderTarget &target, sf::RenderStates states);
 
             enum KeyState
             {
@@ -62,48 +36,37 @@ namespace vot
                 RELEASED
             };
 
-            void process_event(const sf::Event &event);
+            static void process_event(const sf::Event &event);
 
-            void key_pressed(sf::Keyboard::Key key);
-            bool is_key_pressed(sf::Keyboard::Key key) const;
-            void key_released(sf::Keyboard::Key key);
-            bool is_key_released(sf::Keyboard::Key key) const;
+            static bool is_key_pressed(sf::Keyboard::Key key);
+            static bool is_key_released(sf::Keyboard::Key key);
 
-            static void main(GameSystem *main);
-            static GameSystem *main();
+            static void game(Game *value);
+            static Game *game();
 
         private:
-            sf::RenderWindow &_window;
-            sf::View _camera;
-            sf::View _hud_camera;
+            static sf::RenderWindow *s_window;
 
-            BulletManager _bullet_manager;
-            std::unique_ptr<Player> _player;
-            std::unique_ptr<PlayerInfo> _player_info;
-            EnemyManager _enemy_manager;
-            ParticleSystemManager _particle_manager;
-            PowerupManager _powerup_manager; 
-            BeamManager _beam_manager;
+            static BulletManager s_bullet_manager;
+            static EnemyManager s_enemy_manager;
+            static ParticleSystemManager s_particle_manager;
+            static PowerupManager s_powerup_manager; 
+            static BeamManager s_beam_manager;
 
-            HudMain _hud;
-            HudWorld _world_hud;
+            static std::unique_ptr<Game> s_game;
 
-            Background _background;
-            Background _background2;
-            Background _background3;
-
-            float _spawn_timer;
-
-            uint32_t _update_counter;
-
-            uint32_t _keys_pressed[sf::Keyboard::KeyCount];
-            uint32_t _keys_released[sf::Keyboard::KeyCount];
-
-            static GameSystem *s_main;
-
-            void kill_enemy(Enemy *enemy);
-            void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
-            void beam_hit_particles(const sf::Vector2f &point, const sf::Vector2f &normal, const std::string &texture);
+            static uint32_t s_update_counter;
+            static uint32_t s_keys_pressed[sf::Keyboard::KeyCount];
+            static uint32_t s_keys_released[sf::Keyboard::KeyCount];
+            
+            static void create_default_bullets();
+            static void create_default_enemies();
+            static void create_default_powerups();
+            static void create_default_beams();
+            
+            static void on_resize(uint32_t width, uint32_t height);
+            static void key_pressed(sf::Keyboard::Key key);
+            static void key_released(sf::Keyboard::Key key);
 
     };
 }

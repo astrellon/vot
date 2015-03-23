@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "vot/game.h"
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
 #include "vot/texture_manager.h"
@@ -38,12 +39,17 @@ int main()
         return -1;
     }
 
-    vot::GameSystem game_system(window);
-    vot::TextureManager::display("Main2");
-    vot::GameSystem::main(&game_system);
+    if (!vot::GameSystem::init(window))
+    {
+        std::cout << "Failed to initialise Game system\n";
+        std::cin.get();
+        return -1;
+    }
 
     vot::TextureManager::display("Main3");
-    game_system.init();
+
+    auto game = new vot::Game();
+    vot::GameSystem::game(game);
 
     /*
     // Load a music to play
@@ -69,7 +75,7 @@ int main()
                 window.close();
             }
 
-            game_system.process_event(event);
+            vot::GameSystem::process_event(event);
         }
         // }}}
         
@@ -77,22 +83,26 @@ int main()
         sf::Time elapsed = clock.restart();
         auto dt = elapsed.asSeconds();
 
-        game_system.update(dt);
+        vot::GameSystem::update(dt);
         // }}}
         
         // Draw game {{{
         // Clear screen
         window.clear();
        
-        window.draw(game_system);
+        //window.draw(game_system);
+        //vot::GameSystem::draw(window, )
+        sf::RenderStates states;
+        vot::GameSystem::draw(window, states);
 
-        window.setView(game_system.camera());
+        //window.setView(vot::GameSystem::camera());
         // Update the window
         window.display();
         // }}}
     }
     // }}}
 
+    vot::GameSystem::deinit();
     vot::ui::Manager::deinit();
     vot::FontManager::deinit();
     vot::TextureManager::deinit();

@@ -18,7 +18,7 @@ namespace vot
             return;
         }
 
-        auto gs = GameSystem::main();
+        auto gs = GameSystem::game();
         auto player = gs->player();
 
         auto to_player = player->location() - _controlling->location();
@@ -49,7 +49,7 @@ namespace vot
         {
             for (auto i = 0; i < 16; i++)
             {
-                auto bullet = gs->bullet_manager().spawn_pattern_bullet("straight_red_circle", Group::ENEMY);
+                auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet("straight_red_circle", Group::ENEMY);
                 if (bullet == nullptr)
                 {
                     continue;

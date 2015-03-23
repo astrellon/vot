@@ -179,7 +179,7 @@ namespace vot
         if (_fire_bullet && cooldown() < 0.0f)
         {
             auto texture = TextureManager::texture("bullet_blue_circle");
-            auto system = GameSystem::main()->particle_manager().spawn_system(*texture, 3);
+            auto system = GameSystem::particle_manager()->spawn_system(*texture, 3);
             system->speed_factor(1.75f);
 
             auto trans = parent()->getTransform() * getTransform();
@@ -189,7 +189,7 @@ namespace vot
             system->setRotation(global_rotation);
             system->init();
 
-            auto bullet = GameSystem::main()->bullet_manager().spawn_pattern_bullet(_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet(_blueprint, Group::PLAYER);
             bullet->pattern_type(_pattern_type);
 
             bullet->init_transform(trans);
@@ -221,7 +221,7 @@ namespace vot
     {
         if (cooldown() < 0.0f)
         {
-            auto bullet = GameSystem::main()->bullet_manager().spawn_homing_bullet(_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(_blueprint, Group::PLAYER);
 
             auto trans = parent()->getTransform() * getTransform();
             bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
@@ -238,10 +238,10 @@ namespace vot
         _charge_up_system(nullptr),
         _charge_up(0.0f)
     {
-        _active_beam = GameSystem::main()->beam_manager().spawn_beam(blueprint, group);
+        _active_beam = GameSystem::beam_manager()->spawn_beam(blueprint, group);
 
         auto texture = TextureManager::texture("bullet_blue_circle");
-        _charge_up_system = GameSystem::main()->particle_manager().spawn_system(*texture, 10);
+        _charge_up_system = GameSystem::particle_manager()->spawn_system(*texture, 10);
         _charge_up_system->system_type(1u);
         _charge_up_system->auto_remove(false);
 
