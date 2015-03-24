@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
 
+#include "ui/main_menu.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "powerup.h"
@@ -54,6 +55,7 @@ namespace vot
             static BeamManager s_beam_manager;
 
             static std::unique_ptr<Game> s_game;
+            static MainMenu s_main_menu;
 
             static uint32_t s_update_counter;
             static uint32_t s_keys_pressed[sf::Keyboard::KeyCount];

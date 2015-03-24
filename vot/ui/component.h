@@ -37,10 +37,17 @@ namespace vot
             
                 virtual void update(float dt) = 0;
 
+                virtual bool check_hover(int32_t x, int32_t y) const = 0;
+
+                void id(const std::string &value);
+                const std::string &id() const;
+
             private:
                 State _state;
                 bool _has_focus;
                 bool _hover;
+
+                std::string _id;
 
                 Component *_to_left;
                 Component *_to_right;

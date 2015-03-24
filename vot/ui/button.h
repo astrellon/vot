@@ -23,10 +23,13 @@ namespace vot
                 virtual void update(float dt);
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+                virtual bool check_hover(int32_t x, int32_t y) const;
+
             private:
                 std::string _label;
                 sf::Text _label_graphic;
                 sf::Sprite _sprite;
+                float _alpha;
 
                 void update_label_position();
         };

@@ -10,6 +10,7 @@
 #include "vot/font_manager.h"
 #include "vot/texture_manager.h"
 #include "vot/ui/manager.h"
+#include "vot/ui/button.h"
 
 int main()
 {
@@ -51,6 +52,12 @@ int main()
     auto game = new vot::Game();
     vot::GameSystem::game(game);
 
+    auto button = new vot::ui::Button("Hello");
+    button->texture(*vot::TextureManager::texture("button_idle"));
+    button->id("btn1");
+    vot::ui::Manager::add_component(button);
+    button->setPosition(300, 200);
+
     /*
     // Load a music to play
     sf::Music music;
@@ -76,6 +83,7 @@ int main()
             }
 
             vot::GameSystem::process_event(event);
+            vot::ui::Manager::process_event(event);
         }
         // }}}
         
@@ -84,6 +92,7 @@ int main()
         auto dt = elapsed.asSeconds();
 
         vot::GameSystem::update(dt);
+        vot::ui::Manager::update(dt);
         // }}}
         
         // Draw game {{{
@@ -94,6 +103,7 @@ int main()
         //vot::GameSystem::draw(window, )
         sf::RenderStates states;
         vot::GameSystem::draw(window, states);
+        vot::ui::Manager::draw(window, states);
 
         //window.setView(vot::GameSystem::camera());
         // Update the window

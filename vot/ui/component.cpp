@@ -5,8 +5,9 @@ namespace vot
     namespace ui
     {
         Component::Component() :
-            _has_focus(false),
             _state(NONE),
+            _has_focus(false),
+            _hover(false),
             _to_left(nullptr),
             _to_right(nullptr),
             _to_below(nullptr),
@@ -27,6 +28,15 @@ namespace vot
         bool Component::has_focus() const
         {
             return _has_focus;
+        }
+
+        void Component::hover(bool value)
+        {
+            _hover = value;
+        }
+        bool Component::hover() const
+        {
+            return _hover;
         }
 
         Component *Component::to_left() const
@@ -63,6 +73,15 @@ namespace vot
         void Component::to_below(Component *value)
         {
             _to_below = value;
+        }
+
+        void Component::id(const std::string &value)
+        {
+            _id = value;
+        }
+        const std::string &Component::id() const
+        {
+            return _id;
         }
     }
 }
