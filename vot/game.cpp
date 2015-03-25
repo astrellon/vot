@@ -19,8 +19,6 @@ namespace vot
     
         auto window_size = GameSystem::window().getSize();
         _camera.setSize(static_cast<float>(window_size.x), static_cast<float>(window_size.y));
-        _hud_camera = GameSystem::window().getDefaultView();
-
         _background.speed(0.1f);
         _background.create();
         _background2.speed(0.05f);
@@ -254,7 +252,7 @@ namespace vot
 
         target.draw(_world_hud);
         
-        target.setView(_hud_camera);
+        target.setView(GameSystem::hud_camera());
         target.draw(_hud);
     }
     
@@ -287,7 +285,6 @@ namespace vot
         auto fwidth = static_cast<float>(width);
         auto fheight = static_cast<float>(height);
         _camera.setSize(fwidth, fheight);
-        _hud_camera.setSize(fwidth, fheight);
     }
 
     Enemy *Game::next_target(Enemy *current)

@@ -68,7 +68,10 @@ namespace vot
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
-                target.draw(*comp, states);
+                if (comp->enabled())
+                {
+                    target.draw(*comp, states);
+                }
             }
         }
 
@@ -90,7 +93,7 @@ namespace vot
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
-                if (comp->check_hover(x, y))
+                if (comp->enabled() && comp->check_hover(x, y))
                 {
                     if (comp != s_has_hover && s_has_hover != nullptr)
                     {
@@ -123,7 +126,7 @@ namespace vot
         {
             if (s_has_hover != nullptr)
             {
-                //s_has_hover->click
+                s_has_hover->do_click(x, y, button);
             }
         }
     }

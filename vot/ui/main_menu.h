@@ -4,14 +4,17 @@
 
 namespace vot
 {
-    class MainMenu : public sf::Drawable
+    namespace ui
     {
-        public:
-            MainMenu();
+        class MainMenu : public sf::Drawable
+        {
+            public:
+                MainMenu();
 
-            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+                virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-        private:
+            private:
 
-    };
+        };
+    }
 }

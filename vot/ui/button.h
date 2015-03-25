@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <string>
+#include <functional>
 
 #include "component.h"
 
@@ -24,6 +25,7 @@ namespace vot
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
                 virtual bool check_hover(int32_t x, int32_t y) const;
+                virtual void do_click(int32_t x, int32_t y, sf::Mouse::Button button); 
 
             private:
                 std::string _label;

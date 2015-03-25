@@ -44,6 +44,8 @@ namespace vot
 
             static void game(Game *value);
             static Game *game();
+            
+            static sf::View &hud_camera();
 
         private:
             static sf::RenderWindow *s_window;
@@ -54,8 +56,9 @@ namespace vot
             static PowerupManager s_powerup_manager; 
             static BeamManager s_beam_manager;
 
+            static sf::View s_hud_camera;
             static std::unique_ptr<Game> s_game;
-            static MainMenu s_main_menu;
+            static ui::MainMenu s_main_menu;
 
             static uint32_t s_update_counter;
             static uint32_t s_keys_pressed[sf::Keyboard::KeyCount];

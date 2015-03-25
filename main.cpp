@@ -52,9 +52,13 @@ int main()
     auto game = new vot::Game();
     vot::GameSystem::game(game);
 
-    auto button = new vot::ui::Button("Hello");
+    auto button = new vot::ui::Button("Hello There");
     button->texture(*vot::TextureManager::texture("button_idle"));
     button->id("btn1");
+    button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
+    {
+        std::cout << "Button clicked: " << x << ", " << y << ", " << btn << "\n";    
+    });
     vot::ui::Manager::add_component(button);
     button->setPosition(300, 200);
 

@@ -33,7 +33,6 @@ namespace vot
 
         private:
             sf::View _camera;
-            sf::View _hud_camera;
             
             std::unique_ptr<Player> _player;
             std::unique_ptr<PlayerInfo> _player_info;

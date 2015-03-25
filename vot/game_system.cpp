@@ -18,7 +18,9 @@ namespace vot
     PowerupManager GameSystem::s_powerup_manager;
     BeamManager GameSystem::s_beam_manager;
 
+    sf::View GameSystem::s_hud_camera;
     std::unique_ptr<Game> GameSystem::s_game;
+    ui::MainMenu GameSystem::s_main_menu;
 
     uint32_t GameSystem::s_update_counter = 0;
     uint32_t GameSystem::s_keys_pressed[sf::Keyboard::KeyCount];
@@ -27,6 +29,7 @@ namespace vot
     bool GameSystem::init(sf::RenderWindow &window)
     {
         s_window = &window;
+        s_hud_camera = window.getDefaultView();
 
         auto size = static_cast<int>(sf::Keyboard::KeyCount);
         for (auto i = 0; i < size; i++)
@@ -220,10 +223,20 @@ namespace vot
     void GameSystem::on_resize(uint32_t width, uint32_t height)
     {
         s_window->setSize(sf::Vector2u(width, height));
+        
+        auto fwidth = static_cast<float>(width);
+        auto fheight = static_cast<float>(height);
+        s_hud_camera.setSize(fwidth, fheight);
+        s_hud_camera.setCenter(fwidth * 0.5f, fheight * 0.5f);
+
         if (s_game.get() != nullptr)
         {
             s_game->on_resize(width, height);
         }
     }
 
+    sf::View &GameSystem::hud_camera()
+    {
+        return s_hud_camera;
+    }
 }

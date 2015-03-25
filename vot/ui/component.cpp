@@ -8,6 +8,7 @@ namespace vot
             _state(NONE),
             _has_focus(false),
             _hover(false),
+            _enabled(true),
             _to_left(nullptr),
             _to_right(nullptr),
             _to_below(nullptr),
@@ -37,6 +38,15 @@ namespace vot
         bool Component::hover() const
         {
             return _hover;
+        }
+
+        void Component::enabled(bool value)
+        {
+            _enabled = value;
+        }
+        bool Component::enabled() const
+        {
+            return _enabled;
         }
 
         Component *Component::to_left() const
@@ -82,6 +92,15 @@ namespace vot
         const std::string &Component::id() const
         {
             return _id;
+        }
+
+        void Component::on_click(Component::ClickHandler handler)
+        {
+            _on_click = handler;
+        }
+        Component::ClickHandler Component::on_click() const
+        {
+            return _on_click;
         }
     }
 }

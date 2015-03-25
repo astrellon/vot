@@ -14,6 +14,8 @@ namespace vot
         {
             auto font = FontManager::font("sans");
             _label_graphic.setFont(*font);
+            _label_graphic.setCharacterSize(16);
+            _label_graphic.setColor(sf::Color::Black);
             this->label(label);
         }
 
@@ -40,7 +42,7 @@ namespace vot
             auto dalpha = hover() ? 400.0f : -200.0f;
             auto new_alpha = _alpha + dalpha * dt;
             if (new_alpha > 255.0f) new_alpha = 255.0f;
-            if (new_alpha < 127.0f) new_alpha = 127.0f;
+            if (new_alpha < 180.0f) new_alpha = 180.0f;
             _alpha = new_alpha;
             
             auto colour = _sprite.getColor();
@@ -71,6 +73,15 @@ namespace vot
                 local_pos.y >= 0.0f && local_pos.y <= size.y;
         }
 
+        void Button::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
+        {
+            auto handler = on_click();
+            if (handler)
+            {
+                handler(x, y, button);
+            }
+        }
+
         void Button::update_label_position()
         {
             sf::Vector2u texture_size;
@@ -79,7 +90,6 @@ namespace vot
                 texture_size = _sprite.getTexture()->getSize();
             }
             auto text_size = _label_graphic.getLocalBounds();
-            std::cout << "Size: " << text_size.left << ", " << text_size.top << " | " << text_size.width << ", " << text_size.height << "\n";
 
             auto left = (static_cast<float>(texture_size.x) - text_size.width) * 0.5f;
             auto top = (static_cast<float>(texture_size.y) - text_size.height) * 0.5f - text_size.top;
