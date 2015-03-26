@@ -5,6 +5,7 @@
 #include <string>
 #include <functional>
 
+#include <vot/colour.h>
 #include "component.h"
 
 namespace vot
@@ -31,7 +32,7 @@ namespace vot
                 std::string _label;
                 sf::Text _label_graphic;
                 sf::Sprite _sprite;
-                float _alpha;
+                Colour _colour;
 
                 void update_label_position();
         };

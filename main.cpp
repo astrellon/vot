@@ -15,12 +15,6 @@
 
 int main()
 {
-    vot::Colour c1;
-    c1.rgb(0.5f, 0.5f, 0.5f);
-    c1.calc_hsv();
-
-    c1.display();
-
     // Init {{{
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
@@ -58,16 +52,23 @@ int main()
 
     auto game = new vot::Game();
     vot::GameSystem::game(game);
-
-    auto button = new vot::ui::Button("Hello There");
-    button->texture(*vot::TextureManager::texture("button_idle"));
-    button->id("btn1");
+    
+    /*
     button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
     {
         std::cout << "Button clicked: " << x << ", " << y << ", " << btn << "\n";    
     });
-    vot::ui::Manager::add_component(button);
+    */
+
+    auto button = new vot::ui::Button("Hello There");
+    button->texture(*vot::TextureManager::texture("button_idle"));
     button->setPosition(300, 200);
+    vot::ui::Manager::add_component(button);
+
+    button = new vot::ui::Button("What up");
+    button->texture(*vot::TextureManager::texture("button_idle"));
+    button->setPosition(300, 260);
+    vot::ui::Manager::add_component(button);
 
     /*
     // Load a music to play

@@ -134,6 +134,11 @@ namespace vot
                 return vec1.x * vec2.y - vec1.y * vec2.x;
             }
 
+            static inline float clamp(float input, float min, float max)
+            {
+                return input > max ? max : (input < min ? min : input);
+            }
+
         private:
             static std::random_device _rd;
             static std::mt19937 _rand;

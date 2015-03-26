@@ -65,6 +65,15 @@
     <ClCompile Include="vot\ui\manager.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
+    <ClCompile Include="vot\colour.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\game.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\main_menu.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -149,6 +158,12 @@
     </ClInclude>
     <ClInclude Include="vot\ui\component.h">
       <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\colour.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\game.h">
+      <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

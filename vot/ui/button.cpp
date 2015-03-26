@@ -3,20 +3,24 @@
 #include <iostream>
 
 #include <vot/font_manager.h>
+#include <vot/utils.h>
 
 namespace vot
 {
     namespace ui
     {
         Button::Button(const std::string &label) :
-            Component(),
-            _alpha(127.0f)
+            Component()
         {
             auto font = FontManager::font("sans");
             _label_graphic.setFont(*font);
             _label_graphic.setCharacterSize(16);
             _label_graphic.setColor(sf::Color::Black);
             this->label(label);
+
+            //_colour.rgb(1, 1, 1);
+            _colour.hsv(25.0f, 1.0f, 1.0f);
+
         }
 
         void Button::texture(const sf::Texture &texture)
@@ -39,15 +43,13 @@ namespace vot
 
         void Button::update(float dt)
         {
-            auto dalpha = hover() ? 400.0f : -200.0f;
-            auto new_alpha = _alpha + dalpha * dt;
-            if (new_alpha > 255.0f) new_alpha = 255.0f;
-            if (new_alpha < 180.0f) new_alpha = 180.0f;
-            _alpha = new_alpha;
+            auto dsaturation = (hover() ? 4.0f : -3.0f) * dt;
+
+            auto new_saturation = Utils::clamp(_colour.saturation() + dsaturation, 0.0f, 1.0f);
+            _colour.saturation(new_saturation);
+            _colour.calc_rgb();
             
-            auto colour = _sprite.getColor();
-            colour.a = static_cast<uint8_t>(new_alpha);
-            _sprite.setColor(colour);
+            _sprite.setColor(_colour);
         }
         void Button::draw(sf::RenderTarget &target, sf::RenderStates states) const
         {

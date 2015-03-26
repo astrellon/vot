@@ -1,6 +1,7 @@
 #include "colour.h"
 
 #include <iostream>
+#include <stdint.h>
 
 namespace vot
 {
@@ -10,7 +11,8 @@ namespace vot
         _blue(0.0f),
         _hue(0.0f),
         _saturation(0.0f),
-        _value(0.0f)
+        _value(0.0f),
+        _dirty(true)
     {
 
     }
@@ -34,7 +36,12 @@ namespace vot
 
     void Colour::red(float value)
     {
+        if (_red == value)
+        {
+            return;
+        }
         _red = value;
+        _dirty = true;
     }
     float Colour::red() const
     {
@@ -43,7 +50,12 @@ namespace vot
 
     void Colour::green(float value)
     {
+        if (_green == value)
+        {
+            return;
+        }
         _green = value;
+        _dirty = true;
     }
     float Colour::green() const
     {
@@ -52,7 +64,12 @@ namespace vot
 
     void Colour::blue(float value)
     {
+        if (_blue == value)
+        {
+            return;
+        }
         _blue = value;
+        _dirty = true;
     }
     float Colour::blue() const
     {
@@ -61,7 +78,12 @@ namespace vot
 
     void Colour::hue(float value)
     {
+        if (_hue == value)
+        {
+            return;
+        }
         _hue = value;
+        _dirty = true;
     }
     float Colour::hue() const
     {
@@ -70,7 +92,12 @@ namespace vot
 
     void Colour::saturation(float value)
     {
+        if (_saturation == value)
+        {
+            return;
+        }
         _saturation = value;
+        _dirty = true;
     }
     float Colour::saturation() const
     {
@@ -79,7 +106,12 @@ namespace vot
 
     void Colour::value(float value)
     {
+        if (_value == value)
+        {
+            return;
+        }
         _value = value;
+        _dirty = true;
     }
     float Colour::value() const
     {
@@ -88,19 +120,34 @@ namespace vot
 
     void Colour::rgb(float r, float g, float b)
     {
+        if (_red == r && _green == g && _blue == b)
+        {
+            return;
+        }
         _red = r;
         _green = g;
         _blue = b;
+        _dirty = true;
     }
     void Colour::hsv(float h, float s, float v)
     {
+        if (_hue == h && _saturation == s && _value == v)
+        {
+            return;
+        }
         _hue = h;
         _saturation = s;
         _value = v;
+        _dirty = true;
     }
 
     void Colour::calc_hsv()
     {
+        if (!_dirty)
+        {
+            return;
+        }
+        _dirty = false;
         auto min = _red < _green ? _red : _green;
         min = min < _blue ? min : _blue;
 
@@ -118,7 +165,7 @@ namespace vot
             // if max is 0, then r = g = b = 0              
             // s = 0, v is undefined
             _saturation = 0.0;
-            _hue = NAN;
+            //_hue = NAN;
             return;
         }
 
@@ -149,6 +196,12 @@ namespace vot
 
     void Colour::calc_rgb()
     {
+        if (!_dirty)
+        {
+            return;
+        }
+        _dirty = false;
+
         if (_saturation <= 0.0) 
         {       // < is bogus, just shuts up warnings
             _red = _value;

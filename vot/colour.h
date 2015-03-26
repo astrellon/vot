@@ -47,6 +47,7 @@ namespace vot
             float _saturation;
             float _value;
 
+            bool _dirty;
     };
 
 }

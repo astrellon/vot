@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>./sfml/win/SFML-2.2/include;$(IncludePath)</IncludePath>
+    <IncludePath>./sfml/win/SFML-2.2/include;./;$(IncludePath)</IncludePath>
     <LibraryPath>./sfml/win/SFML-2.2/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,9 +83,11 @@
     <ClCompile Include="vot\bullet.cpp" />
     <ClCompile Include="vot\character.cpp" />
     <ClCompile Include="vot\circle.cpp" />
+    <ClCompile Include="vot\colour.cpp" />
     <ClCompile Include="vot\enemy.cpp" />
     <ClCompile Include="vot\enemy_fighter.cpp" />
     <ClCompile Include="vot\font_manager.cpp" />
+    <ClCompile Include="vot\game.cpp" />
     <ClCompile Include="vot\game_hud.cpp" />
     <ClCompile Include="vot\game_system.cpp" />
     <ClCompile Include="vot\hardpoint.cpp" />
@@ -97,6 +99,7 @@
     <ClCompile Include="vot\thruster.cpp" />
     <ClCompile Include="vot\ui\button.cpp" />
     <ClCompile Include="vot\ui\component.cpp" />
+    <ClCompile Include="vot\ui\main_menu.cpp" />
     <ClCompile Include="vot\ui\manager.cpp" />
     <ClCompile Include="vot\utils.cpp" />
   </ItemGroup>
@@ -106,10 +109,12 @@
     <ClInclude Include="vot\bullet.h" />
     <ClInclude Include="vot\character.h" />
     <ClInclude Include="vot\circle.h" />
+    <ClInclude Include="vot\colour.h" />
     <ClInclude Include="vot\common.h" />
     <ClInclude Include="vot\enemy.h" />
     <ClInclude Include="vot\enemy_fighter.h" />
     <ClInclude Include="vot\font_manager.h" />
+    <ClInclude Include="vot\game.h" />
     <ClInclude Include="vot\game_hud.h" />
     <ClInclude Include="vot\game_system.h" />
     <ClInclude Include="vot\hardpoint.h" />
