@@ -6,15 +6,23 @@ namespace vot
 {
     namespace ui
     {
-        class MainMenu : public sf::Drawable
+        class Button;
+
+        class MainMenu 
         {
             public:
-                MainMenu();
+                static bool init();
+                static void deinit();
 
-                virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+                static void visible(bool value);
+                static bool visible();
 
             private:
 
+                static bool s_visible;
+                static Button *s_start_game;
+                static Button *s_options;
+                static Button *s_quit;
         };
     }
 }

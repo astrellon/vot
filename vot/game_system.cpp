@@ -182,6 +182,14 @@ namespace vot
         if (event.type == sf::Event::KeyPressed)
         {
             key_pressed(event.key.code);
+
+            if (event.key.code == sf::Keyboard::Escape)
+            {
+                if (s_game.get() != nullptr)
+                {
+                    ui::MainMenu::visible(!ui::MainMenu::visible());
+                }
+            }
         }
         if (event.type == sf::Event::KeyReleased)
         {
@@ -201,6 +209,15 @@ namespace vot
     Game *GameSystem::game()
     {
         return s_game.get();
+    }
+
+    void GameSystem::start_game()
+    {
+        game(new Game());
+    }
+    void GameSystem::close_game()
+    {
+        s_window->close();
     }
 
     void GameSystem::key_pressed(sf::Keyboard::Key key)

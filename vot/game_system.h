@@ -44,6 +44,9 @@ namespace vot
 
             static void game(Game *value);
             static Game *game();
+
+            static void start_game();
+            static void close_game();
             
             static sf::View &hud_camera();
 

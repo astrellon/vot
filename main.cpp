@@ -22,54 +22,39 @@ int main()
     if (!vot::FontManager::init())
     {
         std::cout << "Failed to load fonts on startup\n";
-        std::cin.get();
         return -1;
     }
     
     if (!vot::TextureManager::init())
     {
         std::cout << "Failed to load textures on startup\n";
-        std::cin.get();
         return -1;
     }
-    vot::TextureManager::display("Main1");
 
     if (!vot::ui::Manager::init())
     {
         std::cout << "Failed to initialise UI\n";
-        std::cin.get();
         return -1;
     }
 
     if (!vot::GameSystem::init(window))
     {
         std::cout << "Failed to initialise Game system\n";
-        std::cin.get();
         return -1;
     }
 
-    vot::TextureManager::display("Main3");
+    if (!vot::ui::MainMenu::init())
+    {
+        std::cout << "Failed to initialise Main Menu\n";
+        return -1;
+    }
 
-    auto game = new vot::Game();
-    vot::GameSystem::game(game);
-    
     /*
     button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
     {
         std::cout << "Button clicked: " << x << ", " << y << ", " << btn << "\n";    
     });
     */
-
-    auto button = new vot::ui::Button("Hello There");
-    button->texture(*vot::TextureManager::texture("button_idle"));
-    button->setPosition(300, 200);
-    vot::ui::Manager::add_component(button);
-
-    button = new vot::ui::Button("ABCDEFGHIJKLMN\nOPQRSTUVWXYZ");
-    button->texture(*vot::TextureManager::texture("button_idle"));
-    button->setPosition(300, 260);
-    vot::ui::Manager::add_component(button);
-
     /*
     // Load a music to play
     sf::Music music;
@@ -124,6 +109,7 @@ int main()
     }
     // }}}
 
+    vot::ui::MainMenu::deinit();
     vot::GameSystem::deinit();
     vot::ui::Manager::deinit();
     vot::FontManager::deinit();
