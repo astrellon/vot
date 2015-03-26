@@ -180,6 +180,7 @@ namespace vot
     }
     void PatternBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
+        states.blendMode = sf::BlendAdd;
         target.draw(_sprite, states);
     }
     // }}}

@@ -171,7 +171,7 @@ namespace vot
     {
         auto beam = new Beam();
         beam->width(12.0f);
-        beam->max_length(200.0f);
+        beam->max_length(400.0f);
         beam->dps(2.0f);
 
         s_beam_manager.add_src_beam("beam1", beam);

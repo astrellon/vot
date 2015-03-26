@@ -114,11 +114,11 @@ namespace vot
 
             if (s_has_hover != nullptr)
             {
-                std::cout << "Hovering over: " << s_has_hover->id() << "\n";
+                //std::cout << "Hovering over: " << s_has_hover->id() << "\n";
             }
             else
             {
-                std::cout << "No hovering\n";
+                //std::cout << "No hovering\n";
             }
         }
 

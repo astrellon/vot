@@ -139,6 +139,11 @@ namespace vot
                 return input > max ? max : (input < min ? min : input);
             }
 
+            static inline float round(float input)
+            {
+                return roundf(input);
+            }
+
         private:
             static std::random_device _rd;
             static std::mt19937 _rand;

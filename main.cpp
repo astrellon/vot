@@ -65,7 +65,7 @@ int main()
     button->setPosition(300, 200);
     vot::ui::Manager::add_component(button);
 
-    button = new vot::ui::Button("What up");
+    button = new vot::ui::Button("ABCDEFGHIJKLMN\nOPQRSTUVWXYZ");
     button->texture(*vot::TextureManager::texture("button_idle"));
     button->setPosition(300, 260);
     vot::ui::Manager::add_component(button);
