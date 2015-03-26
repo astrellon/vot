@@ -11,9 +11,16 @@
 #include "vot/texture_manager.h"
 #include "vot/ui/manager.h"
 #include "vot/ui/button.h"
+#include "vot/colour.h"
 
 int main()
 {
+    vot::Colour c1;
+    c1.rgb(0.5f, 0.5f, 0.5f);
+    c1.calc_hsv();
+
+    c1.display();
+
     // Init {{{
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
