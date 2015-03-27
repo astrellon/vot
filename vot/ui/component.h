@@ -26,9 +26,6 @@ namespace vot
                 void has_focus(bool value);
                 bool has_focus() const;
             
-                void hover(bool value);
-                bool hover() const;
-                
                 void enabled(bool value);
                 bool enabled() const;
 
@@ -56,7 +53,6 @@ namespace vot
             private:
                 State _state;
                 bool _has_focus;
-                bool _hover;
                 bool _enabled;
 
                 std::string _id;

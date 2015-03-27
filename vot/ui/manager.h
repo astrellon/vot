@@ -21,8 +21,6 @@ namespace vot
             static void focus(Component *component);
             static Component *focus();
 
-            static Component *has_hover();
-
             typedef std::vector<std::unique_ptr<Component> > ComponentList;
             static const ComponentList *components();
 
@@ -34,10 +32,12 @@ namespace vot
         private:
             static ComponentList s_components;
             static Component *s_has_focus;
-            static Component *s_has_hover;
+            static Component *s_last_had_focus;
 
             static void check_hover(int32_t x, int32_t y);
             static void check_pressed(int32_t x, int32_t y, sf::Mouse::Button button);
+
+            static void change_focus(Component *comp);
         };
     }
 }

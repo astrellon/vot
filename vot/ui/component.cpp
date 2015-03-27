@@ -7,7 +7,6 @@ namespace vot
         Component::Component() :
             _state(NONE),
             _has_focus(false),
-            _hover(false),
             _enabled(true),
             _to_left(nullptr),
             _to_right(nullptr),
@@ -29,15 +28,6 @@ namespace vot
         bool Component::has_focus() const
         {
             return _has_focus;
-        }
-
-        void Component::hover(bool value)
-        {
-            _hover = value;
-        }
-        bool Component::hover() const
-        {
-            return _hover;
         }
 
         void Component::enabled(bool value)

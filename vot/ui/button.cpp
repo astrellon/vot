@@ -47,7 +47,7 @@ namespace vot
 
         void Button::update(float dt)
         {
-            auto dsaturation = (hover() ? 4.0f : -3.0f) * dt;
+            auto dsaturation = (has_focus() ? 4.0f : -3.0f) * dt;
 
             auto new_saturation = Utils::clamp(_colour.saturation() + dsaturation, 0.0f, 0.7f);
             _colour.saturation(new_saturation);

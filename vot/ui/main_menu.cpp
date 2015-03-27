@@ -42,6 +42,13 @@ namespace vot
                 GameSystem::close_game();
             });
             Manager::add_component(s_quit);
+
+            s_start_game->to_above(s_quit);
+            s_start_game->to_below(s_options);
+            s_options->to_above(s_start_game);
+            s_options->to_below(s_quit);
+            s_quit->to_above(s_options);
+            s_quit->to_below(s_start_game);
         
             return true;
         }
@@ -57,6 +64,11 @@ namespace vot
             s_start_game->enabled(value);
             s_options->enabled(value);
             s_quit->enabled(value);
+
+            if (value)
+            {
+                ui::Manager::focus(s_start_game);
+            }
         }
         bool MainMenu::visible()
         {
