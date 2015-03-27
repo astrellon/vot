@@ -28,6 +28,10 @@ namespace vot
             _sprite.setTexture(texture);
             update_label_position();
         }
+        const sf::Texture *Button::texture() const
+        {
+            return _sprite.getTexture();
+        }
 
         void Button::label(const std::string &label)
         {

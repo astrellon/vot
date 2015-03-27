@@ -17,6 +17,8 @@ namespace vot
                 static void visible(bool value);
                 static bool visible();
 
+                static void on_resize(uint32_t width, uint32_t height);
+
             private:
 
                 static bool s_visible;

@@ -18,6 +18,7 @@ namespace vot
                 Button(const std::string &label);
 
                 void texture(const sf::Texture &texture);
+                const sf::Texture *texture() const;
 
                 void label(const std::string &label);
                 const std::string &label() const;

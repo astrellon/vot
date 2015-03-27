@@ -183,6 +183,7 @@ namespace vot
         {
             key_pressed(event.key.code);
 
+            // Only toggle main menu when a game is in progress.
             if (event.key.code == sf::Keyboard::Escape)
             {
                 if (s_game.get() != nullptr)
@@ -199,6 +200,7 @@ namespace vot
         if (event.type == sf::Event::Resized)
         {
             on_resize(event.size.width, event.size.height);
+            ui::MainMenu::on_resize(event.size.width, event.size.height);
         }
     }
 
