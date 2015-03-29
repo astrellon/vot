@@ -150,7 +150,7 @@ namespace vot
 
         if (_pattern_type == 0u)
         {
-            auto x = dl * 1000.0f;
+            auto x = dl * 1500.0f;
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 2u)

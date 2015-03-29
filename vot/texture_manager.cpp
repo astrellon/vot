@@ -5,9 +5,9 @@
 
 namespace vot
 {
-    TextureManager::TextureMap TextureManager::_textures;
-    uint32_t TextureManager::_num_textures = 0u;
-    uint32_t TextureManager::_texture_load_attempt = 0u;
+    TextureManager::TextureMap TextureManager::s_textures;
+    uint32_t TextureManager::s_num_textures = 0u;
+    uint32_t TextureManager::s_texture_load_attempt = 0u;
 
     bool TextureManager::init()
     {
@@ -15,58 +15,58 @@ namespace vot
     }
     void TextureManager::deinit()
     {
-        _textures.clear();
-        _num_textures = 0u;
-        _texture_load_attempt = 0u;
+        s_textures.clear();
+        s_num_textures = 0u;
+        s_texture_load_attempt = 0u;
     }
 
     const TextureManager::TextureMap &TextureManager::textures()
     {
-        return _textures;
+        return s_textures;
     }
 
     bool TextureManager::load_texture(const std::string &name, const std::string &filename)
     {
-        _texture_load_attempt++;
+        s_texture_load_attempt++;
         if (name.empty())
         {
             return false;
         }
 
-        sf::Texture texture;
-        if (!texture.loadFromFile(filename))
+        auto texture = new sf::Texture();
+        if (!texture->loadFromFile(filename))
         {
             return false;
         }
-        texture.setSmooth(true);
+        texture->setSmooth(true);
 
-        _textures[name] = texture;
-        _num_textures++;
+        s_textures[name] = std::unique_ptr<sf::Texture>(texture);
+        s_num_textures++;
         return true;
     }
 
     const sf::Texture *TextureManager::texture(const std::string &name)
     {
-        auto find = _textures.find(name);
-        if (find == _textures.end())
+        auto find = s_textures.find(name);
+        if (find == s_textures.end())
         {
             return nullptr;
         }
 
-        return &find->second;
+        return find->second.get();
     }
 
     uint32_t TextureManager::num_textures()
     {
-        return _num_textures;
+        return s_num_textures;
     }
     uint32_t TextureManager::count_textures()
     {
-        return _textures.size();
+        return s_textures.size();
     }
     uint32_t TextureManager::texture_load_attempt()
     {
-        return _texture_load_attempt;
+        return s_texture_load_attempt;
     }
     
     bool TextureManager::load_default_textures()
@@ -105,10 +105,10 @@ namespace vot
 
     void TextureManager::try_load(const std::string &name, const std::string &from_data)
     {
-        std::stringstream filename;
-        filename << "data/" << from_data;
+        std::string filename("data/");
+        filename += from_data;
 
-        if (!load_texture_log(name, filename.str()))
+        if (!load_texture_log(name, filename))
         {
             throw std::runtime_error("Failed to load texture");
         }

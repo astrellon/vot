@@ -14,7 +14,7 @@ namespace vot
             static bool init();
             static void deinit();
 
-            typedef std::map<std::string, sf::Texture> TextureMap;
+            typedef std::map<std::string, std::unique_ptr<sf::Texture> > TextureMap;
             static const TextureMap &textures();
 
             static bool load_texture(const std::string &name, const std::string &filename);
@@ -30,9 +30,9 @@ namespace vot
 
             TextureManager();
 
-            static TextureMap _textures;
-            static uint32_t _num_textures;
-            static uint32_t _texture_load_attempt;
+            static TextureMap s_textures;
+            static uint32_t s_num_textures;
+            static uint32_t s_texture_load_attempt;
 
             static bool load_default_textures();
 

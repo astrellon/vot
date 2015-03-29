@@ -1,5 +1,8 @@
 #include "component.h"
 
+#include <vot/game_system.h>
+#include <vot/sound.h>
+
 namespace vot
 {
     namespace ui
@@ -23,7 +26,16 @@ namespace vot
 
         void Component::has_focus(bool focus)
         {
-            _has_focus = focus;
+            if (focus != _has_focus)
+            {
+                _has_focus = focus;
+
+                if (focus)
+                {
+                    auto sound = GameSystem::sound_manager()->spawn_sound("select");
+                    sound->play();
+                }
+            }
         }
         bool Component::has_focus() const
         {

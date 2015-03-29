@@ -194,6 +194,10 @@ namespace vot
 
             bullet->init_transform(trans);
 
+            auto sound = GameSystem::sound_manager()->spawn_sound("laser3");
+            sound->setVolume(50.0f);
+            sound->play();
+
             cooldown(max_cooldown());
         }
 
@@ -225,6 +229,10 @@ namespace vot
 
             auto trans = parent()->getTransform() * getTransform();
             bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
+            
+            auto sound = GameSystem::sound_manager()->spawn_sound("laser2");
+            sound->setVolume(50.0f);
+            sound->play();
 
             cooldown(max_cooldown());
         }
@@ -282,8 +290,6 @@ namespace vot
         _charge_up_system->setRotation(global_rotation);
         
         _beam_glow.setScale(_charge_up, _charge_up);
-        //_beam_glow.setPosition(global_position);
-                
 
         if (_fire_beam)
         {
@@ -293,6 +299,9 @@ namespace vot
                 if (!_prev_charging_up)
                 {
                     _charge_up_system->init();
+                    auto sound = GameSystem::sound_manager()->spawn_sound("chargeup");
+                    sound->setVolume(50.0f);
+                    sound->play();
                 }
             }
 

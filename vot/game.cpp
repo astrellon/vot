@@ -360,6 +360,9 @@ namespace vot
             }
         }
 
+        auto explosion = GameSystem::sound_manager()->spawn_sound("explosion2");
+        explosion->play();
+
         auto rand = Utils::randf();
 
         auto type = rand > 0.66f ? "bullet" : (rand < 0.33f ? "beam" : "homing");

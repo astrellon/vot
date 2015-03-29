@@ -10,6 +10,7 @@
 #include "particles.h"
 #include "beam.h"
 #include "game.h"
+#include "sound.h"
 
 namespace vot
 {
@@ -26,6 +27,7 @@ namespace vot
             static ParticleSystemManager *particle_manager();
             static PowerupManager *powerup_manager();
             static BeamManager *beam_manager();
+            static SoundManager *sound_manager();
 
             static void update(float dt);
             static void draw(sf::RenderTarget &target, sf::RenderStates states);
@@ -47,6 +49,8 @@ namespace vot
 
             static void start_game();
             static void close_game();
+
+            static float time_since_start();
             
             static sf::View &hud_camera();
 
@@ -58,10 +62,13 @@ namespace vot
             static ParticleSystemManager s_particle_manager;
             static PowerupManager s_powerup_manager; 
             static BeamManager s_beam_manager;
+            static SoundManager s_sound_manager;
 
             static sf::View s_hud_camera;
             static std::unique_ptr<Game> s_game;
             static ui::MainMenu s_main_menu;
+
+            static float s_time_since_start;
 
             static uint32_t s_update_counter;
             static uint32_t s_keys_pressed[sf::Keyboard::KeyCount];

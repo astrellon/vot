@@ -96,13 +96,10 @@ int main()
         // Clear screen
         window.clear();
        
-        //window.draw(game_system);
-        //vot::GameSystem::draw(window, )
         sf::RenderStates states;
         vot::GameSystem::draw(window, states);
         vot::ui::Manager::draw(window, states);
 
-        //window.setView(vot::GameSystem::camera());
         // Update the window
         window.display();
         // }}}

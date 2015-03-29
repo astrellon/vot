@@ -17,10 +17,13 @@ namespace vot
     ParticleSystemManager GameSystem::s_particle_manager;
     PowerupManager GameSystem::s_powerup_manager;
     BeamManager GameSystem::s_beam_manager;
+    SoundManager GameSystem::s_sound_manager;
 
     sf::View GameSystem::s_hud_camera;
     std::unique_ptr<Game> GameSystem::s_game;
     ui::MainMenu GameSystem::s_main_menu;
+
+    float GameSystem::s_time_since_start = 0.0f;;
 
     uint32_t GameSystem::s_update_counter = 0;
     uint32_t GameSystem::s_keys_pressed[sf::Keyboard::KeyCount];
@@ -44,11 +47,17 @@ namespace vot
         create_default_powerups();
         create_default_beams();
 
+        if (!s_sound_manager.load_default_sounds())
+        {
+            return false;
+        }
+
         return true;
     }
     void GameSystem::deinit()
     {
         s_game = nullptr;
+        s_sound_manager.clear();
     }
 
     sf::RenderWindow &GameSystem::window()
@@ -63,6 +72,9 @@ namespace vot
         {
             s_game->update(dt);
         }
+        s_sound_manager.update(dt);
+
+        s_time_since_start += dt;
     }
 
     void GameSystem::draw(sf::RenderTarget &target, sf::RenderStates states)
@@ -177,6 +189,11 @@ namespace vot
         s_beam_manager.add_src_beam("beam1", beam);
     }
 
+    SoundManager *GameSystem::sound_manager()
+    {
+        return &s_sound_manager;
+    }
+
     void GameSystem::process_event(const sf::Event &event)
     {
         if (event.type == sf::Event::KeyPressed)
@@ -220,6 +237,11 @@ namespace vot
     void GameSystem::close_game()
     {
         s_window->close();
+    }
+
+    float GameSystem::time_since_start()
+    {
+        return s_time_since_start;
     }
 
     void GameSystem::key_pressed(sf::Keyboard::Key key)

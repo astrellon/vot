@@ -86,7 +86,7 @@ namespace vot
             }
             else if (event.type == sf::Event::KeyPressed)
             {
-                if (s_has_focus != nullptr)
+                if (s_has_focus != nullptr && s_has_focus->enabled())
                 {
                     if (event.key.code == sf::Keyboard::W && s_has_focus->to_above() != nullptr)
                     {
