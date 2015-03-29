@@ -95,6 +95,7 @@
     <ClCompile Include="vot\player.cpp" />
     <ClCompile Include="vot\powerup.cpp" />
     <ClCompile Include="vot\ray.cpp" />
+    <ClCompile Include="vot\sound.cpp" />
     <ClCompile Include="vot\texture_manager.cpp" />
     <ClCompile Include="vot\thruster.cpp" />
     <ClCompile Include="vot\ui\button.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="vot\player.h" />
     <ClInclude Include="vot\powerup.h" />
     <ClInclude Include="vot\ray.h" />
+    <ClInclude Include="vot\sound.h" />
     <ClInclude Include="vot\texture_manager.h" />
     <ClInclude Include="vot\thruster.h" />
     <ClInclude Include="vot\ui\button.h" />

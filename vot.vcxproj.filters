@@ -74,6 +74,9 @@
     <ClCompile Include="vot\ui\main_menu.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
+    <ClCompile Include="vot\sound.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -163,6 +166,9 @@
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\game.h">
+      <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\sound.h">
       <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>
