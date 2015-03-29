@@ -24,6 +24,9 @@ namespace vot
 
             sf::View &camera();
 
+            void paused(bool value);
+            bool paused() const;
+
             Enemy *next_target(Enemy *current);
 
             void on_resize(uint32_t width, uint32_t height);
@@ -44,6 +47,7 @@ namespace vot
             Background _background2;
             Background _background3;
 
+            bool _paused;
             float _spawn_timer;
 
             void kill_enemy(Enemy *enemy);

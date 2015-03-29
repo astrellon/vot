@@ -69,6 +69,10 @@ namespace vot
             {
                 ui::Manager::focus(s_start_game);
             }
+            else
+            {
+                ui::Manager::focus(nullptr);
+            }
         }
         bool MainMenu::visible()
         {

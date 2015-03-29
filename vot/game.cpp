@@ -7,7 +7,8 @@
 namespace vot
 {
     Game::Game() :
-        _spawn_timer(0.0f)
+        _spawn_timer(0.0f),
+        _paused(false)
     {
         auto player = new vot::Player(*TextureManager::texture("player"));
         player->sprite().setScale(0.5f, 0.5f);
@@ -32,7 +33,7 @@ namespace vot
 
     void Game::update(float dt)
     {
-        if (_player == nullptr)
+        if (_player == nullptr || _paused)
         {
             return;
         }
@@ -278,6 +279,15 @@ namespace vot
     sf::View &Game::camera()
     {
         return _camera;
+    }
+
+    void Game::paused(bool value)
+    {
+        _paused = value;
+    }
+    bool Game::paused() const
+    {
+        return _paused;
     }
 
     void Game::on_resize(uint32_t width, uint32_t height)

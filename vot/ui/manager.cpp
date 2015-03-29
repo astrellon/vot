@@ -88,33 +88,33 @@ namespace vot
             {
                 if (s_has_focus != nullptr)
                 {
-                    if (event.key.code == sf::Keyboard::Up && s_has_focus->to_above() != nullptr)
+                    if (event.key.code == sf::Keyboard::W && s_has_focus->to_above() != nullptr)
                     {
                         change_focus(s_has_focus->to_above());
                     }
-                    else if (event.key.code == sf::Keyboard::Down && s_has_focus->to_below() != nullptr)
+                    else if (event.key.code == sf::Keyboard::S && s_has_focus->to_below() != nullptr)
                     {
                         change_focus(s_has_focus->to_below());
                     }
-                    else if (event.key.code == sf::Keyboard::Left && s_has_focus->to_left())
+                    else if (event.key.code == sf::Keyboard::A && s_has_focus->to_left())
                     {
                         change_focus(s_has_focus->to_left());
                     }
-                    else if (event.key.code == sf::Keyboard::Right && s_has_focus->to_right())
+                    else if (event.key.code == sf::Keyboard::D && s_has_focus->to_right())
                     {
                         change_focus(s_has_focus->to_right());
                     }
-                    else if (event.key.code == sf::Keyboard::Return)
+                    else if (event.key.code == sf::Keyboard::Space)
                     {
                         check_pressed(0, 0, sf::Mouse::Left);
                     }
                 }
                 else
                 {
-                    if (event.key.code == sf::Keyboard::Up || 
-                        event.key.code == sf::Keyboard::Down ||
-                        event.key.code == sf::Keyboard::Left ||
-                        event.key.code == sf::Keyboard::Right)
+                    if (event.key.code == sf::Keyboard::W || 
+                        event.key.code == sf::Keyboard::S ||
+                        event.key.code == sf::Keyboard::A ||
+                        event.key.code == sf::Keyboard::D)
                     {
                         if (s_last_had_focus == nullptr)
                         {

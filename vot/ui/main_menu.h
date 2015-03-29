@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <stdint.h>
+
 namespace vot
 {
     namespace ui
