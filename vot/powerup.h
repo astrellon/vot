@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "circle.h"
+#include "utils/circle.h"
 
 namespace vot
 {
@@ -29,15 +29,15 @@ namespace vot
 
             void location(const sf::Vector2f &location); 
 
-            Circle &hitbox();
-            const Circle &hitbox() const;
+            utils::Circle &hitbox();
+            const utils::Circle &hitbox() const;
 
             void update(float dt);
 
         private:
             Type _type;
             int32_t _value;
-            Circle _hitbox;
+            utils::Circle _hitbox;
 
             float _lifetime; 
     };

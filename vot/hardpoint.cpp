@@ -2,7 +2,7 @@
 
 #include "game_system.h"
 #include "texture_manager.h"
-#include "utils.h"
+#include "utils/utils.h"
 
 namespace vot
 {
@@ -116,7 +116,7 @@ namespace vot
             auto rot_speed = 90.0f * dt;
             auto parent_trans = _parent->getInverseTransform();
             auto local_target = parent_trans * _target->getPosition();
-            auto angles = Utils::calculate_angles(getPosition(), local_target, getRotation(), 180.0f);
+            auto angles = utils::Utils::calculate_angles(getPosition(), local_target, getRotation(), 180.0f);
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
                 setRotation(angles.to_angle());
@@ -140,8 +140,8 @@ namespace vot
             }
             else if (angle < _min_angle && angle > _max_angle)
             {
-                auto dmin = Utils::abs(_min_angle - angle);
-                auto dmax = Utils::abs(_max_angle - angle);
+                auto dmin = utils::Utils::abs(_min_angle - angle);
+                auto dmax = utils::Utils::abs(_max_angle - angle);
                 setRotation(dmin < dmax ? _min_angle : _max_angle);
             }
         }

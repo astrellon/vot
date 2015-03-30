@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <vot/font_manager.h>
-#include <vot/utils.h>
+#include <vot/utils/utils.h>
 
 namespace vot
 {
@@ -49,7 +49,7 @@ namespace vot
         {
             auto dsaturation = (has_focus() ? 4.0f : -3.0f) * dt;
 
-            auto new_saturation = Utils::clamp(_colour.saturation() + dsaturation, 0.0f, 0.7f);
+            auto new_saturation = utils::Utils::clamp(_colour.saturation() + dsaturation, 0.0f, 0.7f);
             _colour.saturation(new_saturation);
             _colour.calc_rgb();
             
@@ -100,7 +100,7 @@ namespace vot
             auto left = (static_cast<float>(texture_size.x) - text_size.width) * 0.5f;
             auto top = (static_cast<float>(texture_size.y) - text_size.height) * 0.5f - text_size.top;
 
-            _label_graphic.setPosition(Utils::round(left), Utils::round(top));
+            _label_graphic.setPosition(utils::Utils::round(left), utils::Utils::round(top));
         }
     }
 }

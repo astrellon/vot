@@ -1,7 +1,7 @@
 #include "enemy.h"
 
 #include "game_system.h"
-#include "utils.h"
+#include "utils/utils.h"
 #include "common.h"
 #include "icontroller.h"
 
@@ -10,14 +10,14 @@ namespace vot
     // Enemy {{{
     Enemy::Enemy(const sf::Texture &texture) :
         Character(texture),
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _controller(nullptr)
     {
 
     }
     Enemy::Enemy(const Enemy &clone) :
         Character(clone),
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _controller(nullptr)
     {
 
@@ -75,7 +75,7 @@ namespace vot
         }
 
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }

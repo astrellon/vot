@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "texture_manager.h"
-#include "utils.h"
+#include "utils/utils.h"
 #include "common.h"
 #include "enemy_fighter.h"
 

@@ -8,6 +8,8 @@
 #include "hardpoint.h"
 #include "thruster.h"
 
+#include "utils/circle.h"
+
 #include <map>
 
 namespace vot
@@ -30,7 +32,7 @@ namespace vot
             bool looking_at_target() const;
             bool auto_target() const;
 
-            Circle &powerup_hitbox();
+            utils::Circle &powerup_hitbox();
 
             void add_powerup(const Powerup &powerup);
 
@@ -47,7 +49,7 @@ namespace vot
             Enemy *_target;
 
             std::map<Powerup::Type, int32_t> _powerups;
-            Circle _powerup_hitbox;
+            utils::Circle _powerup_hitbox;
             sf::Shader _shader;
             
             std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;

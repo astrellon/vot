@@ -56,7 +56,7 @@ namespace vot
             {
                 auto enemy = enemy_manager->spawn_enemy("enemy1");
                 enemy->controller(new EnemyFighter(enemy));
-                enemy->translate(Utils::rand_vec(-200.0f, 200.0f));
+                enemy->translate(utils::Utils::rand_vec(-200.0f, 200.0f));
                 _spawn_timer = 0.0f;
 
                 if (_player->target() == nullptr && _player->auto_target())
@@ -156,7 +156,7 @@ namespace vot
                 {
                     auto enemy = (*enemies)[i].get();
 
-                    if (enemy != nullptr && Utils::ray_circle_intersect(beam->hitbox(), enemy->hitbox(), points, normals))
+                    if (enemy != nullptr && utils::Utils::ray_circle_intersect(beam->hitbox(), enemy->hitbox(), points, normals))
                     {
                         auto dpos = beam->hitbox().origin() - points[0];
                         auto distance = sqrtf(dpos.x * dpos.x + dpos.y * dpos.y);
@@ -337,7 +337,7 @@ namespace vot
         system->setPosition(bullet->location());
 
         auto dpos = bullet->location() - hit->location();
-        auto angle = Utils::vector_degrees(dpos);
+        auto angle = utils::Utils::vector_degrees(dpos);
         system->setRotation(angle);
         system->init();
     }
@@ -346,7 +346,7 @@ namespace vot
         auto system = GameSystem::particle_manager()->spawn_system(*TextureManager::texture(texture), 1);
         system->setPosition(point);
 
-        auto angle = Utils::vector_degrees(normal);
+        auto angle = utils::Utils::vector_degrees(normal);
         system->setRotation(angle);
         system->init();
     }
@@ -368,7 +368,7 @@ namespace vot
         auto explosion = GameSystem::sound_manager()->spawn_sound("explosion2", Sound::SoundEffects);
         explosion->play();
 
-        auto rand = Utils::randf();
+        auto rand = utils::Utils::randf();
 
         auto type = rand > 0.66f ? "bullet" : (rand < 0.33f ? "beam" : "homing");
         auto powerup = GameSystem::powerup_manager()->spawn_powerup(type);

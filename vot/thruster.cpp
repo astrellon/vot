@@ -1,7 +1,7 @@
 #include "thruster.h"
 
 #include "character.h"
-#include "utils.h"
+#include "utils/utils.h"
 #include "game_system.h"
 #include "texture_manager.h"
 
@@ -54,14 +54,14 @@ namespace vot
 
     sf::Vector2f Thruster::forwards() const
     {
-        auto direction = Utils::transform_direction(getTransform(), sf::Vector2f(0, 1));
-        return Utils::vector_unit(direction);
+        auto direction = utils::Utils::transform_direction(getTransform(), sf::Vector2f(0, 1));
+        return utils::Utils::vector_unit(direction);
     }
 
     void Thruster::calc_thrust(const sf::Vector2f &acc, float rot_acc)
     {
         auto direction = forwards();
-        auto dot = Utils::vector_dot(acc, direction);
+        auto dot = utils::Utils::vector_dot(acc, direction);
 
         auto amount = 0.0f;
         if (dot > 0)
@@ -69,11 +69,11 @@ namespace vot
             amount += dot / _max_thrust;
         }
 
-        auto to_parent = Utils::vector_unit(getPosition());
-        auto cross = Utils::vector_cross_amount(to_parent, direction);
+        auto to_parent = utils::Utils::vector_unit(getPosition());
+        auto cross = utils::Utils::vector_cross_amount(to_parent, direction);
         if ((cross < 0 && rot_acc < 0) || (cross > 0 && rot_acc > 0))
         {
-            amount += Utils::abs(cross);
+            amount += utils::Utils::abs(cross);
         }
 
         thrust_amount(amount);
@@ -94,7 +94,7 @@ namespace vot
         auto trans = parent()->getTransform() * getTransform();
         auto global_position = trans.transformPoint(sf::Vector2f(0, 0));
         auto global_rotation = getRotation() + parent()->getRotation();
-        _system->spawn_rotation_offset(Utils::degrees_to_radians * (global_rotation - 90.0f));
+        _system->spawn_rotation_offset(utils::Utils::degrees_to_radians * (global_rotation - 90.0f));
         _system->scale_factor(scale);
         _system->spawning_active(_thrust_amount > 0.40f);
         _system->setPosition(global_position);

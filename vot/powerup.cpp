@@ -39,11 +39,11 @@ namespace vot
         _hitbox.location(location);
     }
 
-    Circle &Powerup::hitbox()
+    utils::Circle &Powerup::hitbox()
     {
         return _hitbox;
     }
-    const Circle &Powerup::hitbox() const
+    const utils::Circle &Powerup::hitbox() const
     {
         return _hitbox;
     }

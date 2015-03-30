@@ -4,7 +4,7 @@
 #include <math.h>
 #include <iostream>
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "character.h"
 #include "game_system.h"
 
@@ -13,13 +13,13 @@ namespace vot
     // Bullet {{{
     Bullet::Bullet(float damage) :
         _damage(damage),
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _group(Group::NATURE)
     {
     }
     Bullet::Bullet(const Bullet &clone) :
         _damage(clone._damage),
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _hitbox(clone._hitbox.radius()),
         _group(Group::NATURE)
     {
@@ -52,7 +52,7 @@ namespace vot
         return _group;
     }
 
-    Circle &Bullet::hitbox()
+    utils::Circle &Bullet::hitbox()
     {
         return _hitbox;
     }
@@ -171,7 +171,7 @@ namespace vot
         }
 
         auto dp = point - prevPoint;
-        auto angle = Utils::vector_degrees(dp);
+        auto angle = utils::Utils::vector_degrees(dp);
 
         _sprite.setPosition(point);
 
@@ -316,7 +316,7 @@ namespace vot
             return;
         }
         
-        auto angles = Utils::calculate_angles(_sprite.getPosition(), _target->location(), _sprite.getRotation(), 0.0f);
+        auto angles = utils::Utils::calculate_angles(_sprite.getPosition(), _target->location(), _sprite.getRotation(), 0.0f);
         auto rot_speed = 180.0f * dt;
 
         if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
@@ -369,7 +369,7 @@ namespace vot
         }
 
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }
@@ -382,7 +382,7 @@ namespace vot
     PatternBullet *BulletManager::spawn_pattern_bullet(const PatternBullet &blueprint, Group::Type group)
     {
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }
@@ -402,7 +402,7 @@ namespace vot
         }
 
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }
@@ -415,7 +415,7 @@ namespace vot
     HomingBullet *BulletManager::spawn_homing_bullet(const HomingBullet &blueprint, Group::Type group)
     {
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }

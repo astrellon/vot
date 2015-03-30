@@ -22,7 +22,7 @@ namespace vot
         auto player = gs->player();
 
         auto to_player = player->location() - _controlling->location();
-        auto dist = Utils::vector_length(to_player);
+        auto dist = utils::Utils::vector_length(to_player);
         auto unit_player = to_player / dist;
 
         /*

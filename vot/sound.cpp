@@ -3,14 +3,14 @@
 #include <sstream>
 #include <iostream>
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "game_system.h"
 
 namespace vot
 {
     // Sound {{{
     Sound::Sound() :
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _time_played_at(0.0f),
         _type(Sound::SoundEffects)
     {
@@ -84,7 +84,7 @@ namespace vot
 
 
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }

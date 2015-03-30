@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "circle.h"
+#include "utils/circle.h"
 #include "hardpoint.h"
 #include "thruster.h"
 
@@ -29,7 +29,7 @@ namespace vot
             void rotation(float angle);
             float rotation() const;
 
-            Circle &hitbox();
+            utils::Circle &hitbox();
             void take_damage(float damage);
 
             void is_dead(bool value);
@@ -93,7 +93,7 @@ namespace vot
 
         private:
             sf::Sprite _sprite;
-            Circle _hitbox;
+            utils::Circle _hitbox;
             float _life;
             float _max_life;
             bool _is_dead;

@@ -2,7 +2,7 @@
 
 #include "game_system.h"
 #include "bullet.h"
-#include "utils.h"
+#include "utils/utils.h"
 #include "texture_manager.h"
 
 #include <iostream>
@@ -52,7 +52,7 @@ namespace vot
         _shader.setParameter("Resolution", 800.0f, 600.0f);
         _shader.setParameter("LightPos", 1.0f, 1.0f, 1.0f);
         _shader.setParameter("LightColor", 1.0f, 0.9f, 0.8f, 1.0f);
-        _shader.setParameter("AmbientColour", 1.0f, 1.0f, 1.0f, 0.1f);
+        _shader.setParameter("AmbientColor", 1.0f, 1.0f, 1.0f, 0.1f);
         _shader.setParameter("Falloff", 0.5f, 0.5f, 0.5f);
         _shader.setParameter("u_texture", *sprite().getTexture());
 
@@ -137,12 +137,12 @@ namespace vot
 
             auto distance_to_stop = rot_velocity() * time_to_stop + 0.5f * rot_acceleration() * time_to_stop * time_to_stop;
 
-            auto angles = Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
+            auto angles = utils::Utils::calculate_angles(getPosition(), _target->getPosition(), rotation(), -90.0f);
 
-            auto abs_delta = Utils::abs(angles.delta_angle());
-            auto diff = abs_delta - Utils::abs(distance_to_stop);
+            auto abs_delta = utils::Utils::abs(angles.delta_angle());
+            auto diff = abs_delta - utils::Utils::abs(distance_to_stop);
             auto dir_speed = (angles.delta_angle() > 0) ? -rot_speed() : rot_speed();
-            if (abs_delta > 0.1f && Utils::abs(rot_velocity()) < 0.1f)
+            if (abs_delta > 0.1f && utils::Utils::abs(rot_velocity()) < 0.1f)
             {
                 if (diff > 0.1f)
                 {
@@ -201,7 +201,7 @@ namespace vot
         return _auto_target;
     }
 
-    Circle &Player::powerup_hitbox()
+    utils::Circle &Player::powerup_hitbox()
     {
         return _powerup_hitbox;
     }

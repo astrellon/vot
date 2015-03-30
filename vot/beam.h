@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "object_manager.h"
-#include "ray.h"
+#include "utils/ray.h"
 #include "common.h"
 
 namespace vot
@@ -17,8 +17,8 @@ namespace vot
         public:
             Beam();
 
-            Ray &hitbox();
-            const Ray &hitbox() const;
+            utils::Ray &hitbox();
+            const utils::Ray &hitbox() const;
 
             void max_length(float value);
             float max_length() const;
@@ -49,7 +49,7 @@ namespace vot
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:
-            Ray _hitbox;
+            utils::Ray _hitbox;
             uint32_t _index;
             Group::Type _group;
             float _max_length;

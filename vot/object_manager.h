@@ -4,7 +4,7 @@
 #include <memory>
 #include <array>
 
-#include "utils.h"
+#include "utils/utils.h"
 
 namespace vot
 {
@@ -50,7 +50,7 @@ namespace vot
                     }
                 }
 
-                return Utils::max_uint;
+                return utils::Utils::max_uint;
             }
 
             void insert_object(T *object, uint32_t index)

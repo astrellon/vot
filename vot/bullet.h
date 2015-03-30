@@ -7,7 +7,7 @@
 #include <memory>
 #include <array>
 
-#include "circle.h"
+#include "utils/circle.h"
 #include "object_manager.h"
 #include "common.h"
 
@@ -39,12 +39,12 @@ namespace vot
             void group(Group::Type value);
             Group::Type group() const;
 
-            Circle &hitbox();
+            utils::Circle &hitbox();
 
         private:
             float _damage;
             uint32_t _index;
-            Circle _hitbox;
+            utils::Circle _hitbox;
             Group::Type _group;
     };
     // }}}

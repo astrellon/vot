@@ -1,13 +1,13 @@
 #include "beam.h"
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "texture_manager.h"
 
 namespace vot
 {
     // Beam {{{
     Beam::Beam() :
-        _index(Utils::max_uint),
+        _index(utils::Utils::max_uint),
         _group(Group::NATURE),
         _max_length(100.0f),
         _width(10.0f),
@@ -26,11 +26,11 @@ namespace vot
         _shape_top.setTexture(texture, true);
     }
 
-    Ray &Beam::hitbox()
+    utils::Ray &Beam::hitbox()
     {
         return _hitbox;
     }
-    const Ray &Beam::hitbox() const
+    const utils::Ray &Beam::hitbox() const
     {
         return _hitbox;
     }
@@ -153,7 +153,7 @@ namespace vot
         }
 
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }
@@ -166,7 +166,7 @@ namespace vot
     Beam *BeamManager::spawn_beam(const Beam &blueprint, Group::Type group)
     {
         auto index = find_empty_object();
-        if (index == Utils::max_uint)
+        if (index == utils::Utils::max_uint)
         {
             return nullptr;
         }

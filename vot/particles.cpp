@@ -1,6 +1,6 @@
 #include "particles.h"
 
-#include "utils.h"
+#include "utils/utils.h"
 #include <iostream>
 
 namespace vot
@@ -39,12 +39,12 @@ namespace vot
         }
 
         auto dl = _lifetime / _total_lifetime;
-        auto position = Utils::lerp(_init_position, _target_position, dl);  
+        auto position = utils::Utils::lerp(_init_position, _target_position, dl);  
         setPosition(position);
-        auto scale = Utils::para_lerp(_init_scale, _target_scale, dl);
+        auto scale = utils::Utils::para_lerp(_init_scale, _target_scale, dl);
         setScale(scale, scale);
 
-        auto alpha = static_cast<uint8_t>(Utils::para_lerp(_init_alpha, _target_alpha, dl));
+        auto alpha = static_cast<uint8_t>(utils::Utils::para_lerp(_init_alpha, _target_alpha, dl));
         setColor(sf::Color(255u, 255u, 255u, alpha));
 
         if (_lifetime > _total_lifetime)
@@ -265,8 +265,8 @@ namespace vot
     {
         if (_system_type == 0u)
         {
-            auto angle = Utils::randf(-0.8f, 0.8f);
-            auto dist = Utils::randf(20, 28);
+            auto angle = utils::Utils::randf(-0.8f, 0.8f);
+            auto dist = utils::Utils::randf(20, 28);
             auto x = cos(angle) * dist;
             auto y = sin(angle) * dist;
 
@@ -276,8 +276,8 @@ namespace vot
         }
         else if (_system_type == 1u)
         {
-            auto angle = Utils::randf(-0.7f, 0.7f);
-            auto dist = Utils::randf(12, 20);
+            auto angle = utils::Utils::randf(-0.7f, 0.7f);
+            auto dist = utils::Utils::randf(12, 20);
             auto x = cos(angle) * dist;
             auto y = sin(angle) * dist;
 
@@ -286,13 +286,13 @@ namespace vot
             particle.alphas(255u, 0u);
             particle.texture(_texture);
 
-            auto lifetime_offset = Utils::randf(0, 1.0f);
+            auto lifetime_offset = utils::Utils::randf(0, 1.0f);
             particle.lifetime(-lifetime_offset);
         }
         else if (_system_type == 2u)
         {
             auto angle = _spawn_rotation_offset;
-            auto dist = Utils::randf(28, 32);
+            auto dist = utils::Utils::randf(28, 32);
             auto x = cos(angle) * dist;
             auto y = sin(angle) * dist;
 

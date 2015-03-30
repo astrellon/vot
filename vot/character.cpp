@@ -49,7 +49,7 @@ namespace vot
     void Character::translate(const sf::Vector2f &vector)
     {
         // Transform move vector by the sprites rotation matrix.
-        auto local_direction = Utils::transform_direction(getTransform(), vector);
+        auto local_direction = utils::Utils::transform_direction(getTransform(), vector);
         move(local_direction);
         //_hitbox.location(getPosition());
     }
@@ -94,13 +94,13 @@ namespace vot
         // Velocity {{{
         if (_translate_assist && _acceleration.x == 0.0f && _acceleration.y == 0.0f)
         {
-            if (Utils::vector_dot(_velocity, _velocity) < 2.0f)
+            if (utils::Utils::vector_dot(_velocity, _velocity) < 2.0f)
             {
                 _velocity.x = _velocity.y = 0.0f;
             }
             else
             {
-                auto local_velocity = Utils::transform_direction(getInverseTransform(), _velocity); 
+                auto local_velocity = utils::Utils::transform_direction(getInverseTransform(), _velocity); 
                 _acceleration = local_velocity / -dt;
                 if (_acceleration.x > _strafe_speed)
                 {
@@ -120,11 +120,11 @@ namespace vot
                 }
             }
         }
-        auto world_acceleration = Utils::transform_direction(getTransform(), _acceleration);
+        auto world_acceleration = utils::Utils::transform_direction(getTransform(), _acceleration);
 
         _velocity += world_acceleration * dt;
 
-        auto length = Utils::vector_length(_velocity);
+        auto length = utils::Utils::vector_length(_velocity);
         if (length > _max_speed)
         {
             _velocity /= length;
@@ -133,7 +133,7 @@ namespace vot
 
         auto dt_velocity = _velocity * dt;
         if (_acceleration.x == 0.0f && _acceleration.y == 0.0f && 
-                _translate_assist && Utils::vector_dot(_velocity, _velocity) < 10.0f)
+                _translate_assist && utils::Utils::vector_dot(_velocity, _velocity) < 10.0f)
         {
             _velocity.x = _velocity.y = 0.0f;
             dt_velocity.x = dt_velocity.y = 0.0f;
@@ -144,7 +144,7 @@ namespace vot
 
         /*
         auto unit_acc = _acceleration;
-        auto len_acc = Utils::vector_length(world_acceleration);
+        auto len_acc = utils::Utils::vector_length(world_acceleration);
         if (len_acc > 0.0f)
         {
             unit_acc /= len_acc;
@@ -155,7 +155,7 @@ namespace vot
         // Rotational velocity {{{
         if (_rot_acceleration == 0.0f && _rotation_assist)
         {
-            if (Utils::abs(_rot_velocity) < 0.5f)
+            if (utils::Utils::abs(_rot_velocity) < 0.5f)
             {
                 _rot_velocity = 0.0f;
             }
@@ -203,7 +203,7 @@ namespace vot
         }
     }
 
-    Circle &Character::hitbox()
+    utils::Circle &Character::hitbox()
     {
         return _hitbox;
     }
@@ -281,7 +281,7 @@ namespace vot
     {
         thruster->parent(this);
         auto direction = thruster->forwards();
-        auto dot = Utils::vector_dot(direction, sf::Vector2f(0, 1));
+        auto dot = utils::Utils::vector_dot(direction, sf::Vector2f(0, 1));
         auto max_thrust = 0.0f;
         if (dot > 0.0f)
         {
@@ -292,8 +292,8 @@ namespace vot
             max_thrust += -dot * forwards_speed();
         }
 
-        dot = Utils::vector_dot(direction, sf::Vector2f(1, 0));
-        max_thrust += Utils::abs(dot) * strafe_speed();
+        dot = utils::Utils::vector_dot(direction, sf::Vector2f(1, 0));
+        max_thrust += utils::Utils::abs(dot) * strafe_speed();
 
         thruster->max_thrust(max_thrust);
 
@@ -302,7 +302,7 @@ namespace vot
 
     void Character::acceleration(const sf::Vector2f &acc)
     {
-        //_acceleration = Utils::transform_direction(getTransform(), acc);
+        //_acceleration = utils::Utils::transform_direction(getTransform(), acc);
         _acceleration = acc;
     }
     sf::Vector2f Character::acceleration() const

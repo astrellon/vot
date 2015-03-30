@@ -6,7 +6,7 @@
 
 #include "texture_manager.h"
 #include "game_system.h"
-#include "utils.h"
+#include "utils/utils.h"
 
 namespace vot
 {
@@ -44,15 +44,15 @@ namespace vot
             {
                 sprite = &red_star_sprite;
             }
-            auto x = size * (Utils::randf() * 0.95f + 0.025f);
-            auto y = size * (Utils::randf() * 0.95f + 0.025f);
+            auto x = size * (utils::Utils::randf() * 0.95f + 0.025f);
+            auto y = size * (utils::Utils::randf() * 0.95f + 0.025f);
 
-            auto r = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
-            auto g = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
-            auto b = static_cast<uint8_t>(Utils::randf(0.0, 30.0f) + 155);
+            auto r = static_cast<uint8_t>(utils::Utils::randf(0.0, 30.0f) + 155);
+            auto g = static_cast<uint8_t>(utils::Utils::randf(0.0, 30.0f) + 155);
+            auto b = static_cast<uint8_t>(utils::Utils::randf(0.0, 30.0f) + 155);
             sf::Color colour(r, g, b);
 
-            auto scale = (powf(2.0f, Utils::randf()) - 1.0f) * (powf(2.0f, (_speed + 0.5f) - 1.0f));
+            auto scale = (powf(2.0f, utils::Utils::randf()) - 1.0f) * (powf(2.0f, (_speed + 0.5f) - 1.0f));
             sprite->setScale(scale, scale);
             sprite->setPosition(x, y);
             sprite->setColor(colour);
