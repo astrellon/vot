@@ -37,6 +37,8 @@ namespace vot
             void add_hardpoint_placement(HardpointPlacement *placement);
             void add_thruster_placement(float x, float y, float rotation, float size);
 
+            virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+
         private:
             float _cooldown;
             float _homing_cooldown;
@@ -46,6 +48,7 @@ namespace vot
 
             std::map<Powerup::Type, int32_t> _powerups;
             Circle _powerup_hitbox;
+            sf::Shader _shader;
             
             std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
 

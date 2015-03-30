@@ -53,6 +53,8 @@ namespace vot
             static float time_since_start();
             
             static sf::View &hud_camera();
+            static sf::Vector2i mouse_position();
+            static sf::Vector2u window_size();
 
         private:
             static sf::RenderWindow *s_window;

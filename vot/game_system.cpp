@@ -280,4 +280,12 @@ namespace vot
     {
         return s_hud_camera;
     }
+    sf::Vector2i GameSystem::mouse_position()
+    {
+        return sf::Mouse::getPosition(*s_window);
+    }
+    sf::Vector2u GameSystem::window_size()
+    {
+        return s_window->getSize();
+    }
 }

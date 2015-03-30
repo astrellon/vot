@@ -185,6 +185,7 @@ namespace vot
     {
         states.transform *= getTransform();
         target.draw(_sprite, states);
+        
         /*
         sf::RectangleShape line;
         line.setSize(sf::Vector2f(_sprite.getTexture()->getSize()));

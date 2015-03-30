@@ -77,6 +77,7 @@ namespace vot
             try_load("bullet_blue_circle", "bullet_blue_circle.png");
             try_load("bullet_red_circle", "bullet_red_circle.png");
             try_load("player", "playerShip2_blue.png");
+            try_load("player_normal", "playerShip2_blue_normal.png");
             try_load("red_star", "red_star.png");
             try_load("blue_star", "blue_star.png");
             try_load("enemy", "ufoRed.png");

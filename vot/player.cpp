@@ -6,6 +6,7 @@
 #include "texture_manager.h"
 
 #include <iostream>
+#include <exception>
 
 namespace vot
 {
@@ -43,11 +44,33 @@ namespace vot
         
         add_thruster_placement(-28, 3, 270, 0.35f);
         add_thruster_placement(28, 3, 90, 0.35f);
+
+        if (!_shader.loadFromFile("data/shaders/base.vert", "data/shaders/normal.frag"))
+        {
+            throw std::runtime_error("Error loading player shader");
+        }
+        _shader.setParameter("Resolution", 800.0f, 600.0f);
+        _shader.setParameter("LightPos", 1.0f, 1.0f, 1.0f);
+        _shader.setParameter("LightColor", 1.0f, 0.9f, 0.8f, 1.0f);
+        _shader.setParameter("AmbientColour", 1.0f, 1.0f, 1.0f, 0.1f);
+        _shader.setParameter("Falloff", 0.5f, 0.5f, 0.5f);
+        _shader.setParameter("u_texture", *sprite().getTexture());
+
+        auto normal = TextureManager::texture("player_normal");
+        _shader.setParameter("u_normals", *normal);
     }
     
     void Player::update(float dt)
     {
         auto gs = GameSystem::game();
+        auto window_size = sf::Vector2f(GameSystem::window_size());
+
+        _shader.setParameter("Resolution", window_size.x, window_size.y);
+
+        auto mouse = sf::Vector2f(GameSystem::mouse_position());
+        mouse.x /= window_size.x;
+        mouse.y /= window_size.y;
+        _shader.setParameter("LightPos", mouse.x, 1.0f - mouse.y, 0.2f);
 
         // Keyboard input {{{
         sf::Vector2f acc;
@@ -253,5 +276,11 @@ namespace vot
         thruster->setRotation(rotation);
         thruster->thrust_size(size);
         add_thruster(thruster);
+    }
+
+    void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        //states.shader = &_shader;
+        Character::draw(target, states);
     }
 }
