@@ -106,7 +106,7 @@ namespace vot
 
     void TextureManager::try_load(const std::string &name, const std::string &from_data)
     {
-        std::string filename("data/");
+        std::string filename("data/textures/");
         filename += from_data;
 
         if (!load_texture_log(name, filename))

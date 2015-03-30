@@ -50,12 +50,12 @@ namespace vot
     
     bool FontManager::load_default_fonts()
     {
-        if (!load_font("mono", "data/LiberationMono-Regular.ttf"))
+        if (!load_font("mono", "data/fonts/LiberationMono-Regular.ttf"))
         {
             std::cout << "Failed to load mono font\n";
             return false;
         }
-        if (!load_font("sans", "data/LiberationSans-Regular.ttf"))
+        if (!load_font("sans", "data/fonts/LiberationSans-Regular.ttf"))
         {
             std::cout << "Failed to load sans font\n";
             return false;

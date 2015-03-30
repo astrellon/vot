@@ -10,6 +10,7 @@
 
 namespace vot
 {
+    // Sound {{{
     class Sound : public sf::Sound
     {
         public:
@@ -34,7 +35,9 @@ namespace vot
             float _time_played_at;
             Type _type;
     };
+    // }}}
 
+    // SoundManager {{{
     class SoundManager : public ObjectManager<Sound, 128>
     {
         public:
@@ -70,4 +73,5 @@ namespace vot
             bool load_sound_log(const std::string &name, const std::string &filename);
             void try_load(const std::string &name, const std::string &from_sound);
     };
+    // }}}
 }

@@ -37,7 +37,7 @@ namespace vot
     {
         // TODO Why is the dt coming from main not constant.
         //dt = 1.0f / 60.0f;
-        std::cout << "Update dt: " << dt << "\n";
+        //std::cout << "Update dt: " << dt << "\n";
         if (_player == nullptr || _paused)
         {
             return;

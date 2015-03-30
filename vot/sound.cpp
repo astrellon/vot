@@ -8,6 +8,7 @@
 
 namespace vot
 {
+    // Sound {{{
     Sound::Sound() :
         _index(Utils::max_uint),
         _time_played_at(0.0f),
@@ -42,7 +43,9 @@ namespace vot
     {
         return _type;
     }
+    // }}}
 
+    // SoundManager {{{
     void SoundManager::clear()
     {
         for (auto i = 0u; i < _objects.size(); i++)
@@ -235,4 +238,5 @@ namespace vot
             }
         }
     }
+    // }}}
 }
