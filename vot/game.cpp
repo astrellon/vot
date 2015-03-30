@@ -36,7 +36,7 @@ namespace vot
     void Game::update(float dt)
     {
         // TODO Why is the dt coming from main not constant.
-        dt = 1.0f / 60.0f;
+        //dt = 1.0f / 60.0f;
         std::cout << "Update dt: " << dt << "\n";
         if (_player == nullptr || _paused)
         {
@@ -56,7 +56,7 @@ namespace vot
             {
                 auto enemy = enemy_manager->spawn_enemy("enemy1");
                 enemy->controller(new EnemyFighter(enemy));
-                enemy->translate(Utils::rand_vec(-50.0f, 50.0f));
+                enemy->translate(Utils::rand_vec(-200.0f, 200.0f));
                 _spawn_timer = 0.0f;
 
                 if (_player->target() == nullptr && _player->auto_target())
@@ -365,7 +365,7 @@ namespace vot
             }
         }
 
-        auto explosion = GameSystem::sound_manager()->spawn_sound("explosion2");
+        auto explosion = GameSystem::sound_manager()->spawn_sound("explosion2", Sound::SoundEffects);
         explosion->play();
 
         auto rand = Utils::randf();

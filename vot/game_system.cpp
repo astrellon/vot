@@ -47,7 +47,7 @@ namespace vot
         create_default_powerups();
         create_default_beams();
 
-        if (!s_sound_manager.load_default_sounds())
+        if (!s_sound_manager.init())
         {
             return false;
         }

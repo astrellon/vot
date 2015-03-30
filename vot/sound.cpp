@@ -10,7 +10,8 @@ namespace vot
 {
     Sound::Sound() :
         _index(Utils::max_uint),
-        _time_played_at(0.0f)
+        _time_played_at(0.0f),
+        _type(Sound::SoundEffects)
     {
 
     }
@@ -33,6 +34,15 @@ namespace vot
         return _time_played_at;
     }
 
+    void Sound::type(Sound::Type value)
+    {
+        _type = value;
+    }
+    Sound::Type Sound::type() const
+    {
+        return _type;
+    }
+
     void SoundManager::clear()
     {
         for (auto i = 0u; i < _objects.size(); i++)
@@ -42,11 +52,11 @@ namespace vot
             {
                 sound->stop();
             }
+            _objects[i] = nullptr;
         }
-        _sound_buffers.clear();
     }
 
-    Sound *SoundManager::spawn_sound(const std::string &name)
+    Sound *SoundManager::spawn_sound(const std::string &name, Sound::Type type)
     {
         auto find = _sound_buffers.find(name);
         if (find == _sound_buffers.end())
@@ -79,6 +89,9 @@ namespace vot
         auto new_sound = new Sound();
         new_sound->setBuffer(*find->second.get());
         new_sound->time_played_at(current_time);
+        new_sound->type(type);
+        auto v = sfml_volume(type);
+        new_sound->setVolume(v);
         insert_object(new_sound, index);
         return new_sound;
     }
@@ -113,6 +126,15 @@ namespace vot
         }
 
         return find->second.get();
+    }
+
+    bool SoundManager::init()
+    {
+        volume(Sound::Music, 1.0f, false);
+        volume(Sound::SoundEffects, 0.3f, false);
+        volume(Sound::UserInterface, 0.3f, false);
+
+        return load_default_sounds();
     }
 
     bool SoundManager::load_default_sounds()
@@ -160,17 +182,56 @@ namespace vot
         return result;
     }
 
+    const SoundManager::SoundVolumeMap &SoundManager::volumes() const
+    {
+        return _volumes;
+    }
+
+    void SoundManager::volume(Sound::Type type, float volume, bool update_existing_sounds)
+    {
+        _volumes[type] = volume;
+
+
+        if (update_existing_sounds)
+        {
+            auto v = sfml_volume(type);
+            for (auto i = 0u; i < _objects.size(); i++)
+            {
+                auto sound = _objects[i].get();
+                if (sound != nullptr && 
+                    sound->type() == type &&
+                    sound->getStatus() == sf::SoundSource::Playing)
+                {
+                    sound->setVolume(v);
+                }
+            }
+        }
+    }
+    float SoundManager::volume(Sound::Type type) const
+    {
+        auto find = _volumes.find(type);
+        if (find == _volumes.end())
+        {
+            return 1.0f;
+        }
+        return find->second;
+    }
+
+    float SoundManager::sfml_volume(Sound::Type type) const
+    {
+        auto v = volume(type);
+        auto e = 10.0f;
+        return (powf(e, v) - 1.0f) / e * 100.0f;
+    }
+
     void SoundManager::update(float dt)
     {
         for (auto i = 0u; i < _objects.size(); i++)
         {
             auto sound = _objects[i].get();
-            if (sound != nullptr)
+            if (sound != nullptr && sound->getStatus() != sf::SoundSource::Playing)
             {
-                if (sound->getStatus() != sf::SoundSource::Playing)
-                {
-                    _objects[i] = nullptr;
-                }
+                _objects[i] = nullptr;
             }
         }
     }

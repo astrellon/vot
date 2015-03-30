@@ -43,7 +43,7 @@
     <LibraryPath>./sfml/win/SFML-2.2/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>./sfml/win/SFML-2.2/include;$(IncludePath)</IncludePath>
+    <IncludePath>./;./sfml/win/SFML-2.2/include;$(IncludePath)</IncludePath>
     <LibraryPath>./sfml/win/SFML-2.2/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

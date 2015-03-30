@@ -32,7 +32,7 @@ namespace vot
 
                 if (focus)
                 {
-                    auto sound = GameSystem::sound_manager()->spawn_sound("select");
+                    auto sound = GameSystem::sound_manager()->spawn_sound("select", Sound::UserInterface);
                     sound->play();
                 }
             }
