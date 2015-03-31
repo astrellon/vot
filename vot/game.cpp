@@ -9,7 +9,6 @@
 namespace vot
 {
     Game::Game() :
-        _spawn_timer(0.0f),
         _paused(false)
     {
         auto player = new vot::Player(*TextureManager::texture("player"));
@@ -48,23 +47,6 @@ namespace vot
         auto bullet_manager = GameSystem::bullet_manager();
         auto beam_manager = GameSystem::beam_manager();
         auto particle_manager = GameSystem::particle_manager();
-
-        if (true && enemy_manager->num_enemies() < 3)
-        {
-            _spawn_timer += dt;
-            if (_spawn_timer > 3.0f)
-            {
-                auto enemy = enemy_manager->spawn_enemy("enemy1");
-                enemy->controller(new EnemyFighter(enemy));
-                enemy->translate(utils::Utils::rand_vec(-200.0f, 200.0f));
-                _spawn_timer = 0.0f;
-
-                if (_player->target() == nullptr && _player->auto_target())
-                {
-                    _player->target(enemy);
-                }
-            }
-        }
 
         auto enemies = enemy_manager->objects();
         for (auto i = 0u; i < enemies->size(); i++)

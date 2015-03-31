@@ -41,7 +41,6 @@ namespace vot
             s_keys_released[i] = 0u;
         }
         
-        TextureManager::display("Init GS");
         create_default_bullets();
         create_default_enemies();
         create_default_powerups();

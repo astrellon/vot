@@ -48,7 +48,6 @@ namespace vot
             Background _background3;
 
             bool _paused;
-            float _spawn_timer;
 
             void kill_enemy(Enemy *enemy);
             void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);
