@@ -280,7 +280,7 @@ namespace vot
 
     void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        states.shader = &_shader;
+        //states.shader = &_shader;
         Character::draw(target, states);
     }
 }

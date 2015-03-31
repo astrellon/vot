@@ -45,6 +45,8 @@ namespace vot
             void add_src_enemy(const std::string &name, Enemy *enemy);
             uint32_t num_enemies() const;
 
+            void clear_enemies();
+
             typedef std::map<std::string, std::unique_ptr<Enemy> > EnemyMap;
             const EnemyMap &src_enemies() const;
 

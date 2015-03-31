@@ -47,7 +47,9 @@ namespace vot
             bool init();
             bool load_default_sounds();
 
-            typedef std::map<std::string, std::unique_ptr<sf::SoundBuffer> > SoundBufferMap;
+            // Unsure if we can just use raw pointers for sound buffers or not.
+            // OpenAL seems to complain when we delete them on shutdown.
+            typedef std::map<std::string, sf::SoundBuffer *> SoundBufferMap;
             const SoundBufferMap &sound_buffers();
 
             typedef std::map<Sound::Type, float> SoundVolumeMap;

@@ -5,6 +5,7 @@
 
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
+#include <vot/level.h>
 
 namespace vot
 {
@@ -24,7 +25,10 @@ namespace vot
             s_start_game->setPosition(300, 200);
             s_start_game->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                GameSystem::start_game();
+                auto game = new Game();
+                GameSystem::game(game);
+                game->level(LevelManager::level("level1"));
+
                 MainMenu::visible(false);
             });
             Manager::add_component(s_start_game);

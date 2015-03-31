@@ -3,12 +3,14 @@
 #include "texture_manager.h"
 #include "game_system.h"
 #include "enemy_fighter.h"
+#include "level.h"
 
 #include <iostream>
 
 namespace vot
 {
     Game::Game() :
+        _current_level(nullptr),
         _paused(false)
     {
         auto player = new vot::Player(*TextureManager::texture("player"));
@@ -47,6 +49,11 @@ namespace vot
         auto bullet_manager = GameSystem::bullet_manager();
         auto beam_manager = GameSystem::beam_manager();
         auto particle_manager = GameSystem::particle_manager();
+
+        if (_current_level != nullptr)
+        {
+            _current_level->update(dt);
+        }
 
         auto enemies = enemy_manager->objects();
         for (auto i = 0u; i < enemies->size(); i++)
@@ -266,6 +273,25 @@ namespace vot
     sf::View &Game::camera()
     {
         return _camera;
+    }
+
+    void Game::level(Level *lvl)
+    {
+        if (_current_level != nullptr)
+        {
+            _current_level->deinit();
+        }
+
+        GameSystem::enemy_manager()->clear_enemies();
+        _current_level = lvl;
+        if (_current_level != nullptr)
+        {
+            _current_level->init();
+        }
+    }
+    Level *Game::level() const
+    {
+        return _current_level;
     }
 
     void Game::paused(bool value)

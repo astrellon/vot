@@ -71,7 +71,7 @@ namespace vot
         for (auto i = 0u; i < _objects.size(); i++)
         {
             auto sound = _objects[i].get();
-            if (sound != nullptr && sound->getBuffer() == find->second.get())
+            if (sound != nullptr && sound->getBuffer() == find->second)
             {
                 // Prevent the same sound from being played too close to each other.
                 auto time_diff = current_time - sound->time_played_at();
@@ -90,7 +90,7 @@ namespace vot
         }
 
         auto new_sound = new Sound();
-        new_sound->setBuffer(*find->second.get());
+        new_sound->setBuffer(*find->second);
         new_sound->time_played_at(current_time);
         new_sound->type(type);
         auto v = sfml_volume(type);
@@ -117,7 +117,7 @@ namespace vot
             return false;
         }
 
-        _sound_buffers[name] = std::unique_ptr<sf::SoundBuffer>(buffer);
+        _sound_buffers[name] = buffer;
         return true;
     }
     const sf::SoundBuffer *SoundManager::sound_buffer(const std::string &name)
@@ -128,7 +128,7 @@ namespace vot
             return nullptr;
         }
 
-        return find->second.get();
+        return find->second;
     }
 
     bool SoundManager::init()

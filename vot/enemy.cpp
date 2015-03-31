@@ -87,6 +87,15 @@ namespace vot
         return new_enemy;
     }
 
+    void EnemyManager::clear_enemies()
+    {
+        for (auto i = 0u; i < _objects.size(); i++)
+        {
+            _objects[i] = nullptr;
+        }
+        _num_enemies = 0u;
+    }
+
     uint32_t EnemyManager::num_enemies() const
     {
         return _num_enemies;

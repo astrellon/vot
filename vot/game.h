@@ -11,6 +11,8 @@
 
 namespace vot
 {
+    class Level;
+
     class Game : public sf::Drawable
     {
         public:
@@ -23,6 +25,9 @@ namespace vot
             PlayerInfo *player_info() const;
 
             sf::View &camera();
+
+            void level(Level *lvl);
+            Level *level() const;
 
             void paused(bool value);
             bool paused() const;
@@ -46,6 +51,8 @@ namespace vot
             Background _background;
             Background _background2;
             Background _background3;
+
+            Level *_current_level;
 
             bool _paused;
 
