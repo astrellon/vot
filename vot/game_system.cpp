@@ -9,7 +9,7 @@
 #include "enemy_fighter.h"
 #include "ui/main_menu.h"
 #include "ui/level_select.h"
-#include "level.h"
+#include "levels/level.h"
 
 namespace vot
 {

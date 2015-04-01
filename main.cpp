@@ -11,8 +11,9 @@
 #include "vot/texture_manager.h"
 #include "vot/ui/manager.h"
 #include "vot/ui/button.h"
+#include "vot/ui/main_menu.h"
 #include "vot/ui/level_select.h"
-#include "vot/level.h"
+#include "vot/levels/level.h"
 
 int main()
 {

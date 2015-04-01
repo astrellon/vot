@@ -6,7 +6,7 @@
 
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
-#include <vot/level.h>
+#include <vot/levels/level.h>
 
 namespace vot
 {

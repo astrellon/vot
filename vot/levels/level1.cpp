@@ -1,9 +1,9 @@
 #include "level1.h"
 
-#include "game_system.h"
-#include "game.h"
-#include "enemy.h"
-#include "enemy_fighter.h"
+#include <vot/game_system.h>
+#include <vot/game.h>
+#include <vot/enemy.h>
+#include <vot/enemy_fighter.h>
 
 namespace vot
 {
