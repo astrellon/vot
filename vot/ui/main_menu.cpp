@@ -2,6 +2,7 @@
 
 #include "button.h"
 #include "manager.h"
+#include "level_select.h"
 
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
@@ -20,25 +21,28 @@ namespace vot
         {
             auto idle_texture = TextureManager::texture("button_idle");
             
-            s_start_game = new vot::ui::Button("Start Game");
+            s_start_game = new Button("Start Game");
             s_start_game->texture(*idle_texture);
             s_start_game->setPosition(300, 200);
             s_start_game->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
+            /*
                 auto game = new Game();
                 GameSystem::game(game);
                 game->level(LevelManager::level("level1"));
+                */
+                LevelSelect::visible(true);
 
                 MainMenu::visible(false);
             });
             Manager::add_component(s_start_game);
 
-            s_options = new vot::ui::Button("Options");
+            s_options = new Button("Options");
             s_options->texture(*idle_texture);
             s_options->setPosition(300, 260);
             Manager::add_component(s_options);
             
-            s_quit = new vot::ui::Button("Quit");
+            s_quit = new Button("Quit");
             s_quit->texture(*idle_texture);
             s_quit->setPosition(300, 320);
             s_quit->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)

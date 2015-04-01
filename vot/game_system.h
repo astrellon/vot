@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
 
-#include "ui/main_menu.h"
 #include "bullet.h"
 #include "enemy.h"
 #include "powerup.h"
@@ -47,7 +46,7 @@ namespace vot
             static void game(Game *value);
             static Game *game();
 
-            static void start_game();
+            static void start_game(const std::string &level);
             static void close_game();
 
             static float time_since_start();
@@ -68,7 +67,6 @@ namespace vot
 
             static sf::View s_hud_camera;
             static std::unique_ptr<Game> s_game;
-            static ui::MainMenu s_main_menu;
 
             static float s_time_since_start;
 

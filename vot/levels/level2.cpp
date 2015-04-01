@@ -1,4 +1,4 @@
-#include "level1.h"
+#include "level2.h"
 
 #include "game_system.h"
 #include "game.h"
@@ -7,16 +7,21 @@
 
 namespace vot
 {
-    void Level1::init()
+    void Level2::init()
     {
         _spawn_timer = 0.0f;
     }
-    void Level1::deinit()
+    void Level2::deinit()
     {
 
     }
 
-    void Level1::update(float dt)
+    std::string Level2::name() const
+    {
+        return "Level 2";
+    }
+
+    void Level2::update(float dt)
     {
         auto enemy_manager = GameSystem::enemy_manager();
         auto game = GameSystem::game();

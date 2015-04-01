@@ -11,6 +11,7 @@
 #include "vot/texture_manager.h"
 #include "vot/ui/manager.h"
 #include "vot/ui/button.h"
+#include "vot/ui/level_select.h"
 #include "vot/level.h"
 
 int main()
@@ -52,6 +53,12 @@ int main()
     if (!vot::LevelManager::init())
     {
         std::cout << "Failed to load levels\n";
+        return -1;
+    }
+
+    if (!vot::ui::LevelSelect::init())
+    {
+        std::cout << "Failed to initialise Level Select\n";
         return -1;
     }
 
@@ -113,6 +120,7 @@ int main()
     // }}}
 
     vot::LevelManager::deinit();
+    vot::ui::LevelSelect::deinit();
     vot::ui::MainMenu::deinit();
     vot::GameSystem::deinit();
     vot::ui::Manager::deinit();

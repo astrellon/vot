@@ -13,6 +13,8 @@ namespace vot
             virtual void deinit() = 0;
 
             virtual void update(float dt) = 0;
+
+            virtual std::string name() const = 0;
     };
 
     class LevelManager
@@ -22,7 +24,7 @@ namespace vot
             static void deinit();
 
             typedef std::map<std::string, std::unique_ptr<Level> > LevelMap;
-            static const LevelMap &levels();
+            static const LevelMap *levels();
 
             static void level(const std::string &name, Level *level);
             static Level *level(const std::string &name);

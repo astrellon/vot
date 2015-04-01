@@ -7,6 +7,9 @@
 #include "utils/utils.h"
 #include "common.h"
 #include "enemy_fighter.h"
+#include "ui/main_menu.h"
+#include "ui/level_select.h"
+#include "level.h"
 
 namespace vot
 {
@@ -21,7 +24,6 @@ namespace vot
 
     sf::View GameSystem::s_hud_camera;
     std::unique_ptr<Game> GameSystem::s_game;
-    ui::MainMenu GameSystem::s_main_menu;
 
     float GameSystem::s_time_since_start = 0.0f;;
 
@@ -217,6 +219,7 @@ namespace vot
         {
             on_resize(event.size.width, event.size.height);
             ui::MainMenu::on_resize(event.size.width, event.size.height);
+            ui::LevelSelect::on_resize(event.size.width, event.size.height);
         }
     }
 
@@ -229,9 +232,11 @@ namespace vot
         return s_game.get();
     }
 
-    void GameSystem::start_game()
+    void GameSystem::start_game(const std::string &level)
     {
-        game(new Game());
+        auto g = new Game();
+        g->level(LevelManager::level(level));
+        game(g);
     }
     void GameSystem::close_game()
     {

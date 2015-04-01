@@ -12,6 +12,8 @@ namespace vot
 
             virtual void update(float dt);
 
+            virtual std::string name() const;
+
         private:
             float _spawn_timer;
     };
