@@ -14,9 +14,14 @@
 #include "vot/ui/main_menu.h"
 #include "vot/ui/level_select.h"
 #include "vot/levels/level.h"
+#include "vot/player_info.h"
 
 int main()
 {
+    auto info = vot::PlayerInfoManager::spawn_info("Alan");
+    info->credits(550.0f);
+    info->save();
+
     // Init {{{
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
