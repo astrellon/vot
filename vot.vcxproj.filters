@@ -5,9 +5,6 @@
     <ClCompile Include="vot\bullet.cpp">
       <Filter>vot</Filter>
     </ClCompile>
-    <ClCompile Include="vot\circle.cpp">
-      <Filter>vot</Filter>
-    </ClCompile>
     <ClCompile Include="vot\font_manager.cpp">
       <Filter>vot</Filter>
     </ClCompile>
@@ -32,16 +29,10 @@
     <ClCompile Include="vot\game_hud.cpp">
       <Filter>vot</Filter>
     </ClCompile>
-    <ClCompile Include="vot\utils.cpp">
-      <Filter>vot</Filter>
-    </ClCompile>
     <ClCompile Include="vot\particles.cpp">
       <Filter>vot</Filter>
     </ClCompile>
     <ClCompile Include="vot\powerup.cpp">
-      <Filter>vot</Filter>
-    </ClCompile>
-    <ClCompile Include="vot\ray.cpp">
       <Filter>vot</Filter>
     </ClCompile>
     <ClCompile Include="vot\beam.cpp">
@@ -65,9 +56,6 @@
     <ClCompile Include="vot\ui\manager.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
-    <ClCompile Include="vot\colour.cpp">
-      <Filter>vot</Filter>
-    </ClCompile>
     <ClCompile Include="vot\game.cpp">
       <Filter>vot</Filter>
     </ClCompile>
@@ -75,6 +63,33 @@
       <Filter>vot\ui</Filter>
     </ClCompile>
     <ClCompile Include="vot\sound.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\utils\circle.cpp">
+      <Filter>vot\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\utils\colour.cpp">
+      <Filter>vot\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\utils\ray.cpp">
+      <Filter>vot\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\utils\utils.cpp">
+      <Filter>vot\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\levels\level1.cpp">
+      <Filter>vot\levels</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\levels\level2.cpp">
+      <Filter>vot\levels</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\level_select.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\levels\level.cpp">
+      <Filter>vot\levels</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\player_info.cpp">
       <Filter>vot</Filter>
     </ClCompile>
   </ItemGroup>
@@ -85,12 +100,15 @@
     <Filter Include="vot\ui">
       <UniqueIdentifier>{27b5dbec-e7f0-4c00-b46e-ee00cb85af3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vot\utils">
+      <UniqueIdentifier>{c819dbb9-346b-4135-9014-6e8ffdaeb1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vot\levels">
+      <UniqueIdentifier>{0374326d-44c6-4605-97dd-9c8308b26a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vot\bullet.h">
-      <Filter>vot</Filter>
-    </ClInclude>
-    <ClInclude Include="vot\circle.h">
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\font_manager.h">
@@ -117,16 +135,10 @@
     <ClInclude Include="vot\game_hud.h">
       <Filter>vot</Filter>
     </ClInclude>
-    <ClInclude Include="vot\utils.h">
-      <Filter>vot</Filter>
-    </ClInclude>
     <ClInclude Include="vot\particles.h">
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\powerup.h">
-      <Filter>vot</Filter>
-    </ClInclude>
-    <ClInclude Include="vot\ray.h">
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\beam.h">
@@ -162,14 +174,35 @@
     <ClInclude Include="vot\ui\component.h">
       <Filter>vot\ui</Filter>
     </ClInclude>
-    <ClInclude Include="vot\colour.h">
-      <Filter>vot</Filter>
-    </ClInclude>
     <ClInclude Include="vot\game.h">
       <Filter>vot</Filter>
     </ClInclude>
     <ClInclude Include="vot\sound.h">
       <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\utils\circle.h">
+      <Filter>vot\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\utils\colour.h">
+      <Filter>vot\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\utils\ray.h">
+      <Filter>vot\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\utils\utils.h">
+      <Filter>vot\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\levels\level.h">
+      <Filter>vot\levels</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\levels\level1.h">
+      <Filter>vot\levels</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\levels\level2.h">
+      <Filter>vot\levels</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\level_select.h">
+      <Filter>vot\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

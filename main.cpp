@@ -5,6 +5,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <filesystem>
+
 #include "vot/game.h"
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
@@ -19,8 +21,9 @@
 int main()
 {
     auto info = vot::PlayerInfoManager::spawn_info("Alan");
-    info->credits(550.0f);
-    info->save();
+    //info->credits(550.0f);
+    //info->save();
+    info->load();
 
     // Init {{{
     // Create the main window

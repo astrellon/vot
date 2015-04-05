@@ -3,6 +3,9 @@
 #include <fstream>
 #include <iostream>
 
+#include <boost/filesystem.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 namespace vot
 {
     // PlayerInfo {{{
@@ -29,7 +32,11 @@ namespace vot
 
     bool PlayerInfo::save()
     {
-        auto filename = _name;
+        boost::filesystem::path save_path("saves");
+        boost::filesystem::create_directory(save_path);
+
+        std::string filename("saves/");
+        filename += _name;
         filename += ".player";
 
         std::ofstream output(filename);
@@ -38,26 +45,31 @@ namespace vot
             return false;
         }
 
-        output << "name: " << _name << "\n";
-        output << "credit: " << _credits << "\n";
+        boost::property_tree::ptree tree;
+        tree.add("name", _name);
+        tree.add<float>("credits", _credits);
+
+        boost::property_tree::write_json(filename, tree);
 
         return true;
     }
     bool PlayerInfo::load()
     {
-        auto filename = _name;
+        std::string filename("saves/");
+        filename += _name;
         filename += ".player";
 
-        std::ifstream input(filename);
-        if (!input)
-        {
-            return false;
-        }
+        boost::property_tree::ptree tree;
+        boost::property_tree::read_json(filename, tree);
+        auto name = tree.get<std::string>("name");
+        auto credits = tree.get<float>("credits");
 
+        /*
         while (input)
         {
             std::cout << "Loaded: " << input;
         }
+        */
         return true;
     }
     // }}}
