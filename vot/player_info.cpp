@@ -81,6 +81,18 @@ namespace vot
     bool PlayerInfoManager::init()
     {
         // Load player infos from folder
+        boost::filesystem::path save_path("saves");
+        boost::filesystem::directory_iterator end;
+        for (boost::filesystem::directory_iterator iter(save_path); iter != end; ++iter)
+        {
+            if (boost::filesystem::is_regular_file(iter->path()) && 
+                iter->path().extension() == ".player")
+            {
+                auto info = new PlayerInfo(iter->path().stem().string());
+                s_infos.push_back(std::unique_ptr<PlayerInfo>(info));
+                info->load();
+            }
+        }
         return true;
     }
     void PlayerInfoManager::deinit()

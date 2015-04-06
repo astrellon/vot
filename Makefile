@@ -60,11 +60,11 @@
 MY_CFLAGS = -I./ -I/usr/include
 
 # The linker options.
-MY_LIBS   = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+MY_LIBS   = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lboost_filesystem -lboost_system
 
 # The pre-processor options used by the cpp (man cpp for more).
 #CPPFLAGS  = -I./ $(shell sdl2-config --prefix=/usr --cflags)
-CPPFLAGS  = 
+CPPFLAGS  = -m64
 
 # The options used in linking as well as in any direct use of ld.
 LDFLAGS   = 

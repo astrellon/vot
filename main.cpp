@@ -5,8 +5,6 @@
 #include <sstream>
 #include <iostream>
 
-#include <filesystem>
-
 #include "vot/game.h"
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
@@ -20,10 +18,10 @@
 
 int main()
 {
-    auto info = vot::PlayerInfoManager::spawn_info("Alan");
+    //auto info = vot::PlayerInfoManager::spawn_info("Alan");
     //info->credits(550.0f);
     //info->save();
-    info->load();
+    //info->load();
 
     // Init {{{
     // Create the main window
@@ -68,6 +66,12 @@ int main()
     if (!vot::ui::LevelSelect::init())
     {
         std::cout << "Failed to initialise Level Select\n";
+        return -1;
+    }
+
+    if (!vot::PlayerInfoManager::init())
+    {
+        std::cout << "Failed to load player data\n";
         return -1;
     }
 
@@ -128,6 +132,7 @@ int main()
     }
     // }}}
 
+    vot::PlayerInfoManager::deinit();
     vot::LevelManager::deinit();
     vot::ui::LevelSelect::deinit();
     vot::ui::MainMenu::deinit();
