@@ -9,6 +9,7 @@
 #include "enemy_fighter.h"
 #include "ui/main_menu.h"
 #include "ui/level_select.h"
+#include "ui/profile_select.h"
 #include "levels/level.h"
 
 namespace vot
@@ -220,6 +221,7 @@ namespace vot
             on_resize(event.size.width, event.size.height);
             ui::MainMenu::on_resize(event.size.width, event.size.height);
             ui::LevelSelect::on_resize(event.size.width, event.size.height);
+            ui::ProfileSelect::on_resize(event.size.width, event.size.height);
         }
     }
 

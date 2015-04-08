@@ -3,6 +3,7 @@
 #include "button.h"
 #include "manager.h"
 #include "level_select.h"
+#include "profile_select.h"
 
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
@@ -14,8 +15,9 @@ namespace vot
     {
         Button *MainMenu::s_start_game = nullptr;
         Button *MainMenu::s_options = nullptr;
+        Button *MainMenu::s_profiles = nullptr;
         Button *MainMenu::s_quit = nullptr;
-        bool MainMenu::s_visible = false;
+        MenuHelper MainMenu::s_helper;
 
         bool MainMenu::init()
         {
@@ -26,38 +28,37 @@ namespace vot
             s_start_game->setPosition(300, 200);
             s_start_game->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-            /*
-                auto game = new Game();
-                GameSystem::game(game);
-                game->level(LevelManager::level("level1"));
-                */
                 LevelSelect::visible(true);
-
                 MainMenu::visible(false);
             });
-            Manager::add_component(s_start_game);
+            s_helper.add_component(s_start_game);
 
             s_options = new Button("Options");
             s_options->texture(*idle_texture);
             s_options->setPosition(300, 260);
-            Manager::add_component(s_options);
+            s_helper.add_component(s_options);
+
+            s_profiles = new Button("Profiles");
+            s_profiles->texture(*idle_texture);
+            s_profiles->setPosition(300, 320);
+            s_profiles->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
+            {
+                ProfileSelect::visible(true);
+                MainMenu::visible(false);
+            });
+            s_helper.add_component(s_profiles);
             
             s_quit = new Button("Quit");
             s_quit->texture(*idle_texture);
-            s_quit->setPosition(300, 320);
+            s_quit->setPosition(300, 380);
             s_quit->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
                 GameSystem::close_game();
             });
-            Manager::add_component(s_quit);
+            s_helper.add_component(s_quit);
 
-            s_start_game->to_above(s_quit);
-            s_start_game->to_below(s_options);
-            s_options->to_above(s_start_game);
-            s_options->to_below(s_quit);
-            s_quit->to_above(s_options);
-            s_quit->to_below(s_start_game);
-        
+            s_helper.calc_nearby_components();
+
             return true;
         }
 
@@ -68,23 +69,11 @@ namespace vot
 
         void MainMenu::visible(bool value)
         {
-            s_visible = value;
-            s_start_game->enabled(value);
-            s_options->enabled(value);
-            s_quit->enabled(value);
-
-            if (value)
-            {
-                ui::Manager::focus(s_start_game);
-            }
-            else
-            {
-                ui::Manager::focus(nullptr);
-            }
+            s_helper.visible(value);
         }
         bool MainMenu::visible()
         {
-            return s_visible;
+            return s_helper.visible();;
         }
 
         void MainMenu::on_resize( uint32_t width, uint32_t height )
@@ -94,6 +83,7 @@ namespace vot
 
             s_start_game->setPosition(x, s_start_game->getPosition().y);
             s_options->setPosition(x, s_options->getPosition().y);
+            s_profiles->setPosition(x, s_profiles->getPosition().y);
             s_quit->setPosition(x, s_quit->getPosition().y);
         }
     }

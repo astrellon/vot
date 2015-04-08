@@ -5,6 +5,8 @@
 
 #include <stdint.h>
 
+#include "menu_helper.h"
+
 namespace vot
 {
     namespace ui
@@ -24,9 +26,7 @@ namespace vot
 
             private:
 
-                static bool s_visible;
-                static std::vector<Button *> s_level_buttons;
-                static Button *s_back_button;
+                static MenuHelper s_helper;
         };
     }
 }

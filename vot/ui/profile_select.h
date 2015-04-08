@@ -1,8 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include <stdint.h>
+#include <vector>
 
 #include "menu_helper.h"
 
@@ -12,7 +11,7 @@ namespace vot
     {
         class Button;
 
-        class MainMenu 
+        class ProfileSelect
         {
             public:
                 static bool init();
@@ -25,11 +24,8 @@ namespace vot
 
             private:
 
-                static Button *s_start_game;
-                static Button *s_profiles;
-                static Button *s_options;
-                static Button *s_quit;
-                static MenuHelper s_helper;
+                static MenuHelper s_helper; 
+
         };
     }
 }

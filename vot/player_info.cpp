@@ -37,7 +37,7 @@ namespace vot
 
         std::string filename("saves/");
         filename += _name;
-        filename += ".player";
+        filename += ".save";
 
         std::ofstream output(filename);
         if (!output)
@@ -57,19 +57,15 @@ namespace vot
     {
         std::string filename("saves/");
         filename += _name;
-        filename += ".player";
+        filename += ".save";
 
         boost::property_tree::ptree tree;
         boost::property_tree::read_json(filename, tree);
         auto name = tree.get<std::string>("name");
         auto credits = tree.get<float>("credits");
 
-        /*
-        while (input)
-        {
-            std::cout << "Loaded: " << input;
-        }
-        */
+        _credits = credits;
+
         return true;
     }
     // }}}
@@ -86,10 +82,10 @@ namespace vot
         for (boost::filesystem::directory_iterator iter(save_path); iter != end; ++iter)
         {
             if (boost::filesystem::is_regular_file(iter->path()) && 
-                iter->path().extension() == ".player")
+                iter->path().extension() == ".save")
             {
-                auto info = new PlayerInfo(iter->path().stem().string());
-                s_infos.push_back(std::unique_ptr<PlayerInfo>(info));
+                std::cout << "Found save file: " << iter->path().filename() << "\n";
+                auto info = spawn_info(iter->path().stem().string());
                 info->load();
             }
         }
@@ -97,7 +93,10 @@ namespace vot
     }
     void PlayerInfoManager::deinit()
     {
-
+        if (s_current_info != nullptr)
+        {
+            s_current_info->save();
+        }
     }
 
     const PlayerInfoManager::PlayerInfos *PlayerInfoManager::player_infos()

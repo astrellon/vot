@@ -41,7 +41,15 @@ namespace vot
 
         void Manager::focus(Component *component)
         {
+            if (s_has_focus != nullptr)
+            {
+                s_has_focus->has_focus(false);
+            }
             s_has_focus = component;
+            if (s_has_focus != nullptr)
+            {
+                s_has_focus->has_focus(true);
+            }
         }
         Component *Manager::focus()
         {

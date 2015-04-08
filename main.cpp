@@ -13,6 +13,7 @@
 #include "vot/ui/button.h"
 #include "vot/ui/main_menu.h"
 #include "vot/ui/level_select.h"
+#include "vot/ui/profile_select.h"
 #include "vot/levels/level.h"
 #include "vot/player_info.h"
 
@@ -51,6 +52,12 @@ int main()
         return -1;
     }
 
+    if (!vot::PlayerInfoManager::init())
+    {
+        std::cout << "Failed to load player data\n";
+        return -1;
+    }
+
     if (!vot::ui::MainMenu::init())
     {
         std::cout << "Failed to initialise Main Menu\n";
@@ -69,9 +76,9 @@ int main()
         return -1;
     }
 
-    if (!vot::PlayerInfoManager::init())
+    if (!vot::ui::ProfileSelect::init())
     {
-        std::cout << "Failed to load player data\n";
+        std::cout << "Failed to initialise Profile Select\n";
         return -1;
     }
 
@@ -132,10 +139,11 @@ int main()
     }
     // }}}
 
-    vot::PlayerInfoManager::deinit();
     vot::LevelManager::deinit();
+    vot::ui::ProfileSelect::deinit();
     vot::ui::LevelSelect::deinit();
     vot::ui::MainMenu::deinit();
+    vot::PlayerInfoManager::deinit();
     vot::GameSystem::deinit();
     vot::ui::Manager::deinit();
     vot::FontManager::deinit();

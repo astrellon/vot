@@ -45,6 +45,10 @@ namespace vot
         void Component::enabled(bool value)
         {
             _enabled = value;
+            if (!value)
+            {
+                _has_focus = false;
+            }
         }
         bool Component::enabled() const
         {
