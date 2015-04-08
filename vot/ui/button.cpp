@@ -18,9 +18,7 @@ namespace vot
             _label_graphic.setColor(sf::Color::Black);
             this->label(label);
 
-            //_colour.rgb(1, 1, 1);
             _colour.hsv(25.0f, 1.0f, 1.0f);
-
         }
 
         void Button::texture(const sf::Texture &texture)
@@ -61,13 +59,6 @@ namespace vot
 
             target.draw(_sprite, states);
             target.draw(_label_graphic, states);
-                
-            /*
-            sf::RectangleShape line;
-            line.setSize(sf::Vector2f(200.0, 1.0f));
-            line.setPosition(-100.0f, y * 20.0f);
-            target.draw(line, states);
-            */
         }
 
         bool Button::check_hover(int32_t x, int32_t y) const

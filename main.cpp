@@ -14,6 +14,7 @@
 #include "vot/ui/main_menu.h"
 #include "vot/ui/level_select.h"
 #include "vot/ui/profile_select.h"
+#include "vot/ui/text_input.h"
 #include "vot/levels/level.h"
 #include "vot/player_info.h"
 
@@ -81,6 +82,10 @@ int main()
         std::cout << "Failed to initialise Profile Select\n";
         return -1;
     }
+
+    auto text_input = new vot::ui::TextInput("Yo Name", 256, 32);
+    text_input->setPosition(50, 50);
+    vot::ui::Manager::add_component(text_input);
 
     /*
     button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
