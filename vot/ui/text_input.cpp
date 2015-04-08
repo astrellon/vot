@@ -10,8 +10,7 @@ namespace vot
         TextInput::TextInput(const std::string &label, float width, float height) :
             _label(label),
             _width(width),
-            _height(height),
-            _outline(nullptr)
+            _height(height)
         {
             auto font = FontManager::font("sans");
             _label_graphic.setFont(*font);
@@ -47,24 +46,22 @@ namespace vot
             _colour.saturation(new_saturation);
             _colour.calc_rgb();
 
-            /*
-            if (_outline == nullptr)
+            auto size = _outline.getSize();
+            if (size.x < 1.0f && size.y < 1.0f)
             {
-                _outline = new sf::RectangleShape();
-                _outline->setSize(sf::Vector2f(_width, _height));
-                _outline->setFillColor(sf::Color::Transparent);
-                _outline->setOutlineThickness(1.0f);
-                _outline->setPosition(0, 0);
+                _outline.setSize(sf::Vector2f(_width, _height));
+                _outline.setFillColor(sf::Color::Transparent);
+                _outline.setOutlineThickness(1.0f);
+                _outline.setPosition(0, 0);
             }
-            _outline->setOutlineColor(_colour);
-            */
+            _outline.setOutlineColor(_colour);
         }
         void TextInput::draw(sf::RenderTarget &target, sf::RenderStates states) const
         {
             states.transform *= getTransform();
 
             target.draw(_label_graphic, states);
-            //target.draw(*_outline.get(), states);
+            target.draw(_outline, states);
         }
 
         bool TextInput::check_hover( int32_t x, int32_t y ) const

@@ -92,6 +92,15 @@
     <ClCompile Include="vot\player_info.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ui\menu_helper.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\profile_select.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\text_input.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -202,6 +211,15 @@
       <Filter>vot\levels</Filter>
     </ClInclude>
     <ClInclude Include="vot\ui\level_select.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\menu_helper.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\profile_select.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\text_input.h">
       <Filter>vot\ui</Filter>
     </ClInclude>
   </ItemGroup>

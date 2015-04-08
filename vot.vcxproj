@@ -104,6 +104,9 @@
     <ClCompile Include="vot\ui\level_select.cpp" />
     <ClCompile Include="vot\ui\main_menu.cpp" />
     <ClCompile Include="vot\ui\manager.cpp" />
+    <ClCompile Include="vot\ui\menu_helper.cpp" />
+    <ClCompile Include="vot\ui\profile_select.cpp" />
+    <ClCompile Include="vot\ui\text_input.cpp" />
     <ClCompile Include="vot\utils\circle.cpp" />
     <ClCompile Include="vot\utils\colour.cpp" />
     <ClCompile Include="vot\utils\ray.cpp" />
@@ -138,6 +141,9 @@
     <ClInclude Include="vot\ui\level_select.h" />
     <ClInclude Include="vot\ui\main_menu.h" />
     <ClInclude Include="vot\ui\manager.h" />
+    <ClInclude Include="vot\ui\menu_helper.h" />
+    <ClInclude Include="vot\ui\profile_select.h" />
+    <ClInclude Include="vot\ui\text_input.h" />
     <ClInclude Include="vot\utils\circle.h" />
     <ClInclude Include="vot\utils\colour.h" />
     <ClInclude Include="vot\utils\ray.h" />

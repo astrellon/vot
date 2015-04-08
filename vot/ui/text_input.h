@@ -34,7 +34,7 @@ namespace vot
 
                 sf::Text _label_graphic;
                 utils::Colour _colour;
-                sf::RectangleShape *_outline;
+                sf::RectangleShape _outline;
 
                 void update_label_position();
         };
