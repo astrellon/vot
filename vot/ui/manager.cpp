@@ -131,7 +131,8 @@ namespace vot
                         {
                             change_focus(s_has_focus->to_right());
                         }
-                        else if (event.key.code == sf::Keyboard::Space)
+                        else if (event.key.code == sf::Keyboard::Space ||
+                                event.key.code == sf::Keyboard::Return) 
                         {
                             check_pressed(0, 0, sf::Mouse::Left);
                         }

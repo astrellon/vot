@@ -75,13 +75,15 @@ namespace vot
 
         bool TextInput::do_keypress(sf::Keyboard::Key key)
         {
-            if (key == sf::Keyboard::Tab)
+            if (key == sf::Keyboard::Tab || 
+                key == sf::Keyboard::Up ||
+                key == sf::Keyboard::Down ||
+                key == sf::Keyboard::Left ||
+                key == sf::Keyboard::Right)
             {
                 return true;
             }
             return false;
-            //_value += key; 
-            //_value_graphic.setString(_value);
         }
         bool TextInput::do_text(uint32_t text)
         {
@@ -90,9 +92,12 @@ namespace vot
                 return true;
             }
 
-            if (text == '\b' && _value.size() > 0u)
+            if (text == '\b')
             {
-                _value.erase(_value.size() - 1);
+                if (_value.size() > 0u)
+                {
+                    _value.erase(_value.size() - 1);
+                }
             }
             else
             {

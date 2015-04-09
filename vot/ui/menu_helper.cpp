@@ -4,6 +4,8 @@
 #include "button.h"
 #include "manager.h"
 
+#include <vot/utils/utils.h>
+
 namespace vot
 {
     namespace ui
@@ -86,9 +88,8 @@ namespace vot
         void MenuHelper::on_resize(uint32_t width, uint32_t height)
         {
             auto size = _back_button->texture()->getSize();
-            auto x = (static_cast<float>(width) - size.x) * 0.5f;
+            auto x = utils::Utils::round((static_cast<float>(width) - size.x) * 0.5f);
 
-            //_back_button->setPosition(x, _back_button->getPosition().y);
             for (auto i = 0u; i < _components.size(); i++)
             {
                 auto comp = _components[i];

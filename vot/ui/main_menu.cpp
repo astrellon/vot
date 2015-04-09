@@ -66,6 +66,7 @@ namespace vot
             s_helper.add_component(s_quit);
 
             s_input = new TextInput("HURR");
+            s_input->setPosition(300, 440);
             s_helper.add_component(s_input);
 
             s_helper.calc_nearby_components();
@@ -84,18 +85,19 @@ namespace vot
         }
         bool MainMenu::visible()
         {
-            return s_helper.visible();;
+            return s_helper.visible();
         }
 
         void MainMenu::on_resize( uint32_t width, uint32_t height )
         {
             auto size = s_start_game->texture()->getSize();
-            auto x = (static_cast<float>(width) - size.x) * 0.5f;
+            auto x = utils::Utils::round((static_cast<float>(width) - size.x) * 0.5f);
 
             s_start_game->setPosition(x, s_start_game->getPosition().y);
             s_options->setPosition(x, s_options->getPosition().y);
             s_profiles->setPosition(x, s_profiles->getPosition().y);
             s_quit->setPosition(x, s_quit->getPosition().y);
+            s_input->setPosition(x, s_input->getPosition().y);
         }
     }
 }
