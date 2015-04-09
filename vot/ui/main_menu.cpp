@@ -19,7 +19,6 @@ namespace vot
         Button *MainMenu::s_profiles = nullptr;
         Button *MainMenu::s_quit = nullptr;
         MenuHelper MainMenu::s_helper;
-        TextInput *MainMenu::s_input = nullptr;
 
         bool MainMenu::init()
         {
@@ -65,10 +64,6 @@ namespace vot
             });
             s_helper.add_component(s_quit);
 
-            s_input = new TextInput("HURR");
-            s_input->setPosition(300, 440);
-            s_helper.add_component(s_input);
-
             s_helper.calc_nearby_components();
 
             return true;
@@ -97,7 +92,6 @@ namespace vot
             s_options->setPosition(x, s_options->getPosition().y);
             s_profiles->setPosition(x, s_profiles->getPosition().y);
             s_quit->setPosition(x, s_quit->getPosition().y);
-            s_input->setPosition(x, s_input->getPosition().y);
         }
     }
 }

@@ -5,6 +5,7 @@
 #include "button.h"
 #include "manager.h"
 #include "main_menu.h"
+#include "text_input.h"
 
 #include <vot/texture_manager.h>
 #include <vot/player_info.h>
@@ -14,6 +15,7 @@ namespace vot
     namespace ui
     {
         MenuHelper ProfileSelect::s_helper;
+        TextInput *ProfileSelect::s_name_input = nullptr;
 
         bool ProfileSelect::init()
         {
@@ -31,16 +33,29 @@ namespace vot
                 return true;
             });
 
+            auto top = 260.0f;
             auto profiles = PlayerInfoManager::player_infos();
             std::cout << "Num profiles: " << profiles->size() << "\n";
-            for (auto i = 0u; i < profiles->size(); i++)
+            auto i = 0u;
+            for (; i < profiles->size(); i++)
             {
                 auto profile = profiles->at(i).get();
                 auto btn = new Button(profile->name());
                 btn->texture(*idle_texture);
-                btn->setPosition(300, 260 + (60 * i));
+                btn->setPosition(300, top + (60 * i));
                 s_helper.add_component(btn);
             }
+
+            i++;
+            auto create_button = new Button("Create Profile");
+            create_button->texture(*idle_texture);
+            create_button->setPosition(300, top + (60 * i));
+            s_helper.add_component(create_button);
+
+            i++;
+            s_name_input = new TextInput("Name");
+            s_name_input->setPosition(300, top + (60 * i));
+            s_helper.add_component(s_name_input);
 
             s_helper.calc_nearby_components();
 

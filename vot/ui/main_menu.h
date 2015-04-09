@@ -31,7 +31,6 @@ namespace vot
                 static Button *s_options;
                 static Button *s_quit;
                 static MenuHelper s_helper;
-                static TextInput *s_input;
         };
     }
 }

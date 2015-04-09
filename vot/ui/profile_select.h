@@ -10,6 +10,7 @@ namespace vot
     namespace ui
     {
         class Button;
+        class TextInput;
 
         class ProfileSelect
         {
@@ -25,6 +26,7 @@ namespace vot
             private:
 
                 static MenuHelper s_helper; 
+                static TextInput *s_name_input;
 
         };
     }
