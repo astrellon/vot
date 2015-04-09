@@ -108,5 +108,14 @@ namespace vot
         {
             return _on_click;
         }
+
+        bool Component::do_keypress(sf::Keyboard::Key key)
+        {
+            return true;
+        }
+        bool Component::do_text(uint32_t text)
+        {
+            return true;
+        }
     }
 }

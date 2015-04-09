@@ -27,6 +27,8 @@ namespace vot
             {
                 ProfileSelect::visible(false);
                 MainMenu::visible(true);
+                
+                return true;
             });
 
             auto profiles = PlayerInfoManager::player_infos();

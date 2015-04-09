@@ -41,12 +41,14 @@ namespace vot
                 virtual void update(float dt) = 0;
 
                 virtual bool check_hover(int32_t x, int32_t y) const = 0;
-                virtual void do_click(int32_t x, int32_t y, sf::Mouse::Button button) = 0;
+                virtual bool do_click(int32_t x, int32_t y, sf::Mouse::Button button) = 0;
+                virtual bool do_keypress(sf::Keyboard::Key key);
+                virtual bool do_text(uint32_t text);
 
                 void id(const std::string &value);
                 const std::string &id() const;
                 
-                typedef std::function<void (int32_t, int32_t, sf::Mouse::Button)> ClickHandler;
+                typedef std::function<bool (int32_t, int32_t, sf::Mouse::Button)> ClickHandler;
                 void on_click(ClickHandler handler);
                 ClickHandler on_click() const;
 

@@ -1,6 +1,7 @@
 #include "main_menu.h"
 
 #include "button.h"
+#include "text_input.h"
 #include "manager.h"
 #include "level_select.h"
 #include "profile_select.h"
@@ -18,6 +19,7 @@ namespace vot
         Button *MainMenu::s_profiles = nullptr;
         Button *MainMenu::s_quit = nullptr;
         MenuHelper MainMenu::s_helper;
+        TextInput *MainMenu::s_input = nullptr;
 
         bool MainMenu::init()
         {
@@ -30,6 +32,8 @@ namespace vot
             {
                 LevelSelect::visible(true);
                 MainMenu::visible(false);
+                
+                return true;
             });
             s_helper.add_component(s_start_game);
 
@@ -45,6 +49,8 @@ namespace vot
             {
                 ProfileSelect::visible(true);
                 MainMenu::visible(false);
+
+                return true;
             });
             s_helper.add_component(s_profiles);
             
@@ -54,8 +60,13 @@ namespace vot
             s_quit->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
                 GameSystem::close_game();
+                
+                return true;
             });
             s_helper.add_component(s_quit);
+
+            s_input = new TextInput("HURR");
+            s_helper.add_component(s_input);
 
             s_helper.calc_nearby_components();
 

@@ -83,16 +83,6 @@ int main()
         return -1;
     }
 
-    auto text_input = new vot::ui::TextInput("Yo Name", 256, 32);
-    text_input->setPosition(50, 50);
-    vot::ui::Manager::add_component(text_input);
-
-    /*
-    button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
-    {
-        std::cout << "Button clicked: " << x << ", " << y << ", " << btn << "\n";    
-    });
-    */
     /*
     // Load a music to play
     sf::Music music;

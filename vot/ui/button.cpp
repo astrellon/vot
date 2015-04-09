@@ -70,13 +70,14 @@ namespace vot
                 local_pos.y >= 0.0f && local_pos.y <= size.y;
         }
 
-        void Button::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
+        bool Button::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
         {
             auto handler = on_click();
             if (handler)
             {
-                handler(x, y, button);
+                return handler(x, y, button);
             }
+            return true;
         }
 
         void Button::update_label_position()

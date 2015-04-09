@@ -95,6 +95,7 @@ namespace vot
             try_load("button_idle", "button_idle.png");
             try_load("button_over", "button_over.png");
             try_load("button_down", "button_down.png");
+            try_load("text_input_back", "text_input_back.png");
         }
         catch (...)
         {

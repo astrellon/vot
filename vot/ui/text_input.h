@@ -14,27 +14,27 @@ namespace vot
         class TextInput : public Component
         {
             public:
-                TextInput(const std::string &label, float width, float height);
+                TextInput(const std::string &label_str);
 
                 void label(const std::string &value);
                 const std::string &label() const;
-
-                float width() const;
-                float height() const;
 
                 virtual void update(float dt);
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
                 virtual bool check_hover(int32_t x, int32_t y) const;
-                virtual void do_click(int32_t x, int32_t y, sf::Mouse::Button button);
+                virtual bool do_click(int32_t x, int32_t y, sf::Mouse::Button button);
+                virtual bool do_keypress(sf::Keyboard::Key key);
+                virtual bool do_text(uint32_t text);
+
             private:
                 std::string _label;
-                float _width;
-                float _height;
+                std::string _value;
 
                 sf::Text _label_graphic;
                 utils::Colour _colour;
-                sf::RectangleShape _outline;
+                sf::Sprite _sprite;
+                sf::Text _value_graphic;
 
                 void update_label_position();
         };

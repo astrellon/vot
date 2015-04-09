@@ -28,6 +28,8 @@ namespace vot
             {
                 LevelSelect::visible(false);
                 MainMenu::visible(true);
+                
+                return true;
             });
 
             auto levels = LevelManager::levels();
@@ -44,6 +46,8 @@ namespace vot
                 {
                     GameSystem::start_game(iter->first);
                     LevelSelect::visible(false);
+                
+                    return true;
                 });
             }
 

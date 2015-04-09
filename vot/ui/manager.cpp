@@ -92,37 +92,54 @@ namespace vot
             {
                 check_pressed(event.mouseButton.x, event.mouseButton.y, event.mouseButton.button);
             }
-            else if (event.type == sf::Event::KeyPressed)
+            else if (event.type == sf::Event::TextEntered)
             {
                 if (s_has_focus != nullptr && s_has_focus->enabled())
                 {
-                    if (event.key.code == sf::Keyboard::W && s_has_focus->to_above() != nullptr)
+                    s_has_focus->do_text(event.text.unicode);
+                }
+            }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                auto back = event.key.code == sf::Keyboard::W ||
+                    event.key.code == sf::Keyboard::Up;
+                auto forward = event.key.code == sf::Keyboard::S ||
+                    event.key.code == sf::Keyboard::Down ||
+                    event.key.code == sf::Keyboard::Tab;
+                auto left = event.key.code == sf::Keyboard::A ||
+                    event.key.code == sf::Keyboard::Left;
+                auto right = event.key.code == sf::Keyboard::D ||
+                    event.key.code == sf::Keyboard::Right;
+
+                if (s_has_focus != nullptr && s_has_focus->enabled())
+                {
+                    if (s_has_focus->do_keypress(event.key.code))
                     {
-                        change_focus(s_has_focus->to_above());
-                    }
-                    else if (event.key.code == sf::Keyboard::S && s_has_focus->to_below() != nullptr)
-                    {
-                        change_focus(s_has_focus->to_below());
-                    }
-                    else if (event.key.code == sf::Keyboard::A && s_has_focus->to_left())
-                    {
-                        change_focus(s_has_focus->to_left());
-                    }
-                    else if (event.key.code == sf::Keyboard::D && s_has_focus->to_right())
-                    {
-                        change_focus(s_has_focus->to_right());
-                    }
-                    else if (event.key.code == sf::Keyboard::Space)
-                    {
-                        check_pressed(0, 0, sf::Mouse::Left);
+                        if (back && s_has_focus->to_above() != nullptr)
+                        {
+                            change_focus(s_has_focus->to_above());
+                        }
+                        else if (forward && s_has_focus->to_below() != nullptr)
+                        {
+                            change_focus(s_has_focus->to_below());
+                        }
+                        else if (left && s_has_focus->to_left())
+                        {
+                            change_focus(s_has_focus->to_left());
+                        }
+                        else if (right && s_has_focus->to_right())
+                        {
+                            change_focus(s_has_focus->to_right());
+                        }
+                        else if (event.key.code == sf::Keyboard::Space)
+                        {
+                            check_pressed(0, 0, sf::Mouse::Left);
+                        }
                     }
                 }
                 else
                 {
-                    if (event.key.code == sf::Keyboard::W || 
-                        event.key.code == sf::Keyboard::S ||
-                        event.key.code == sf::Keyboard::A ||
-                        event.key.code == sf::Keyboard::D)
+                    if (back || forward || left || right)
                     {
                         if (s_last_had_focus == nullptr)
                         {
