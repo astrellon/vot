@@ -19,6 +19,9 @@ namespace vot
                 void label(const std::string &value);
                 const std::string &label() const;
 
+                void value(const std::string &value);
+                const std::string &value() const;
+
                 virtual void update(float dt);
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 

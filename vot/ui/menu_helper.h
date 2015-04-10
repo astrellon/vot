@@ -22,6 +22,8 @@ namespace vot
                 Button *back_button() const;
 
                 void add_component(Component *comp);
+                void remove_component(Component *comp);
+                void clear_all_component();
                 void calc_nearby_components();
                 
                 typedef std::vector<Component *> ComponentList;

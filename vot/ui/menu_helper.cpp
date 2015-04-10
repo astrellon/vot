@@ -55,6 +55,26 @@ namespace vot
             _components.push_back(comp);
             Manager::add_component(comp);
         }
+        void MenuHelper::remove_component(Component *comp)
+        {
+            for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+            {
+                if (*iter == comp)
+                {
+                    _components.erase(iter);
+                    break;
+                }
+            }
+            Manager::remove_component(comp);
+        }
+        void MenuHelper::clear_all_component()
+        {
+            for (auto i = 0u; i < _components.size(); i++)
+            {
+                Manager::remove_component(_components[i]);
+            }
+            _components.clear();
+        }
         void MenuHelper::calc_nearby_components()
         {
             for (auto i = 0u; i < _components.size(); i++)

@@ -9,6 +9,7 @@
 
 #include <vot/texture_manager.h>
 #include <vot/player_info.h>
+#include <vot/game_system.h>
 
 namespace vot
 {
@@ -51,6 +52,19 @@ namespace vot
             create_button->texture(*idle_texture);
             create_button->setPosition(300, top + (60 * i));
             s_helper.add_component(create_button);
+            create_button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
+            {
+                auto info = PlayerInfoManager::spawn_info(s_name_input->value());
+                info->save();
+
+                // Super jank, need a better way of redoing the UI.
+                s_helper.clear_all_component();
+                ProfileSelect::init();
+                ProfileSelect::on_resize();
+                ProfileSelect::visible(true);
+
+                return true;
+            });
 
             i++;
             s_name_input = new TextInput("Name");
@@ -80,6 +94,11 @@ namespace vot
         void ProfileSelect::on_resize( uint32_t width, uint32_t height )
         {
             s_helper.on_resize(width, height);
+        }
+        void ProfileSelect::on_resize()
+        {
+            auto size = GameSystem::window_size();
+            on_resize(size.x, size.y);
         }
     }
 }

@@ -35,6 +35,20 @@ namespace vot
 
             update_label_position();
         }
+        const std::string &TextInput::label() const
+        {
+            return _label;
+        }
+
+        void TextInput::value(const std::string &value)
+        {
+            _value = value;
+            _value_graphic.setString(value);
+        }
+        const std::string &TextInput::value() const
+        {
+            return _value;
+        }
 
         void TextInput::update(float dt)
         {
