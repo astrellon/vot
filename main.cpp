@@ -17,15 +17,13 @@
 #include "vot/ui/text_input.h"
 #include "vot/levels/level.h"
 #include "vot/profile.h"
+#include "vot/options.h"
 
 int main()
 {
-    //auto info = vot::ProfileManager::spawn_info("Alan");
-    //info->credits(550.0f);
-    //info->save();
-    //info->load();
-
     // Init {{{
+    vot::Options::load();
+    
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "VOT", sf::Style::Default);
 
@@ -143,6 +141,8 @@ int main()
     vot::ui::Manager::deinit();
     vot::FontManager::deinit();
     vot::TextureManager::deinit();
+
+    vot::Options::save();
 
     return EXIT_SUCCESS;
 }

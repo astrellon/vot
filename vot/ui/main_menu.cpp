@@ -115,7 +115,7 @@ namespace vot
         }
         void MainMenu::draw(sf::RenderTarget &target, sf::RenderStates states)
         {
-            auto profile = ProfileManager::current_info();
+            auto profile = ProfileManager::current_profile();
             if (profile == nullptr)
             {
                 s_current_profile.setString("- No profile -");

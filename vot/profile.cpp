@@ -71,8 +71,8 @@ namespace vot
     // }}}
     
     // ProfileManager {{{
-    ProfileManager::Profiles ProfileManager::s_infos;
-    Profile *ProfileManager::s_current_info = nullptr;
+    ProfileManager::Profiles ProfileManager::s_profiles;
+    Profile *ProfileManager::s_current_profile = nullptr;
 
     bool ProfileManager::init()
     {
@@ -85,7 +85,7 @@ namespace vot
                 iter->path().extension() == ".save")
             {
                 std::cout << "Found save file: " << iter->path().filename() << "\n";
-                auto info = spawn_info(iter->path().stem().string());
+                auto info = spawn_profile(iter->path().stem().string());
                 info->load();
             }
         }
@@ -93,36 +93,36 @@ namespace vot
     }
     void ProfileManager::deinit()
     {
-        if (s_current_info != nullptr)
+        if (s_current_profile != nullptr)
         {
-            s_current_info->save();
+            s_current_profile->save();
         }
     }
 
     const ProfileManager::Profiles *ProfileManager::profiles()
     {
-        return &s_infos;
+        return &s_profiles;
     }
 
-    Profile *ProfileManager::spawn_info(const std::string &name)
+    Profile *ProfileManager::spawn_profile(const std::string &name)
     {
         auto info = new Profile(name);
 
-        s_infos.push_back(std::unique_ptr<Profile>(info));
+        s_profiles.push_back(std::unique_ptr<Profile>(info));
         return info;
     }
 
-    void ProfileManager::current_info(Profile *info)
+    void ProfileManager::current_profile(Profile *info)
     {
-        if (s_current_info != nullptr)
+        if (s_current_profile != nullptr)
         {
-            s_current_info->save();
+            s_current_profile->save();
         }
-        s_current_info = info;
+        s_current_profile = info;
     }
-    Profile *ProfileManager::current_info()
+    Profile *ProfileManager::current_profile()
     {
-        return s_current_info;
+        return s_current_profile;
     }
     // }}}
 }

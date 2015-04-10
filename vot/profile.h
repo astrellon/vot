@@ -36,13 +36,13 @@ namespace vot
             typedef std::vector<std::unique_ptr<Profile> > Profiles;
             static const Profiles *profiles();
 
-            static Profile *spawn_info(const std::string &name);
+            static Profile *spawn_profile(const std::string &name);
 
-            static void current_info(Profile *info);
-            static Profile *current_info();
+            static void current_profile(Profile *profile);
+            static Profile *current_profile();
 
         private:
-            static Profiles s_infos;
-            static Profile *s_current_info;
+            static Profiles s_profiles;
+            static Profile *s_current_profile;
     };
 }

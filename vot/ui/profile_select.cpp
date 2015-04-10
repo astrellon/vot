@@ -48,7 +48,7 @@ namespace vot
 
                 btn->on_click([profile] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
-                    ProfileManager::current_info(profile);  
+                    ProfileManager::current_profile(profile);  
                     ProfileSelect::visible(false);
                     MainMenu::visible(true);
                     return true;
@@ -62,7 +62,7 @@ namespace vot
             s_helper.add_component(create_button);
             create_button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                auto info = ProfileManager::spawn_info(s_name_input->value());
+                auto info = ProfileManager::spawn_profile(s_name_input->value());
                 info->save();
 
                 // Super jank, need a better way of redoing the UI.
