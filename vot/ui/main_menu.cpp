@@ -9,6 +9,7 @@
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
 #include <vot/levels/level.h>
+#include <vot/font_manager.h>
 
 namespace vot
 {
@@ -19,6 +20,8 @@ namespace vot
         Button *MainMenu::s_profiles = nullptr;
         Button *MainMenu::s_quit = nullptr;
         MenuHelper MainMenu::s_helper;
+        sf::Text MainMenu::s_current_profile;
+        sf::Text MainMenu::s_current_profile_label;
 
         bool MainMenu::init()
         {
@@ -66,6 +69,19 @@ namespace vot
 
             s_helper.calc_nearby_components();
 
+            auto sans = FontManager::font("sans");
+            s_current_profile.setFont(*sans);
+            s_current_profile.setString("asd");
+            s_current_profile.setCharacterSize(16);
+            s_current_profile.setColor(sf::Color::White);
+            s_current_profile.setPosition(300, 230);
+
+            s_current_profile_label.setFont(*sans);
+            s_current_profile_label.setString("Current Profile");
+            s_current_profile_label.setCharacterSize(16);
+            s_current_profile_label.setColor(sf::Color::White);
+            s_current_profile_label.setPosition(300, 200);
+
             return true;
         }
 
@@ -88,10 +104,34 @@ namespace vot
             auto size = s_start_game->texture()->getSize();
             auto x = utils::Utils::round((static_cast<float>(width) - size.x) * 0.5f);
 
-            s_start_game->setPosition(x, s_start_game->getPosition().y);
-            s_options->setPosition(x, s_options->getPosition().y);
-            s_profiles->setPosition(x, s_profiles->getPosition().y);
-            s_quit->setPosition(x, s_quit->getPosition().y);
+            set_pos(s_start_game, x);
+            set_pos(s_options, x);
+            set_pos(s_profiles, x);
+            set_pos(s_quit, x);
+
+            auto offset = utils::Utils::round(1.1f * size.x);
+            set_pos(&s_current_profile_label, x + offset);
+            set_pos(&s_current_profile, x + offset);
+        }
+        void MainMenu::draw(sf::RenderTarget &target, sf::RenderStates states)
+        {
+            auto profile = PlayerInfoManager::current_info();
+            if (profile == nullptr)
+            {
+                s_current_profile.setString("- No profile -");
+            }
+            else
+            {
+                s_current_profile.setString(profile->name());
+            }
+
+            target.draw(s_current_profile_label, states);
+            target.draw(s_current_profile, states);
+        }
+
+        void MainMenu::set_pos(sf::Transformable *obj, float x)
+        {
+            obj->setPosition(x, obj->getPosition().y);
         }
     }
 }

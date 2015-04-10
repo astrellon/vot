@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <string>
-#include <functional>
 
 #include <vot/utils/colour.h>
 #include "component.h"

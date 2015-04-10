@@ -45,6 +45,14 @@ namespace vot
                 btn->texture(*idle_texture);
                 btn->setPosition(300, top + (60 * i));
                 s_helper.add_component(btn);
+
+                btn->on_click([profile] (int32_t x, int32_t y, sf::Mouse::Button btn)
+                {
+                    PlayerInfoManager::current_info(profile);  
+                    ProfileSelect::visible(false);
+                    MainMenu::visible(true);
+                    return true;
+                });
             }
 
             i++;

@@ -4,6 +4,8 @@
 
 #include <vot/game_system.h>
 
+#include "main_menu.h"
+
 namespace vot
 {
     namespace ui
@@ -72,6 +74,8 @@ namespace vot
         void Manager::draw(sf::RenderTarget &target, sf::RenderStates states)
         {
             target.setView(GameSystem::hud_camera());
+
+            MainMenu::draw(target, states);
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
