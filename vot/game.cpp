@@ -261,13 +261,13 @@ namespace vot
         return _player.get();
     }
 
-    void Game::player_info(PlayerInfo *value)
+    void Game::profile(Profile *value)
     {
-        _player_info = std::unique_ptr<PlayerInfo>(value);
+        _profile = std::unique_ptr<Profile>(value);
     }
-    PlayerInfo *Game::player_info() const
+    Profile *Game::profile() const
     {
-        return _player_info.get();
+        return _profile.get();
     }
 
     sf::View &Game::camera()

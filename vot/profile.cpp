@@ -1,4 +1,4 @@
-#include "player_info.h"
+#include "profile.h"
 
 #include <fstream>
 #include <iostream>
@@ -8,29 +8,29 @@
 
 namespace vot
 {
-    // PlayerInfo {{{
-    PlayerInfo::PlayerInfo(const std::string &name) :
+    // Profile {{{
+    Profile::Profile(const std::string &name) :
         _credits(0.0f),
         _name(name)
     {
 
     }
 
-    void PlayerInfo::credits(float value)
+    void Profile::credits(float value)
     {
         _credits = value < 0.0f ? 0.0f : value;
     }
-    float PlayerInfo::credits() const
+    float Profile::credits() const
     {
         return _credits;
     }
 
-    const std::string &PlayerInfo::name() const
+    const std::string &Profile::name() const
     {
         return _name;
     }
 
-    bool PlayerInfo::save()
+    bool Profile::save()
     {
         boost::filesystem::path save_path("saves");
         boost::filesystem::create_directory(save_path);
@@ -53,7 +53,7 @@ namespace vot
 
         return true;
     }
-    bool PlayerInfo::load()
+    bool Profile::load()
     {
         std::string filename("saves/");
         filename += _name;
@@ -70,11 +70,11 @@ namespace vot
     }
     // }}}
     
-    // PlayerInfoManager {{{
-    PlayerInfoManager::PlayerInfos PlayerInfoManager::s_infos;
-    PlayerInfo *PlayerInfoManager::s_current_info = nullptr;
+    // ProfileManager {{{
+    ProfileManager::Profiles ProfileManager::s_infos;
+    Profile *ProfileManager::s_current_info = nullptr;
 
-    bool PlayerInfoManager::init()
+    bool ProfileManager::init()
     {
         // Load player infos from folder
         boost::filesystem::path save_path("saves");
@@ -91,7 +91,7 @@ namespace vot
         }
         return true;
     }
-    void PlayerInfoManager::deinit()
+    void ProfileManager::deinit()
     {
         if (s_current_info != nullptr)
         {
@@ -99,20 +99,20 @@ namespace vot
         }
     }
 
-    const PlayerInfoManager::PlayerInfos *PlayerInfoManager::player_infos()
+    const ProfileManager::Profiles *ProfileManager::profiles()
     {
         return &s_infos;
     }
 
-    PlayerInfo *PlayerInfoManager::spawn_info(const std::string &name)
+    Profile *ProfileManager::spawn_info(const std::string &name)
     {
-        auto info = new PlayerInfo(name);
+        auto info = new Profile(name);
 
-        s_infos.push_back(std::unique_ptr<PlayerInfo>(info));
+        s_infos.push_back(std::unique_ptr<Profile>(info));
         return info;
     }
 
-    void PlayerInfoManager::current_info(PlayerInfo *info)
+    void ProfileManager::current_info(Profile *info)
     {
         if (s_current_info != nullptr)
         {
@@ -120,7 +120,7 @@ namespace vot
         }
         s_current_info = info;
     }
-    PlayerInfo *PlayerInfoManager::current_info()
+    Profile *ProfileManager::current_info()
     {
         return s_current_info;
     }

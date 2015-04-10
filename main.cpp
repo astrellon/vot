@@ -16,11 +16,11 @@
 #include "vot/ui/profile_select.h"
 #include "vot/ui/text_input.h"
 #include "vot/levels/level.h"
-#include "vot/player_info.h"
+#include "vot/profile.h"
 
 int main()
 {
-    //auto info = vot::PlayerInfoManager::spawn_info("Alan");
+    //auto info = vot::ProfileManager::spawn_info("Alan");
     //info->credits(550.0f);
     //info->save();
     //info->load();
@@ -53,7 +53,7 @@ int main()
         return -1;
     }
 
-    if (!vot::PlayerInfoManager::init())
+    if (!vot::ProfileManager::init())
     {
         std::cout << "Failed to load player data\n";
         return -1;
@@ -138,7 +138,7 @@ int main()
     vot::ui::ProfileSelect::deinit();
     vot::ui::LevelSelect::deinit();
     vot::ui::MainMenu::deinit();
-    vot::PlayerInfoManager::deinit();
+    vot::ProfileManager::deinit();
     vot::GameSystem::deinit();
     vot::ui::Manager::deinit();
     vot::FontManager::deinit();

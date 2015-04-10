@@ -7,10 +7,10 @@
 
 namespace vot
 {
-    class PlayerInfo
+    class Profile
     {
         public:
-            PlayerInfo(const std::string &name);
+            Profile(const std::string &name);
 
             void credits(float value);
             float credits() const;
@@ -27,22 +27,22 @@ namespace vot
 
     };
 
-    class PlayerInfoManager
+    class ProfileManager
     {
         public:
             static bool init();
             static void deinit();
 
-            typedef std::vector<std::unique_ptr<PlayerInfo> > PlayerInfos;
-            static const PlayerInfos *player_infos();
+            typedef std::vector<std::unique_ptr<Profile> > Profiles;
+            static const Profiles *profiles();
 
-            static PlayerInfo *spawn_info(const std::string &name);
+            static Profile *spawn_info(const std::string &name);
 
-            static void current_info(PlayerInfo *info);
-            static PlayerInfo *current_info();
+            static void current_info(Profile *info);
+            static Profile *current_info();
 
         private:
-            static PlayerInfos s_infos;
-            static PlayerInfo *s_current_info;
+            static Profiles s_infos;
+            static Profile *s_current_info;
     };
 }

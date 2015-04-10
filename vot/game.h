@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "player.h"
-#include "player_info.h"
+#include "profile.h"
 #include "game_hud.h"
 #include "background.h"
 
@@ -21,8 +21,8 @@ namespace vot
             void player(Player *value);
             Player *player() const;
 
-            void player_info(PlayerInfo *value);
-            PlayerInfo *player_info() const;
+            void profile(Profile *value);
+            Profile *profile() const;
 
             sf::View &camera();
 
@@ -43,7 +43,7 @@ namespace vot
             sf::View _camera;
             
             std::unique_ptr<Player> _player;
-            std::unique_ptr<PlayerInfo> _player_info;
+            std::unique_ptr<Profile> _profile;
             
             HudMain _hud;
             HudWorld _world_hud;

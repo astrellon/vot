@@ -8,7 +8,7 @@
 #include "text_input.h"
 
 #include <vot/texture_manager.h>
-#include <vot/player_info.h>
+#include <vot/profile.h>
 #include <vot/game_system.h>
 
 namespace vot
@@ -35,7 +35,7 @@ namespace vot
             });
 
             auto top = 260.0f;
-            auto profiles = PlayerInfoManager::player_infos();
+            auto profiles = ProfileManager::profiles();
             std::cout << "Num profiles: " << profiles->size() << "\n";
             auto i = 0u;
             for (; i < profiles->size(); i++)
@@ -48,7 +48,7 @@ namespace vot
 
                 btn->on_click([profile] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
-                    PlayerInfoManager::current_info(profile);  
+                    ProfileManager::current_info(profile);  
                     ProfileSelect::visible(false);
                     MainMenu::visible(true);
                     return true;
@@ -62,7 +62,7 @@ namespace vot
             s_helper.add_component(create_button);
             create_button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                auto info = PlayerInfoManager::spawn_info(s_name_input->value());
+                auto info = ProfileManager::spawn_info(s_name_input->value());
                 info->save();
 
                 // Super jank, need a better way of redoing the UI.
