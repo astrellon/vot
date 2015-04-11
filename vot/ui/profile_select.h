@@ -27,9 +27,6 @@ namespace vot
 
                 static MenuHelper s_helper; 
                 static TextInput *s_name_input;
-
-                static void on_resize();
-
         };
     }
 }

@@ -6,6 +6,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include "options.h"
+
 namespace vot
 {
     // Profile {{{
@@ -89,6 +91,12 @@ namespace vot
                 info->load();
             }
         }
+
+        auto starting_profile = Options::starting_profile();
+        if (!starting_profile.empty())
+        {
+            s_current_profile = profile(starting_profile);
+        }
         return true;
     }
     void ProfileManager::deinit()
@@ -110,6 +118,18 @@ namespace vot
 
         s_profiles.push_back(std::unique_ptr<Profile>(info));
         return info;
+    }
+    Profile *ProfileManager::profile(const std::string &name)
+    {
+        for (auto i = 0u; i < s_profiles.size(); i++)
+        {
+            if (s_profiles[i]->name() == name)
+            {
+                return s_profiles[i].get();
+            }
+        }
+
+        return nullptr;
     }
 
     void ProfileManager::current_profile(Profile *info)

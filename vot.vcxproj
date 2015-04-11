@@ -92,10 +92,11 @@
     <ClCompile Include="vot\levels\level.cpp" />
     <ClCompile Include="vot\levels\level1.cpp" />
     <ClCompile Include="vot\levels\level2.cpp" />
+    <ClCompile Include="vot\options.cpp" />
     <ClCompile Include="vot\particles.cpp" />
     <ClCompile Include="vot\player.cpp" />
-    <ClCompile Include="vot\player_info.cpp" />
     <ClCompile Include="vot\powerup.cpp" />
+    <ClCompile Include="vot\profile.cpp" />
     <ClCompile Include="vot\sound.cpp" />
     <ClCompile Include="vot\texture_manager.cpp" />
     <ClCompile Include="vot\thruster.cpp" />
@@ -130,9 +131,11 @@
     <ClInclude Include="vot\levels\level1.h" />
     <ClInclude Include="vot\levels\level2.h" />
     <ClInclude Include="vot\object_manager.h" />
+    <ClInclude Include="vot\options.h" />
     <ClInclude Include="vot\particles.h" />
     <ClInclude Include="vot\player.h" />
     <ClInclude Include="vot\powerup.h" />
+    <ClInclude Include="vot\profile.h" />
     <ClInclude Include="vot\sound.h" />
     <ClInclude Include="vot\texture_manager.h" />
     <ClInclude Include="vot\thruster.h" />

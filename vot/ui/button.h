@@ -28,6 +28,8 @@ namespace vot
                 virtual bool check_hover(int32_t x, int32_t y) const;
                 virtual bool do_click(int32_t x, int32_t y, sf::Mouse::Button button); 
 
+                virtual sf::Vector2f size() const;
+
             private:
                 std::string _label;
                 sf::Text _label_graphic;

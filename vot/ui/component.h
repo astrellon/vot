@@ -52,6 +52,8 @@ namespace vot
                 void on_click(ClickHandler handler);
                 ClickHandler on_click() const;
 
+                virtual sf::Vector2f size() const = 0;
+
             private:
                 State _state;
                 bool _has_focus;

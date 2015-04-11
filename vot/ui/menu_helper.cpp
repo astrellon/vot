@@ -5,6 +5,7 @@
 #include "manager.h"
 
 #include <vot/utils/utils.h>
+#include <vot/game_system.h>
 
 namespace vot
 {
@@ -107,14 +108,20 @@ namespace vot
 
         void MenuHelper::on_resize(uint32_t width, uint32_t height)
         {
-            auto size = _back_button->texture()->getSize();
-            auto x = utils::Utils::round((static_cast<float>(width) - size.x) * 0.5f);
-
+            auto fwidth = static_cast<float>(width);
             for (auto i = 0u; i < _components.size(); i++)
             {
                 auto comp = _components[i];
+                auto size = comp->size();
+                auto x = utils::Utils::round((fwidth - size.x) * 0.5f);
+
                 comp->setPosition(x, comp->getPosition().y);
             }
+        }
+        void MenuHelper::on_resize()
+        {
+            auto size = GameSystem::window_size();
+            on_resize(size.x, size.y);
         }
     }
 }

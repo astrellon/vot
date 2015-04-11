@@ -80,6 +80,11 @@ namespace vot
             return true;
         }
 
+        sf::Vector2f Button::size() const
+        {
+            return sf::Vector2f(_sprite.getTexture()->getSize());
+        }
+
         void Button::update_label_position()
         {
             sf::Vector2u texture_size;

@@ -30,6 +30,8 @@ namespace vot
                 virtual bool do_keypress(sf::Keyboard::Key key);
                 virtual bool do_text(uint32_t text);
 
+                virtual sf::Vector2f size() const;
+
             private:
                 std::string _label;
                 std::string _value;

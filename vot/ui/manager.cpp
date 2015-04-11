@@ -146,7 +146,7 @@ namespace vot
                 {
                     if (back || forward || left || right)
                     {
-                        if (s_last_had_focus == nullptr)
+                        if (s_last_had_focus == nullptr || !s_last_had_focus->enabled())
                         {
                             for (auto i = 0u; i < s_components.size(); i++)
                             {

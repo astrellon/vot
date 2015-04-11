@@ -30,6 +30,7 @@ namespace vot
                 const ComponentList &components() const;
 
                 void on_resize(uint32_t width, uint32_t height);
+                void on_resize();
 
             private:
                 bool _visible;

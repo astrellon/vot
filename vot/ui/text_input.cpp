@@ -122,6 +122,11 @@ namespace vot
             return true;
         }
 
+        sf::Vector2f TextInput::size() const
+        {
+            return sf::Vector2f(_sprite.getTexture()->getSize());
+        }
+
         void TextInput::update_label_position()
         {
             auto size = _sprite.getTexture()->getSize();

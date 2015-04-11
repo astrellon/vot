@@ -37,6 +37,7 @@ namespace vot
             static const Profiles *profiles();
 
             static Profile *spawn_profile(const std::string &name);
+            static Profile *profile(const std::string &name);
 
             static void current_profile(Profile *profile);
             static Profile *current_profile();

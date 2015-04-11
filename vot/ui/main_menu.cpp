@@ -82,6 +82,8 @@ namespace vot
             s_current_profile_label.setColor(sf::Color::White);
             s_current_profile_label.setPosition(300, 200);
 
+            auto size = GameSystem::window_size();
+            on_resize(size.x, size.y);
             return true;
         }
 

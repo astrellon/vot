@@ -52,6 +52,7 @@ namespace vot
             }
 
             s_helper.calc_nearby_components();
+            s_helper.on_resize();
 
             visible(false);
             return true;

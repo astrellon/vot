@@ -68,7 +68,7 @@ namespace vot
                 // Super jank, need a better way of redoing the UI.
                 s_helper.clear_all_component();
                 ProfileSelect::init();
-                ProfileSelect::on_resize();
+                s_helper.on_resize();
                 ProfileSelect::visible(true);
 
                 return true;
@@ -80,6 +80,7 @@ namespace vot
             s_helper.add_component(s_name_input);
 
             s_helper.calc_nearby_components();
+            s_helper.on_resize();
 
             visible(false);
 
@@ -102,11 +103,6 @@ namespace vot
         void ProfileSelect::on_resize( uint32_t width, uint32_t height )
         {
             s_helper.on_resize(width, height);
-        }
-        void ProfileSelect::on_resize()
-        {
-            auto size = GameSystem::window_size();
-            on_resize(size.x, size.y);
         }
     }
 }

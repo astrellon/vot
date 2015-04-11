@@ -1,5 +1,7 @@
 #include "component.h"
 
+#include "manager.h"
+
 #include <vot/game_system.h>
 #include <vot/sound.h>
 
@@ -48,6 +50,10 @@ namespace vot
             if (!value)
             {
                 _has_focus = false;
+                if (Manager::focus() == this)
+                {
+                    Manager::focus(nullptr);
+                }
             }
         }
         bool Component::enabled() const
