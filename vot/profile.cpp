@@ -80,6 +80,12 @@ namespace vot
     {
         // Load player infos from folder
         boost::filesystem::path save_path("saves");
+        if (!boost::filesystem::is_directory(save_path))
+        {
+            boost::filesystem::create_directory(save_path);
+            return true;
+        }
+
         boost::filesystem::directory_iterator end;
         for (boost::filesystem::directory_iterator iter(save_path); iter != end; ++iter)
         {
