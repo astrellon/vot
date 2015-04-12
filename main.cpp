@@ -1,23 +1,16 @@
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 
-#include <sstream>
 #include <iostream>
 
 #include "vot/game.h"
 #include "vot/game_system.h"
 #include "vot/font_manager.h"
 #include "vot/texture_manager.h"
-#include "vot/ui/manager.h"
-#include "vot/ui/button.h"
-#include "vot/ui/main_menu.h"
-#include "vot/ui/level_select.h"
-#include "vot/ui/profile_select.h"
-#include "vot/ui/text_input.h"
 #include "vot/levels/level.h"
 #include "vot/profile.h"
 #include "vot/options.h"
+#include "vot/ui/manager.h"
+#include "vot/ui/ui_state.h"
 
 int main()
 {
@@ -57,27 +50,15 @@ int main()
         return -1;
     }
 
-    if (!vot::ui::MainMenu::init())
-    {
-        std::cout << "Failed to initialise Main Menu\n";
-        return -1;
-    }
-
     if (!vot::LevelManager::init())
     {
         std::cout << "Failed to load levels\n";
         return -1;
     }
 
-    if (!vot::ui::LevelSelect::init())
+    if (!vot::ui::State::init())
     {
-        std::cout << "Failed to initialise Level Select\n";
-        return -1;
-    }
-
-    if (!vot::ui::ProfileSelect::init())
-    {
-        std::cout << "Failed to initialise Profile Select\n";
+        std::cout << "Failed to initialise main UI\n";
         return -1;
     }
 
@@ -132,10 +113,9 @@ int main()
     }
     // }}}
 
+    // Deinit {{{
+    vot::ui::State::deinit();
     vot::LevelManager::deinit();
-    vot::ui::ProfileSelect::deinit();
-    vot::ui::LevelSelect::deinit();
-    vot::ui::MainMenu::deinit();
     vot::ProfileManager::deinit();
     vot::GameSystem::deinit();
     vot::ui::Manager::deinit();
@@ -143,6 +123,7 @@ int main()
     vot::TextureManager::deinit();
 
     vot::Options::save();
+    // }}}
 
     return EXIT_SUCCESS;
 }
