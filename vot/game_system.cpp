@@ -217,7 +217,19 @@ namespace vot
                     }
                 }
             }
+            if (s_game.get() != nullptr)
+            {
+                if (event.key.code == sf::Keyboard::LBracket)
+                {
+                    s_game->time_scale(utils::Utils::clamp(s_game->time_scale() + 0.05f, 0.05f, 1.0f)); 
+                }
+                else if (event.key.code == sf::Keyboard::RBracket)
+                {
+                    s_game->time_scale(utils::Utils::clamp(s_game->time_scale() - 0.05f, 0.05f, 1.0f)); 
+                }
+            }
         }
+
         if (event.type == sf::Event::KeyReleased)
         {
             key_released(event.key.code);

@@ -32,6 +32,9 @@ namespace vot
             void paused(bool value);
             bool paused() const;
 
+            void time_scale(float value);
+            float time_scale() const;
+
             Enemy *next_target(Enemy *current);
 
             void on_resize(uint32_t width, uint32_t height);
@@ -55,6 +58,7 @@ namespace vot
             Level *_current_level;
 
             bool _paused;
+            float _time_scale;
 
             void kill_enemy(Enemy *enemy);
             void bullet_hit_particles(Bullet *bullet, Character *hit, const std::string &texture);

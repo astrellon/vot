@@ -11,7 +11,8 @@ namespace vot
 {
     Game::Game() :
         _current_level(nullptr),
-        _paused(false)
+        _paused(false),
+        _time_scale(1.0f)
     {
         auto player = new vot::Player(*TextureManager::texture("player"));
         player->sprite().setScale(0.5f, 0.5f);
@@ -36,6 +37,7 @@ namespace vot
 
     void Game::update(float dt)
     {
+        dt *= _time_scale;
         // TODO Why is the dt coming from main not constant.
         //dt = 1.0f / 60.0f;
         //std::cout << "Update dt: " << dt << "\n";
@@ -301,6 +303,15 @@ namespace vot
     bool Game::paused() const
     {
         return _paused;
+    }
+
+    void Game::time_scale(float value)
+    {
+        _time_scale = value;
+    }
+    float Game::time_scale() const
+    {
+        return _time_scale;
     }
 
     void Game::on_resize(uint32_t width, uint32_t height)

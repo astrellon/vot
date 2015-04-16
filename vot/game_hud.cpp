@@ -39,6 +39,9 @@ namespace vot
         {
             health << "\n\nTarget: " << target->life() << "/" << target->max_life();
         }
+
+        health << "\n\nTime scale: x" << gs->time_scale() << "\n";
+
         _health.setString(health.str());
     }
 
