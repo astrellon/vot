@@ -5,6 +5,9 @@
 #include <vot/game_system.h>
 
 #include "main_menu.h"
+#include "level_select.h"
+#include "profile_select.h"
+#include "profile_widget.h"
 
 namespace vot
 {
@@ -16,10 +19,31 @@ namespace vot
 
         bool Manager::init()
         {
+            if (!MainMenu::init())
+            {
+                return false;
+            }
+            if (!ProfileSelect::init())
+            {
+                return false;
+            }
+            if (!LevelSelect::init())
+            {
+                return false;
+            }
+            if (!ProfileWidget::init())
+            {
+                return false;
+            }
             return true;
         }
         void Manager::deinit()
         {
+            LevelSelect::deinit();
+            ProfileSelect::deinit();
+            MainMenu::deinit();
+            ProfileWidget::deinit();
+            
             s_has_focus = nullptr;
             s_last_had_focus = nullptr;
             s_components.clear();
@@ -70,12 +94,13 @@ namespace vot
                 auto comp = s_components[i].get();
                 comp->update(dt);
             }
+            ProfileWidget::update(dt);
         }
         void Manager::draw(sf::RenderTarget &target, sf::RenderStates states)
         {
             target.setView(GameSystem::hud_camera());
 
-            MainMenu::draw(target, states);
+            ProfileWidget::draw(target, states);
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
@@ -163,6 +188,13 @@ namespace vot
                         }
                     }
                 }
+            }
+            else if (event.type == sf::Event::Resized)
+            {
+                MainMenu::on_resize(event.size.width, event.size.height);
+                LevelSelect::on_resize(event.size.width, event.size.height);
+                ProfileSelect::on_resize(event.size.width, event.size.height);
+                ProfileWidget::on_resize(event.size.width, event.size.height);
             }
         }
 

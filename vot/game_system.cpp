@@ -7,9 +7,7 @@
 #include "utils/utils.h"
 #include "common.h"
 #include "enemy_fighter.h"
-#include "ui/main_menu.h"
-#include "ui/level_select.h"
-#include "ui/profile_select.h"
+#include "ui/ui_state.h"
 #include "levels/level.h"
 
 namespace vot
@@ -207,7 +205,16 @@ namespace vot
             {
                 if (s_game.get() != nullptr)
                 {
-                    ui::MainMenu::visible(!ui::MainMenu::visible());
+                    if (s_game->paused())
+                    {
+                        ui::State::state(ui::State::IN_GAME);
+                        s_game->paused(false);
+                    }
+                    else
+                    {
+                        ui::State::state(ui::State::PAUSE_GAME);
+                        s_game->paused(true);
+                    }
                 }
             }
         }
@@ -219,9 +226,6 @@ namespace vot
         if (event.type == sf::Event::Resized)
         {
             on_resize(event.size.width, event.size.height);
-            ui::MainMenu::on_resize(event.size.width, event.size.height);
-            ui::LevelSelect::on_resize(event.size.width, event.size.height);
-            ui::ProfileSelect::on_resize(event.size.width, event.size.height);
         }
     }
 
@@ -238,6 +242,7 @@ namespace vot
     {
         auto g = new Game();
         g->level(LevelManager::level(level));
+        ui::State::state(ui::State::IN_GAME);
         game(g);
     }
     void GameSystem::close_game()

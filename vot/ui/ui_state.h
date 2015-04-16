@@ -24,6 +24,7 @@ namespace vot
 
             private:
                 static StateValue s_state;
+                static void change_state(StateValue prev_state, StateValue new_state);
         };
     }
 }

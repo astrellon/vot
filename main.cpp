@@ -32,12 +32,6 @@ int main()
         return -1;
     }
 
-    if (!vot::ui::Manager::init())
-    {
-        std::cout << "Failed to initialise UI\n";
-        return -1;
-    }
-
     if (!vot::GameSystem::init(window))
     {
         std::cout << "Failed to initialise Game system\n";
@@ -53,6 +47,12 @@ int main()
     if (!vot::LevelManager::init())
     {
         std::cout << "Failed to load levels\n";
+        return -1;
+    }
+    
+    if (!vot::ui::Manager::init())
+    {
+        std::cout << "Failed to initialise UI\n";
         return -1;
     }
 

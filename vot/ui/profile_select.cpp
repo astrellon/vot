@@ -4,8 +4,8 @@
 
 #include "button.h"
 #include "manager.h"
-#include "main_menu.h"
 #include "text_input.h"
+#include "ui_state.h"
 
 #include <vot/texture_manager.h>
 #include <vot/profile.h>
@@ -28,8 +28,7 @@ namespace vot
             s_helper.back_button(back);
             back->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                ProfileSelect::visible(false);
-                MainMenu::visible(true);
+                State::state(State::MAIN_MENU);
                 
                 return true;
             });
@@ -49,8 +48,8 @@ namespace vot
                 btn->on_click([profile] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
                     ProfileManager::current_profile(profile);  
-                    ProfileSelect::visible(false);
-                    MainMenu::visible(true);
+                    State::state(State::MAIN_MENU);
+                    
                     return true;
                 });
             }

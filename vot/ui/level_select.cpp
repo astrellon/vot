@@ -4,7 +4,7 @@
 
 #include "button.h"
 #include "manager.h"
-#include "main_menu.h"
+#include "ui_state.h"
 
 #include <vot/texture_manager.h>
 #include <vot/game_system.h>
@@ -26,8 +26,7 @@ namespace vot
             back->setPosition(300, 200);
             back->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                LevelSelect::visible(false);
-                MainMenu::visible(true);
+                State::state(State::MAIN_MENU);
                 
                 return true;
             });
@@ -45,7 +44,6 @@ namespace vot
                 btn->on_click([iter] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
                     GameSystem::start_game(iter->first);
-                    LevelSelect::visible(false);
                 
                     return true;
                 });

@@ -23,7 +23,6 @@ namespace vot
                 static bool visible();
 
                 static void on_resize(uint32_t width, uint32_t height);
-                static void draw(sf::RenderTarget &target, sf::RenderStates states);
 
             private:
 
@@ -32,8 +31,6 @@ namespace vot
                 static Button *s_options;
                 static Button *s_quit;
                 static MenuHelper s_helper;
-                static sf::Text s_current_profile;
-                static sf::Text s_current_profile_label;
 
                 static void set_pos(sf::Transformable *obj, float x);
         };
