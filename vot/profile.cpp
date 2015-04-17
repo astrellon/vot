@@ -12,19 +12,33 @@ namespace vot
 {
     // Profile {{{
     Profile::Profile(const std::string &name) :
-        _credits(0.0f),
+        _credits(0u),
+        _points(0u),
         _name(name)
     {
 
     }
 
-    void Profile::credits(float value)
+    void Profile::credits(uint32_t value)
     {
-        _credits = value < 0.0f ? 0.0f : value;
+        _credits = value;
     }
-    float Profile::credits() const
+    uint32_t Profile::credits() const
     {
         return _credits;
+    }
+
+    void Profile::points(int32_t value)
+    {
+        _points = value;
+    }
+    int32_t Profile::points() const
+    {
+        return _points;
+    }
+    void Profile::add_points(int32_t value)
+    {
+        _points += value;
     }
 
     const std::string &Profile::name() const
@@ -49,7 +63,8 @@ namespace vot
 
         boost::property_tree::ptree tree;
         tree.add("name", _name);
-        tree.add<float>("credits", _credits);
+        tree.add<uint32_t>("credits", _credits);
+        tree.add<int32_t>("points", _points);
 
         boost::property_tree::write_json(filename, tree);
 
@@ -64,9 +79,11 @@ namespace vot
         boost::property_tree::ptree tree;
         boost::property_tree::read_json(filename, tree);
         auto name = tree.get<std::string>("name");
-        auto credits = tree.get<float>("credits");
+        auto credits = tree.get<uint32_t>("credits", 0u);
+        auto points = tree.get<int32_t>("points", 0);
 
         _credits = credits;
+        _points = points;
 
         return true;
     }

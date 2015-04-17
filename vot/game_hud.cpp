@@ -4,6 +4,7 @@
 #include "font_manager.h"
 #include "texture_manager.h"
 
+#include <iostream>
 #include <sstream>
 
 namespace vot
@@ -16,8 +17,10 @@ namespace vot
     void HudMain::create()
     {
         _sans = FontManager::font("sans");
-        _health.setFont(*_sans);
-        _health.setCharacterSize(13);
+        _top_left.setFont(*_sans);
+        _top_left.setCharacterSize(13);
+        _top_right.setFont(*_sans);
+        _top_right.setCharacterSize(13);
     }
 
     void HudMain::update(float dt)
@@ -42,12 +45,20 @@ namespace vot
 
         health << "\n\nTime scale: x" << gs->time_scale() << "\n";
 
-        _health.setString(health.str());
+        _top_left.setString(health.str());
+
+        std::stringstream points;
+        points << "Points: " << ProfileManager::current_profile()->points() << "\n";
+        _top_right.setString(points.str());
+        auto window_size = GameSystem::window_size();
+        auto bounds = _top_right.getLocalBounds();
+        _top_right.setPosition(window_size.x - bounds.width, 0);
     }
 
     void HudMain::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
-        target.draw(_health, states);
+        target.draw(_top_left, states);
+        target.draw(_top_right, states);
     }
     // }}}
     

@@ -17,7 +17,8 @@ namespace vot
 
         private:
             const sf::Font *_sans;
-            sf::Text _health;
+            sf::Text _top_left;
+            sf::Text _top_right;
     };
     // }}}
 

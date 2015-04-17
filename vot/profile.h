@@ -12,17 +12,21 @@ namespace vot
         public:
             Profile(const std::string &name);
 
-            void credits(float value);
-            float credits() const;
+            void credits(uint32_t value);
+            uint32_t credits() const;
+
+            void points(int32_t value);
+            int32_t points() const;
+            void add_points(int32_t value);
 
             const std::string &name() const;
-            const std::string &filename() const;
 
             bool save();
             bool load();
 
         private:
             uint32_t _credits;
+            int32_t _points;
             std::string _name;
 
     };

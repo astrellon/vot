@@ -372,6 +372,7 @@ namespace vot
 
     void Game::kill_enemy(Enemy *enemy)
     {
+        ProfileManager::current_profile()->add_points(100);
         if (enemy == _player->target())
         {
             if (_player->auto_target())
