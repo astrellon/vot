@@ -24,11 +24,7 @@ namespace vot
 
             private:
                 static bool s_visible;
-                static sf::Text s_label;
-                static sf::Text s_profile_name;
-
-                static vot::Profile *s_profile;
-                
+                static sf::Text s_text;
         };
     }
 }

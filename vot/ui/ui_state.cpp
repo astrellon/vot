@@ -59,7 +59,7 @@ namespace vot
                 LevelSelect::visible(true);
             }
 
-            ProfileWidget::visible(new_state != IN_GAME);
+            ProfileWidget::visible(new_state != IN_GAME && new_state != PAUSE_GAME);
         }
     }
 }
