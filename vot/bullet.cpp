@@ -139,11 +139,13 @@ namespace vot
         switch (_pattern_type)
         {
             case 0u:
-                return 1500.0f;
+                return 3000.0f;
             case 1u:
                 return 300.0f;
             case 2u:
                 return 2000.0f;
+            case 3u:
+                return 1300.0f;
             default:
                 return 1000.0f;
         }
@@ -162,7 +164,7 @@ namespace vot
         auto point = _sprite.getPosition();
         auto prevPoint = _sprite.getPosition();
 
-        if (_pattern_type == 0u)
+        if (_pattern_type == 0u || _pattern_type == 3u )
         {
             auto x = dl * speed();
             point = _init_transform.transformPoint(x, 0.0f);

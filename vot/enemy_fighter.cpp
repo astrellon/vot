@@ -27,20 +27,20 @@ namespace vot
 
         if (dist > 250.0f)
         {
-            _controlling->acceleration(unit_player * 40.0f);
+            _controlling->acceleration(unit_player * 100.0f);
         }
         else if (dist < 200.0f)
         {
-            _controlling->acceleration(unit_player * -40.0f);
+            _controlling->acceleration(unit_player * -100.0f);
         }
 
         if (dist < 300.0f && dist > 100.0f)
         {
             // Move side ways.
             sf::Transform trans;
-            trans.rotate(80.0f);
+            trans.rotate(45.0f);
             auto sideways = trans.transformPoint(unit_player);
-            _controlling->acceleration (sideways * 50.0f);
+            _controlling->acceleration (sideways * 20.0f);
         }
 
         // Arena
@@ -57,7 +57,7 @@ namespace vot
                 trans.rotate(i * 22.5f);
                 bullet->init_transform(trans);
             }
-            _cooldown = 0.5f;
+            _cooldown = 0.2f;
         }
         _cooldown -= dt;
     }

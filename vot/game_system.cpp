@@ -116,7 +116,7 @@ namespace vot
         s_bullet_manager.add_src_pattern_bullet("player_bullet_medium", pattern_bullet);
         
         pattern_bullet = new PatternBullet(*bullet_red_circle, 1.0f);
-        pattern_bullet->pattern_type(0u);
+        pattern_bullet->pattern_type(3u);
         pattern_bullet->hitbox().radius(5.0f);
         s_bullet_manager.add_src_pattern_bullet("straight_red_circle", pattern_bullet);
 
@@ -145,8 +145,11 @@ namespace vot
     {
         auto texture = TextureManager::texture("enemy");
         auto enemy = new Enemy(*texture);
-        enemy->sprite().setScale(0.5f, 0.5f);
-        enemy->hitbox().radius(25.0f);
+        enemy->sprite().setScale(0.3f, 0.3f);
+        enemy->hitbox().radius(18.0f);
+        enemy->life(4);
+        enemy->max_life(4);
+        enemy->max_speed(500.0f);
         s_enemy_manager.add_src_enemy("enemy1", enemy);
     }
 

@@ -26,10 +26,10 @@ namespace vot
         auto enemy_manager = GameSystem::enemy_manager();
         auto game = GameSystem::game();
 
-        if (true && enemy_manager->num_enemies() < 3)
+        if (true && enemy_manager->num_enemies() < 10)
         {
             _spawn_timer += dt;
-            if (_spawn_timer > 3.0f)
+            if (_spawn_timer > 1.0f)
             {
                 auto enemy = enemy_manager->spawn_enemy("enemy1");
                 enemy->controller(new EnemyFighter(enemy));

@@ -12,13 +12,13 @@ namespace vot
         _is_dead(false),
         _id(0u),
         _max_speed(250.0f),
-        _strafe_speed(400.0f),
-        _forwards_speed(1000.0f),
-        _backwards_speed(600.0f),
+        _strafe_speed(800.0f),
+        _forwards_speed(2000.0f),
+        _backwards_speed(1200.0f),
         _rot_acceleration(0.0f),
         _rot_velocity(0.0f),
-        _rot_speed(180.0f),
-        _max_rot_speed(90.0f),
+        _rot_speed(360.0f),
+        _max_rot_speed(180.0f),
         _translate_assist(true),
         _rotation_assist(true)
     {

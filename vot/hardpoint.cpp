@@ -9,7 +9,7 @@ namespace vot
     // Hardpoint {{{
     Hardpoint::Hardpoint(Group::Type group) :
         _cooldown(0.0f),
-        _max_cooldown(0.5f),
+        _max_cooldown(0.2f),
         _parent(nullptr),
         _target(nullptr),
         _group(group),
@@ -151,6 +151,7 @@ namespace vot
             }
             
             auto angle = getRotation();
+            /*
             if (_max_angle > _min_angle)
             {
                 if (angle > _max_angle)
@@ -168,6 +169,7 @@ namespace vot
                 auto dmax = utils::Utils::abs(_max_angle - angle);
                 setRotation(dmin < dmax ? _min_angle : _max_angle);
             }
+            */
         }
     }
     void Hardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
