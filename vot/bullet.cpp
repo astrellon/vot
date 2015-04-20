@@ -134,6 +134,21 @@ namespace vot
         return _total_lifetime;
     }
 
+    float PatternBullet::speed() const
+    {
+        switch (_pattern_type)
+        {
+            case 0u:
+                return 1500.0f;
+            case 1u:
+                return 300.0f;
+            case 2u:
+                return 2000.0f;
+            default:
+                return 1000.0f;
+        }
+    }
+
     void PatternBullet::update(float dt)
     {
         _lifetime += dt;
@@ -144,24 +159,24 @@ namespace vot
         }
 
         auto dl = _lifetime / _total_lifetime;
-        auto speed_dl = dl * 0.5f;
         auto point = _sprite.getPosition();
         auto prevPoint = _sprite.getPosition();
 
         if (_pattern_type == 0u)
         {
-            auto x = dl * 1500.0f;
+            auto x = dl * speed();
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 2u)
         {
-            auto x = dl * 2000.0f;
+            auto x = dl * speed();
             point = _init_transform.transformPoint(x, 0.0f);
         }
         else if (_pattern_type == 1u)
         {
-            auto x = cosf(speed_dl * 7.0f) * sinf(speed_dl * 3.0f) * 300.0f + 320.0f;
-            auto y = sinf(speed_dl * 2.0f) * cosf(speed_dl * 13.0f) * 300.0f + 320.0f;
+            auto speed_dl = dl * 0.5f;
+            auto x = cosf(speed_dl * 7.0f) * sinf(speed_dl * 3.0f) * speed() + 320.0f;
+            auto y = sinf(speed_dl * 2.0f) * cosf(speed_dl * 13.0f) * speed() + 320.0f;
             if (dl > 1.0f)
             {
                 _lifetime -= _total_lifetime;

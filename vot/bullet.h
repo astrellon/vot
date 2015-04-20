@@ -70,6 +70,8 @@ namespace vot
             void total_lifetime(float value);
             float total_lifetime() const;
 
+            float speed() const;
+
             virtual bool active() const;
             virtual bool dead() const;
 

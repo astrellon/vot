@@ -14,7 +14,8 @@ namespace vot
         _target(nullptr),
         _group(group),
         _max_angle(360.0f),
-        _min_angle(0.0f)
+        _min_angle(0.0f),
+        _track_ahead(false)
     {
 
     }
@@ -72,6 +73,15 @@ namespace vot
         return _min_angle;
     }
 
+    void Hardpoint::track_ahead(bool value)
+    {
+        _track_ahead = value;
+    }
+    bool Hardpoint::track_ahead() const
+    {
+        return _track_ahead;
+    }
+
     void Hardpoint::setup(float x, float y, float rotation, float min, float max)
     {
         setPosition(x, y);
@@ -102,6 +112,12 @@ namespace vot
         return _cooldown;
     }
 
+    float Hardpoint::projectile_speed() const
+    {
+        // Real fast!
+        return 1000000.0f;
+    }
+
     Group::Type Hardpoint::group() const
     {
         return _group;
@@ -115,7 +131,15 @@ namespace vot
         {
             auto rot_speed = 90.0f * dt;
             auto parent_trans = _parent->getInverseTransform();
-            auto local_target = parent_trans * _target->getPosition();
+            auto target_position = _target->getPosition();
+            if (track_ahead())
+            {
+                auto distance = utils::Utils::vector_length(_parent->getPosition() - _target->getPosition());
+                auto projectile_time = distance / projectile_speed();
+                target_position = _target->getPosition() + _target->velocity() * projectile_time * 4.0f + 0.5f * _target->acceleration() * projectile_time * projectile_time;
+            }
+
+            auto local_target = parent_trans * target_position;
             auto angles = utils::Utils::calculate_angles(getPosition(), local_target, getRotation(), 180.0f);
             if (angles.delta_angle() < rot_speed && angles.delta_angle() > -rot_speed)
             {
@@ -160,7 +184,7 @@ namespace vot
         _pattern_type(0u),
         _fire_bullet(false)
     {
-    
+        track_ahead(true);
     }
 
     void PatternBulletHardpoint::pattern_type(uint32_t type)
@@ -170,6 +194,11 @@ namespace vot
     uint32_t PatternBulletHardpoint::pattern_type() const
     {
         return _pattern_type;
+    }
+
+    float PatternBulletHardpoint::projectile_speed() const
+    {
+        return _blueprint.speed();
     }
 
     void PatternBulletHardpoint::update(float dt)

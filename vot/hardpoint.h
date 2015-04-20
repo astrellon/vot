@@ -33,6 +33,11 @@ namespace vot
             void min_angle(float value);
             float min_angle() const;
 
+            void track_ahead(bool value);
+            bool track_ahead() const;
+
+            virtual float projectile_speed() const;
+
             // Sets up the x,y position, initial rotation, and min and max angle restrictions.
             void setup(float x, float y, float rotation, float min = 0.0f, float max = 360.0f);
 
@@ -60,6 +65,7 @@ namespace vot
 
             float _max_angle;
             float _min_angle;
+            bool _track_ahead;
     };
     // }}}
 
@@ -71,6 +77,8 @@ namespace vot
 
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
+
+            virtual float projectile_speed() const;
 
             virtual void update(float dt);
             virtual void fire();

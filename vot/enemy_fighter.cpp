@@ -25,23 +25,22 @@ namespace vot
         auto dist = utils::Utils::vector_length(to_player);
         auto unit_player = to_player / dist;
 
-        if (dist > 200.0f)
+        if (dist > 250.0f)
         {
-            //_controlling->move(unit_player * dt * 50.0f);
-            _controlling->acceleration(unit_player * 50.0f);
+            _controlling->acceleration(unit_player * 40.0f);
         }
-        else if (dist < 100.0f)
+        else if (dist < 200.0f)
         {
-            //_controlling->move(unit_player * dt * -50.0f);
-            _controlling->acceleration(unit_player * -50.0f);
+            _controlling->acceleration(unit_player * -40.0f);
         }
-        else
+
+        if (dist < 300.0f && dist > 100.0f)
         {
             // Move side ways.
             sf::Transform trans;
-            trans.rotate(90.0f);
+            trans.rotate(80.0f);
             auto sideways = trans.transformPoint(unit_player);
-            //_controlling->move(sideways * dt * 50.0f);
+            _controlling->acceleration (sideways * 50.0f);
         }
 
         // Arena
