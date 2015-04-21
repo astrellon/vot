@@ -22,26 +22,21 @@ namespace vot
 
         bool MainMenu::init()
         {
-            auto idle_texture = TextureManager::texture("button_idle");
-            
             s_start_game = new Button("Start Game");
-            s_start_game->texture(*idle_texture);
             s_start_game->setPosition(300, 200);
             s_start_game->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                State::state(State::LEVEL_SELECT);
+                State::state(State::SHIP_HANGER);
                 
                 return true;
             });
             s_helper.add_component(s_start_game);
 
             s_options = new Button("Options");
-            s_options->texture(*idle_texture);
             s_options->setPosition(300, 260);
             s_helper.add_component(s_options);
 
             s_profiles = new Button("Profiles");
-            s_profiles->texture(*idle_texture);
             s_profiles->setPosition(300, 320);
             s_profiles->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
@@ -52,7 +47,6 @@ namespace vot
             s_helper.add_component(s_profiles);
             
             s_quit = new Button("Quit");
-            s_quit->texture(*idle_texture);
             s_quit->setPosition(300, 380);
             s_quit->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {

@@ -13,7 +13,8 @@ namespace vot
                     PROFILE_SELECT,
                     LEVEL_SELECT,
                     IN_GAME,
-                    PAUSE_GAME
+                    PAUSE_GAME,
+                    SHIP_HANGER
                 };
 
                 static bool init();

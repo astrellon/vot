@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <vot/font_manager.h>
+#include <vot/texture_manager.h>
 #include <vot/utils/utils.h>
 
 namespace vot
@@ -17,6 +18,9 @@ namespace vot
             _label_graphic.setCharacterSize(16);
             _label_graphic.setColor(sf::Color::Black);
             this->label(label);
+
+            auto back = TextureManager::texture("button_idle");
+            texture(*back);
 
             _colour.hsv(25.0f, 1.0f, 1.0f);
         }

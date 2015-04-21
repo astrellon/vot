@@ -20,10 +20,7 @@ namespace vot
 
         bool ProfileSelect::init()
         {
-            auto idle_texture = TextureManager::texture("button_idle");
-
             auto back = new Button("Back");
-            back->texture(*idle_texture);
             back->setPosition(300, 200);
             s_helper.back_button(back);
             back->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
@@ -41,7 +38,6 @@ namespace vot
             {
                 auto profile = profiles->at(i).get();
                 auto btn = new Button(profile->name());
-                btn->texture(*idle_texture);
                 btn->setPosition(300, top + (60 * i));
                 s_helper.add_component(btn);
 
@@ -56,7 +52,6 @@ namespace vot
 
             i++;
             auto create_button = new Button("Create Profile");
-            create_button->texture(*idle_texture);
             create_button->setPosition(300, top + (60 * i));
             s_helper.add_component(create_button);
             create_button->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)

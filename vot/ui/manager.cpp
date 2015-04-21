@@ -8,6 +8,7 @@
 #include "level_select.h"
 #include "profile_select.h"
 #include "profile_widget.h"
+#include "ship_hanger.h"
 
 namespace vot
 {
@@ -35,6 +36,10 @@ namespace vot
             {
                 return false;
             }
+            if (!ShipHanger::init())
+            {
+                return false;
+            }
             return true;
         }
         void Manager::deinit()
@@ -43,6 +48,7 @@ namespace vot
             ProfileSelect::deinit();
             MainMenu::deinit();
             ProfileWidget::deinit();
+            ShipHanger::deinit();
             
             s_has_focus = nullptr;
             s_last_had_focus = nullptr;
@@ -195,6 +201,7 @@ namespace vot
                 LevelSelect::on_resize(event.size.width, event.size.height);
                 ProfileSelect::on_resize(event.size.width, event.size.height);
                 ProfileWidget::on_resize(event.size.width, event.size.height);
+                ShipHanger::on_resize(event.size.width, event.size.height);
             }
         }
 

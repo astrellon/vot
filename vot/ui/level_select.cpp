@@ -18,11 +18,8 @@ namespace vot
 
         bool LevelSelect::init()
         {
-            auto idle_texture = TextureManager::texture("button_idle");
-
             auto back = new Button("Back");
             s_helper.back_button(back);
-            back->texture(*idle_texture);
             back->setPosition(300, 200);
             back->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
@@ -36,7 +33,6 @@ namespace vot
             for (auto iter = levels->begin(); iter != levels->end(); ++iter)
             {
                 auto btn = new Button(iter->second->name());
-                btn->texture(*idle_texture);
                 btn->setPosition(300, 260 + (60* i));
                 s_helper.add_component(btn);
                 i++;

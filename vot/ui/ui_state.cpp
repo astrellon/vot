@@ -4,6 +4,7 @@
 #include "level_select.h"
 #include "profile_select.h"
 #include "profile_widget.h"
+#include "ship_hanger.h"
 
 namespace vot
 {
@@ -45,6 +46,10 @@ namespace vot
             {
                 LevelSelect::visible(false);
             }
+            else if (prev_state == SHIP_HANGER)
+            {
+                ShipHanger::visible(false);
+            }
 
             if (new_state == MAIN_MENU || new_state == PAUSE_GAME)
             {
@@ -57,6 +62,10 @@ namespace vot
             else if (new_state == LEVEL_SELECT)
             {
                 LevelSelect::visible(true);
+            }
+            else if (new_state == SHIP_HANGER)
+            {
+                ShipHanger::visible(true);
             }
 
             ProfileWidget::visible(new_state != IN_GAME && new_state != PAUSE_GAME);

@@ -14,7 +14,7 @@ namespace vot
         _paused(false),
         _time_scale(1.0f)
     {
-        auto player = new vot::Player(*TextureManager::texture("player"));
+        auto player = new Player(*TextureManager::texture("player"));
         player->sprite().setScale(0.5f, 0.5f);
         player->hitbox().radius(5.0f);
         player->location(sf::Vector2f(0.0f, 100.0f));
