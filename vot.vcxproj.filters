@@ -104,6 +104,15 @@
     <ClCompile Include="vot\profile.cpp">
       <Filter>vot</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ui\ui_state.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\profile_widget.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="vot\ui\ship_hanger.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -230,6 +239,15 @@
     </ClInclude>
     <ClInclude Include="vot\profile.h">
       <Filter>vot</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\ui_state.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\profile_widget.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\ui\ship_hanger.h">
+      <Filter>vot\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

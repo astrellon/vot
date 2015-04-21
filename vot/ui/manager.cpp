@@ -40,6 +40,20 @@ namespace vot
             {
                 return false;
             }
+
+            auto size = GameSystem::window_size();
+            MainMenu::on_resize(size.x, size.y);
+            ProfileSelect::on_resize(size.x, size.y);
+            LevelSelect::on_resize(size.x, size.y);
+            ProfileWidget::on_resize(size.x, size.y);
+            ShipHanger::on_resize(size.x, size.y);
+
+            MainMenu::visible(false);
+            ProfileSelect::visible(false);
+            LevelSelect::visible(false);
+            ProfileWidget::visible(false);
+            ShipHanger::visible(false);
+
             return true;
         }
         void Manager::deinit()
@@ -115,6 +129,8 @@ namespace vot
                     target.draw(*comp, states);
                 }
             }
+
+            ShipHanger::draw(target, states);
         }
 
         void Manager::process_event(const sf::Event &event)

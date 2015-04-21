@@ -13,6 +13,7 @@ namespace vot
     {
         Player *ShipHanger::s_player_render = nullptr;
         MenuHelper ShipHanger::s_helper;
+        sf::View ShipHanger::s_player_camera;
 
         bool ShipHanger::init()
         {
@@ -26,12 +27,10 @@ namespace vot
                 return true;
             });
 
-            auto size = GameSystem::window_size();
-            on_resize(size.x, size.y);
-            visible(false);
-
             auto player_texture = TextureManager::texture("player");
             s_player_render = new Player(*player_texture);
+
+            s_player_camera.setCenter(0, 0);
 
             return true;
         }
@@ -65,6 +64,12 @@ namespace vot
         }
         void ShipHanger::draw(sf::RenderTarget &target, sf::RenderStates states)
         {
+            //target.setView(s_player_camera);
+            if (!s_helper.visible())
+            {
+                return;
+            }
+
             if (s_player_render != nullptr)
             {
                 target.draw(*s_player_render, states);
@@ -73,7 +78,10 @@ namespace vot
 
         void ShipHanger::on_resize( uint32_t width, uint32_t height )
         {
-            s_helper.on_resize(width, height);            
+            s_helper.on_resize(width, height);
+
+            s_player_camera.setSize(sf::Vector2f(width, height));
+            s_player_render->location(sf::Vector2f(width * 0.5f, height * 0.5f));
         }
 
         void ShipHanger::apply_player_to_renderer()
