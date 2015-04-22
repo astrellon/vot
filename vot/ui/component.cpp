@@ -1,5 +1,7 @@
 #include "component.h"
 
+#include <iostream>
+
 #include "manager.h"
 
 #include <vot/game_system.h>
@@ -13,6 +15,7 @@ namespace vot
             _state(NONE),
             _has_focus(false),
             _enabled(true),
+            _local_view(nullptr),
             _to_left(nullptr),
             _to_right(nullptr),
             _to_below(nullptr),
@@ -61,6 +64,15 @@ namespace vot
             return _enabled;
         }
 
+        void Component::local_view(sf::View *view)
+        {
+            _local_view = view;
+        }
+        sf::View *Component::local_view() const
+        {
+            return _local_view;
+        }
+
         Component *Component::to_left() const
         {
             return _to_left;
@@ -104,6 +116,15 @@ namespace vot
         const std::string &Component::id() const
         {
             return _id;
+        }
+
+        bool Component::check_hover(int32_t x, int32_t y) const
+        {
+            auto s = size();
+            auto local_pos = getInverseTransform().transformPoint(x, y);
+
+            return local_pos.x >= 0.0f && local_pos.x <= s.x &&
+                local_pos.y >= 0.0f && local_pos.y <= s.y;
         }
 
         void Component::on_click(Component::ClickHandler handler)

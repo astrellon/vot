@@ -21,12 +21,12 @@ namespace vot
                 void back_button(Button *btn);
                 Button *back_button() const;
 
-                void add_component(Component *comp);
+                void add_component(Component *comp, bool adjust_on_resize = true);
                 void remove_component(Component *comp);
                 void clear_all_component();
                 void calc_nearby_components();
                 
-                typedef std::vector<Component *> ComponentList;
+                typedef std::vector<std::pair<Component *, bool> > ComponentList;
                 const ComponentList &components() const;
 
                 void on_resize(uint32_t width, uint32_t height);

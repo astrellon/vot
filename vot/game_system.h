@@ -19,7 +19,7 @@ namespace vot
             static bool init(sf::RenderWindow &window);
             static void deinit();
 
-            static sf::RenderWindow &window();
+            static sf::RenderWindow *window();
 
             static BulletManager *bullet_manager();
             static EnemyManager *enemy_manager();

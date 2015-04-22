@@ -24,7 +24,7 @@ namespace vot
 
             for (auto i = 0u; i < _components.size(); i++)
             {
-                _components[i]->enabled(value);
+                _components[i].first->enabled(value);
             }
 
             if (value)
@@ -51,16 +51,16 @@ namespace vot
             return _back_button;
         }
 
-        void MenuHelper::add_component(Component *comp)
+        void MenuHelper::add_component(Component *comp, bool adjust_on_resize)
         {
-            _components.push_back(comp);
+            _components.push_back(std::pair<Component *, bool>(comp, adjust_on_resize));
             Manager::add_component(comp);
         }
         void MenuHelper::remove_component(Component *comp)
         {
             for (auto iter = _components.begin(); iter != _components.end(); ++iter)
             {
-                if (*iter == comp)
+                if (iter->first == comp)
                 {
                     _components.erase(iter);
                     break;
@@ -72,7 +72,7 @@ namespace vot
         {
             for (auto i = 0u; i < _components.size(); i++)
             {
-                Manager::remove_component(_components[i]);
+                Manager::remove_component(_components[i].first);
             }
             _components.clear();
         }
@@ -80,24 +80,24 @@ namespace vot
         {
             for (auto i = 0u; i < _components.size(); i++)
             {
-                auto comp = _components[i];
+                auto comp = _components[i].first;
 
                 if (i == 0u)
                 {
-                    comp->to_above(_components.back());
+                    comp->to_above(_components.back().first);
                 }
                 else
                 {
-                    comp->to_above(_components[i - 1]);
+                    comp->to_above(_components[i - 1].first);
                 }
                 
                 if (i == _components.size() - 1)
                 {
-                    comp->to_below(_components.front());
+                    comp->to_below(_components.front().first);
                 }
                 if (i > 0)
                 {
-                    _components[i - 1]->to_below(comp);
+                    _components[i - 1].first->to_below(comp);
                 }
             }
         }
@@ -111,7 +111,11 @@ namespace vot
             auto fwidth = static_cast<float>(width);
             for (auto i = 0u; i < _components.size(); i++)
             {
-                auto comp = _components[i];
+                auto comp = _components[i].first;
+                if (!_components[i].second)
+                {
+                    continue;
+                }
                 auto size = comp->size();
                 auto x = utils::Utils::round((fwidth - size.x) * 0.5f);
 

@@ -8,6 +8,8 @@
 
 #include "button.h"
 #include "ui_state.h"
+#include "ship_hardpoint_widget.h"
+#include "manager.h"
 
 namespace vot
 {
@@ -47,6 +49,19 @@ namespace vot
             s_player_render->init();
 
             s_player_camera.setCenter(0, 0);
+
+            auto placements = s_player_render->hardpoint_placements();
+            for (auto i = 0u; i < placements->size(); i++)
+            {
+                auto placement = placements->at(i).get();
+                auto widget = new ShipHardpointWidget(placement);
+                widget->local_view(&s_player_camera);
+                s_helper.add_component(widget, false);
+
+                auto pos = placement->position();
+                auto size = widget->size();
+                widget->setPosition(pos.x - (size.x * 0.5f), pos.y - (size.y * 0.5f));
+            }
 
             return true;
         }
@@ -90,21 +105,6 @@ namespace vot
                 target.setView(s_player_camera);
 
                 target.draw(*s_player_render, states);
-
-                auto placements = s_player_render->hardpoint_placements();
-                for (auto i = 0u; i < placements->size(); i++)
-                {
-                    auto placement = placements->at(i).get();
-                    sf::RectangleShape shape;
-                    shape.setSize(sf::Vector2f(6, 6));
-                    shape.setOrigin(3, 3);
-                    shape.setPosition(placement->position());
-                    shape.setOutlineColor(sf::Color::Red);
-                    shape.setFillColor(sf::Color::Transparent);
-                    shape.setOutlineThickness(1);
-
-                    target.draw(shape, states);
-                }
             }
         }
 
@@ -112,7 +112,9 @@ namespace vot
         {
             s_helper.on_resize(width, height);
 
-            s_player_camera.setSize(sf::Vector2f(width * 0.5f, height * 0.5f));
+            auto half_width = width * 0.5f;
+            auto half_height = height * 0.5f;
+            s_player_camera.setSize(sf::Vector2f(half_width, half_height));
         }
 
         void ShipHanger::apply_player_to_renderer()

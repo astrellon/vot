@@ -121,16 +121,25 @@ namespace vot
             target.setView(GameSystem::hud_camera());
 
             ProfileWidget::draw(target, states);
+            ShipHanger::draw(target, states);
+            
+            target.setView(GameSystem::hud_camera());
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
                 if (comp->enabled())
                 {
+                    if (comp->local_view() != nullptr)
+                    {
+                        target.setView(*comp->local_view());
+                    }
                     target.draw(*comp, states);
+                    if (comp->local_view() != nullptr)
+                    {
+                        target.setView(GameSystem::hud_camera());
+                    }
                 }
             }
-
-            ShipHanger::draw(target, states);
         }
 
         void Manager::process_event(const sf::Event &event)
@@ -224,11 +233,26 @@ namespace vot
         void Manager::check_hover(int32_t x, int32_t y)
         {
             auto hovered = false;
+            const auto window = GameSystem::window();
+            auto global = window->mapPixelToCoords(sf::Vector2i(x, y));
+            
             for (auto i = 0u; i < s_components.size(); i++)
             {
                 auto comp = s_components[i].get();
-                if (comp->enabled() && comp->check_hover(x, y))
+                if (comp->enabled())
                 {
+                    if (comp->local_view() != nullptr)
+                    {
+                        auto local = window->mapPixelToCoords(sf::Vector2i(x, y), *comp->local_view());
+                        if (!comp->check_hover(local.x, local.y))
+                        {
+                            continue;
+                        }
+                    }
+                    else if (!comp->check_hover(global.x, global.y))
+                    {
+                        continue;
+                    }
                     change_focus(comp);
                     hovered = true;
                     break;

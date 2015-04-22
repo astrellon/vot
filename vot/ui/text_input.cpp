@@ -69,14 +69,6 @@ namespace vot
             target.draw(_value_graphic, states);
         }
 
-        bool TextInput::check_hover( int32_t x, int32_t y ) const
-        {
-            auto size = _sprite.getTexture()->getSize();
-            auto local_pos = getInverseTransform().transformPoint(x, y);
-
-            return local_pos.x >= 0.0f && local_pos.x <= size.x &&
-                local_pos.y >= 0.0f && local_pos.y <= size.y;
-        }
         bool TextInput::do_click( int32_t x, int32_t y, sf::Mouse::Button button )
         {
             auto handler = on_click();

@@ -25,7 +25,6 @@ namespace vot
                 virtual void update(float dt);
                 virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-                virtual bool check_hover(int32_t x, int32_t y) const;
                 virtual bool do_click(int32_t x, int32_t y, sf::Mouse::Button button);
                 virtual bool do_keypress(sf::Keyboard::Key key);
                 virtual bool do_text(uint32_t text);

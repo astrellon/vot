@@ -22,7 +22,7 @@ namespace vot
 
         this->player(player);
     
-        auto window_size = GameSystem::window().getSize();
+        auto window_size = GameSystem::window()->getSize();
         _camera.setSize(static_cast<float>(window_size.x), static_cast<float>(window_size.y));
         _background.speed(0.1f);
         _background.create();

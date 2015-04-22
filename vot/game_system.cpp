@@ -60,9 +60,9 @@ namespace vot
         s_sound_manager.clear();
     }
 
-    sf::RenderWindow &GameSystem::window()
+    sf::RenderWindow *GameSystem::window()
     {
-        return *s_window;
+        return s_window;
     }
 
     void GameSystem::update(float dt)

@@ -23,7 +23,7 @@ namespace vot
             back->setPosition(300, 200);
             back->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
             {
-                State::state(State::MAIN_MENU);
+                State::state(State::SHIP_HANGER);
                 
                 return true;
             });

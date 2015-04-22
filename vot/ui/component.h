@@ -40,7 +40,7 @@ namespace vot
             
                 virtual void update(float dt) = 0;
 
-                virtual bool check_hover(int32_t x, int32_t y) const = 0;
+                virtual bool check_hover(int32_t x, int32_t y) const;
                 virtual bool do_click(int32_t x, int32_t y, sf::Mouse::Button button) = 0;
                 virtual bool do_keypress(sf::Keyboard::Key key);
                 virtual bool do_text(uint32_t text);
@@ -54,6 +54,9 @@ namespace vot
 
                 virtual sf::Vector2f size() const = 0;
 
+                void local_view(sf::View *view);
+                sf::View *local_view() const;
+
             private:
                 State _state;
                 bool _has_focus;
@@ -61,6 +64,7 @@ namespace vot
 
                 std::string _id;
 
+                sf::View *_local_view;
                 Component *_to_left;
                 Component *_to_right;
                 Component *_to_below;
