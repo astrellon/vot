@@ -1,5 +1,7 @@
 #include "ship_hanger.h"
 
+#include <iostream>
+
 #include <vot/player.h>
 #include <vot/game_system.h>
 #include <vot/texture_manager.h>
@@ -27,8 +29,22 @@ namespace vot
                 return true;
             });
 
+            auto continue_btn = new Button("Continue");
+            s_helper.add_component(continue_btn);
+            continue_btn->setPosition(300, 110);
+            continue_btn->on_click([] (int32_t x, int32_t y, sf::Mouse::Button btn)
+            {
+                State::state(State::LEVEL_SELECT);
+
+                return true;
+            });
+
+            s_helper.calc_nearby_components();
+
             auto player_texture = TextureManager::texture("player");
             s_player_render = new Player(*player_texture);
+            s_player_render->sprite().setScale(0.5f, 0.5f);
+            s_player_render->init();
 
             s_player_camera.setCenter(0, 0);
 
@@ -64,7 +80,6 @@ namespace vot
         }
         void ShipHanger::draw(sf::RenderTarget &target, sf::RenderStates states)
         {
-            //target.setView(s_player_camera);
             if (!s_helper.visible())
             {
                 return;
@@ -72,7 +87,24 @@ namespace vot
 
             if (s_player_render != nullptr)
             {
+                target.setView(s_player_camera);
+
                 target.draw(*s_player_render, states);
+
+                auto placements = s_player_render->hardpoint_placements();
+                for (auto i = 0u; i < placements->size(); i++)
+                {
+                    auto placement = placements->at(i).get();
+                    sf::RectangleShape shape;
+                    shape.setSize(sf::Vector2f(6, 6));
+                    shape.setOrigin(3, 3);
+                    shape.setPosition(placement->position());
+                    shape.setOutlineColor(sf::Color::Red);
+                    shape.setFillColor(sf::Color::Transparent);
+                    shape.setOutlineThickness(1);
+
+                    target.draw(shape, states);
+                }
             }
         }
 
@@ -80,8 +112,7 @@ namespace vot
         {
             s_helper.on_resize(width, height);
 
-            s_player_camera.setSize(sf::Vector2f(width, height));
-            s_player_render->location(sf::Vector2f(width * 0.5f, height * 0.5f));
+            s_player_camera.setSize(sf::Vector2f(width * 0.5f, height * 0.5f));
         }
 
         void ShipHanger::apply_player_to_renderer()

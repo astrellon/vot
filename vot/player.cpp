@@ -278,6 +278,11 @@ namespace vot
         add_thruster(thruster);
     }
 
+    const Player::HardpointPlacements *Player::hardpoint_placements() const
+    {
+        return &_hardpoint_placements;
+    }
+
     void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         //states.shader = &_shader;

@@ -42,6 +42,7 @@ namespace vot
     {
         _sprite.setTexture(*value);
         _sprite.setRotation(90.0f);
+        _sprite.setScale(0.5f, 0.5f);
         auto size = value->getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
     }

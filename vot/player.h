@@ -36,8 +36,11 @@ namespace vot
 
             void add_powerup(const Powerup &powerup);
 
+            typedef std::vector<std::unique_ptr<HardpointPlacement> > HardpointPlacements; 
             void add_hardpoint_placement(HardpointPlacement *placement);
             void add_thruster_placement(float x, float y, float rotation, float size);
+
+            const HardpointPlacements *hardpoint_placements() const;
 
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
@@ -52,7 +55,7 @@ namespace vot
             utils::Circle _powerup_hitbox;
             sf::Shader _shader;
             
-            std::vector<std::unique_ptr<HardpointPlacement> > _hardpoint_placements;
+            HardpointPlacements _hardpoint_placements;
 
             void create_new_hardpoint(Powerup::Type type);
     };
