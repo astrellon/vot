@@ -2,11 +2,14 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <memory>
 #include <stdint.h>
 
 namespace vot
 {
+    class Hardpoint;
+
     class Profile
     {
         public:
@@ -21,6 +24,12 @@ namespace vot
 
             const std::string &name() const;
 
+            typedef std::map<std::string, Hardpoint *> HardpointMap;
+            const HardpointMap *hardpoints() const;
+
+            void hardpoint(const std::string &placement_name, Hardpoint *hardpoint);
+            Hardpoint *hardpoint(const std::string &placement_name) const;
+
             bool save();
             bool load();
 
@@ -28,6 +37,8 @@ namespace vot
             uint32_t _credits;
             int32_t _points;
             std::string _name;
+
+            HardpointMap _hardpoints;
 
     };
 

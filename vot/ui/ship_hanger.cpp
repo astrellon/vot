@@ -1,10 +1,12 @@
 #include "ship_hanger.h"
 
 #include <iostream>
+#include <sstream>
 
 #include <vot/player.h>
 #include <vot/game_system.h>
 #include <vot/texture_manager.h>
+#include <vot/hardpoint.h>
 
 #include "button.h"
 #include "ui_state.h"
@@ -18,6 +20,7 @@ namespace vot
         Player *ShipHanger::s_player_render = nullptr;
         MenuHelper ShipHanger::s_helper;
         sf::View ShipHanger::s_player_camera;
+        Hardpoint *ShipHanger::s_held_hardpoint = nullptr;
 
         bool ShipHanger::init()
         {
@@ -41,8 +44,6 @@ namespace vot
                 return true;
             });
 
-            s_helper.calc_nearby_components();
-
             auto player_texture = TextureManager::texture("player");
             s_player_render = new Player(*player_texture);
             s_player_render->sprite().setScale(0.5f, 0.5f);
@@ -57,11 +58,37 @@ namespace vot
                 auto widget = new ShipHardpointWidget(placement);
                 widget->local_view(&s_player_camera);
                 s_helper.add_component(widget, false);
-
+                
                 auto pos = placement->position();
                 auto size = widget->size();
                 widget->setPosition(pos.x - (size.x * 0.5f), pos.y - (size.y * 0.5f));
+                widget->on_click([placement, pos] (int32_t x, int32_t y, sf::Mouse::Button btn)
+                {
+                    if (s_held_hardpoint != nullptr)
+                    {
+                        if (placement->hardpoint() == nullptr)
+                        {
+                            placement->hardpoint(s_held_hardpoint);
+                            s_held_hardpoint = nullptr;
+                        }
+                        else
+                        {
+                            auto temp = s_held_hardpoint;
+                            s_held_hardpoint = placement->hardpoint();
+                            placement->hardpoint(temp);
+                        }
+                    }
+                    else
+                    {
+                        s_held_hardpoint = placement->hardpoint();
+                        placement->hardpoint(nullptr);
+                    }
+                    std::cout << "Clicked on placement " << pos.x << ", " << pos.y << "\n";
+                    return true;
+                });
             }
+
+            s_helper.calc_nearby_components();
 
             return true;
         }

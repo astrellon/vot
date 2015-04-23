@@ -65,16 +65,6 @@ namespace vot
             target.draw(_label_graphic, states);
         }
 
-        bool Button::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
-        {
-            auto handler = on_click();
-            if (handler)
-            {
-                return handler(x, y, button);
-            }
-            return true;
-        }
-
         sf::Vector2f Button::size() const
         {
             return sf::Vector2f(_sprite.getTexture()->getSize());

@@ -36,11 +36,6 @@ namespace vot
             states.transform *= getTransform();
             target.draw(shape, states);
         }
-                
-        bool ShipHardpointWidget::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
-        {
-            return false;
-        }
 
         sf::Vector2f ShipHardpointWidget::size() const
         {

@@ -126,6 +126,15 @@ namespace vot
             return local_pos.x >= 0.0f && local_pos.x <= s.x &&
                 local_pos.y >= 0.0f && local_pos.y <= s.y;
         }
+        bool Component::do_click(int32_t x, int32_t y, sf::Mouse::Button button)
+        {
+            auto handler = on_click();
+            if (handler)
+            {
+                return handler(x, y, button);
+            }
+            return true;
+        }
 
         void Component::on_click(Component::ClickHandler handler)
         {

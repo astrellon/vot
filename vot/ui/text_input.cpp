@@ -69,16 +69,6 @@ namespace vot
             target.draw(_value_graphic, states);
         }
 
-        bool TextInput::do_click( int32_t x, int32_t y, sf::Mouse::Button button )
-        {
-            auto handler = on_click();
-            if (handler)
-            {
-                return handler(x, y, button);
-            }
-            return true;
-        }
-
         bool TextInput::do_keypress(sf::Keyboard::Key key)
         {
             if (key == sf::Keyboard::Tab || 

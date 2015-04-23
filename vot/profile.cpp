@@ -46,6 +46,25 @@ namespace vot
         return _name;
     }
 
+    const Profile::HardpointMap *Profile::hardpoints() const
+    {
+        return &_hardpoints;
+    }
+    void Profile::hardpoint(const std::string &placement_name, Hardpoint *hardpoint)
+    {
+        _hardpoints[placement_name] = hardpoint;
+    }
+    Hardpoint *Profile::hardpoint(const std::string &placement_name) const
+    {
+        auto find = _hardpoints.find(placement_name);
+        if (find == _hardpoints.end())
+        {
+            return nullptr;
+        }
+
+        return find->second;
+    }
+
     bool Profile::save()
     {
         boost::filesystem::path save_path("saves");
@@ -55,18 +74,19 @@ namespace vot
         filename += _name;
         filename += ".save";
 
-        std::ofstream output(filename);
-        if (!output)
+        boost::property_tree::ptree output;
+        output.add("name", _name);
+        output.add("credits", _credits);
+        output.add("points", _points);
+
+        boost::property_tree::ptree hardpoints;
+        output.add_child("hardpoints", hardpoints);
+        for (auto iter = _hardpoints.begin(); iter != _hardpoints.end(); ++iter)
         {
-            return false;
+            boost::property_tree::ptree hardpoint;    
         }
 
-        boost::property_tree::ptree tree;
-        tree.add("name", _name);
-        tree.add<uint32_t>("credits", _credits);
-        tree.add<int32_t>("points", _points);
-
-        boost::property_tree::write_json(filename, tree);
+        boost::property_tree::write_json(filename, output);
 
         return true;
     }

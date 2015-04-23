@@ -253,6 +253,7 @@ namespace vot
                     {
                         continue;
                     }
+
                     change_focus(comp);
                     hovered = true;
                     break;

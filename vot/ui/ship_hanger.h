@@ -8,6 +8,7 @@
 namespace vot
 {
     class Player;
+    class Hardpoint;
 
     namespace ui
     {
@@ -31,6 +32,7 @@ namespace vot
                 static Player *s_player_render; 
                 static MenuHelper s_helper;
                 static sf::View s_player_camera;
+                static Hardpoint *s_held_hardpoint;
 
                 static void apply_player_to_renderer();
                 static void apply_renderer_to_player();
