@@ -461,6 +461,31 @@ namespace vot
         }
         return find->second.get();
     }
+    
+    std::string BulletManager::find_src_pattern_bullet(const PatternBullet *bullet) const
+    {
+        for (auto iter = _src_pattern_bullets.begin(); iter != _src_pattern_bullets.end(); ++iter)
+        {
+            if (iter->second.get() == bullet)
+            {
+                return iter->first;
+            }
+        }
+        return std::string();
+    }
+
+    std::string BulletManager::find_src_homing_bullet(const HomingBullet *bullet) const
+    {
+        for (auto iter = _src_homing_bullets.begin(); iter != _src_homing_bullets.end(); ++iter)
+        {
+            if (iter->second.get() == bullet)
+            {
+                return iter->first;
+            }
+        }
+        return std::string();
+    }
+
 
     void BulletManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {

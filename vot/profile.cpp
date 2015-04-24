@@ -7,6 +7,7 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include "options.h"
+#include "hardpoint.h"
 
 namespace vot
 {
@@ -79,12 +80,21 @@ namespace vot
         output.add("credits", _credits);
         output.add("points", _points);
 
+        /*
         boost::property_tree::ptree hardpoints;
         output.add_child("hardpoints", hardpoints);
+        auto i = 0u;
         for (auto iter = _hardpoints.begin(); iter != _hardpoints.end(); ++iter)
         {
-            boost::property_tree::ptree hardpoint;    
+            std::stringstream ss;
+            ss << i;
+
+            i++;
+            boost::property_tree::ptree hardpoint_output;
+            iter->second->serialise(hardpoint_output);
+            hardpoints.add_child(ss.str(), hardpoint_output);
         }
+        */
 
         boost::property_tree::write_json(filename, output);
 
@@ -96,11 +106,13 @@ namespace vot
         filename += _name;
         filename += ".save";
 
-        boost::property_tree::ptree tree;
-        boost::property_tree::read_json(filename, tree);
-        auto name = tree.get<std::string>("name");
-        auto credits = tree.get<uint32_t>("credits", 0u);
-        auto points = tree.get<int32_t>("points", 0);
+        boost::property_tree::ptree input;
+        boost::property_tree::read_json(filename, input);
+        auto name = input.get<std::string>("name");
+        auto credits = input.get<uint32_t>("credits", 0u);
+        auto points = input.get<int32_t>("points", 0);
+
+        //auto hardpoints = input.get_child("hardpoints");
 
         _credits = credits;
         _points = points;

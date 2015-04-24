@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include "bullet.h"
 #include "beam.h"
@@ -51,6 +52,9 @@ namespace vot
             virtual void fire() = 0;
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+            virtual void serialise(boost::property_tree::ptree &output) const;
+            virtual void deserialise(boost::property_tree::ptree &input);
+
         protected:
             void cooldown(float value);
             void change_cooldown(float delta);
@@ -73,19 +77,24 @@ namespace vot
     class PatternBulletHardpoint : public Hardpoint
     {
         public:
-            PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group);
+            PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group);
 
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
 
             virtual float projectile_speed() const;
 
+            const PatternBullet *blueprint() const;
+
             virtual void update(float dt);
             virtual void fire();
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+            virtual void serialise(boost::property_tree::ptree &output) const;
+            virtual void deserialise(boost::property_tree::ptree &input);
+
         private:
-            const PatternBullet &_blueprint;
+            const PatternBullet *_blueprint;
             uint32_t _pattern_type;
             bool _fire_bullet;
     };
@@ -95,12 +104,17 @@ namespace vot
     class HomingBulletHardpoint : public Hardpoint
     {
         public:
-            HomingBulletHardpoint(const HomingBullet &blueprint, Group::Type group);
+            HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group);
 
             virtual void fire();
 
+            const HomingBullet *blueprint() const;
+
+            virtual void serialise(boost::property_tree::ptree &output) const;
+            virtual void deserialise(boost::property_tree::ptree &input);
+
         private:
-            const HomingBullet &_blueprint;
+            const HomingBullet *_blueprint;
     };
     // }}}
 
@@ -108,15 +122,20 @@ namespace vot
     class BeamHardpoint : public Hardpoint
     {
         public:
-            BeamHardpoint(const Beam &blueprint, Group::Type group);
+            BeamHardpoint(const Beam *blueprint, Group::Type group);
 
             virtual void update(float dt);
             virtual void fire();
 
+            const Beam *blueprint() const;
+
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+            
+            virtual void serialise(boost::property_tree::ptree &output) const;
+            virtual void deserialise(boost::property_tree::ptree &input);
 
         private:
-            const Beam &_blueprint;
+            const Beam *_blueprint;
             Beam *_active_beam;
             bool _prev_charging_up;;
             bool _fire_beam;

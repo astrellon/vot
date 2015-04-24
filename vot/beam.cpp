@@ -192,6 +192,18 @@ namespace vot
         return find->second.get();
     }
 
+    std::string BeamManager::find_src_beam(const Beam *beam) const
+    {
+        for (auto iter = _src_beams.begin(); iter != _src_beams.end(); ++iter)
+        {
+            if (iter->second.get() == beam)
+            {
+                return iter->first;
+            }
+        }
+        return std::string();
+    }
+
     void BeamManager::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         states.blendMode = sf::BlendAdd;

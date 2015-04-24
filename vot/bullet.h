@@ -151,6 +151,9 @@ namespace vot
             //void draw(sf::RenderWindow &window);
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
+            std::string find_src_pattern_bullet(const PatternBullet *bullet) const;
+            std::string find_src_homing_bullet(const HomingBullet *bullet) const;
+
         private:
             std::map<std::string, std::unique_ptr<PatternBullet> > _src_pattern_bullets;
             std::map<std::string, std::unique_ptr<HomingBullet> > _src_homing_bullets;

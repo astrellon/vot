@@ -76,6 +76,8 @@ namespace vot
             void add_src_beam(const std::string &name, Beam *beam);
             Beam *find_src_beam(const std::string &name) const;
 
+            std::string find_src_beam(const Beam *beam) const;
+
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
         private:

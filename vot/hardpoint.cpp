@@ -178,10 +178,31 @@ namespace vot
         states.transform *= getTransform();
         target.draw(_sprite, states);
     }
+
+    void Hardpoint::serialise(boost::property_tree::ptree &output) const
+    {
+        output.add("cooldown", cooldown());
+        output.add("max_cooldown", max_cooldown());
+
+        output.add("max_angle", max_angle());
+        output.add("min_angle", min_angle());
+        output.add("track_ahead", track_ahead());
+        //output.add("group", group());
+    }
+    void Hardpoint::deserialise(boost::property_tree::ptree &input)
+    {
+        _cooldown = input.get<float>("cooldown");
+        max_cooldown(input.get<float>("max_cooldown"));
+
+        max_angle(input.get<float>("max_angle"));
+        min_angle(input.get<float>("min_angle"));
+        track_ahead(input.get<bool>("track_ahead"));
+        //_group = input.get<Group::Type>("group");
+    }
     // }}}
 
     // PatternBulletHardpoint {{{
-    PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet &blueprint, Group::Type group) :
+    PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group) :
         Hardpoint(group),
         _blueprint(blueprint),
         _pattern_type(0u),
@@ -201,7 +222,12 @@ namespace vot
 
     float PatternBulletHardpoint::projectile_speed() const
     {
-        return _blueprint.speed();
+        return _blueprint->speed();
+    }
+
+    const PatternBullet *PatternBulletHardpoint::blueprint() const
+    {
+        return _blueprint;
     }
 
     void PatternBulletHardpoint::update(float dt)
@@ -221,7 +247,7 @@ namespace vot
             system->setRotation(global_rotation);
             system->init();
 
-            auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet(_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet(*_blueprint, Group::PLAYER);
             bullet->pattern_type(_pattern_type);
 
             bullet->init_transform(trans);
@@ -242,21 +268,42 @@ namespace vot
     {
         Hardpoint::draw(target, states);
     }
+
+    void PatternBulletHardpoint::serialise(boost::property_tree::ptree &output) const
+    {
+        Hardpoint::serialise(output);
+            
+        output.add("type", "pattern");
+        output.add("pattern_type", pattern_type());
+        output.add("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
+    }
+    void PatternBulletHardpoint::deserialise(boost::property_tree::ptree &input)
+    {
+        Hardpoint::deserialise(input);
+
+        pattern_type(input.get<uint32_t>("pattern_type"));
+        _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(input.get<std::string>("blueprint"));
+    }
     // }}}
 
     // HomingBulletHardpoint {{{
-    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet &blueprint, Group::Type group) :
+    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group) :
         Hardpoint(group),
         _blueprint(blueprint)
     {
 
     }
 
+    const HomingBullet *HomingBulletHardpoint::blueprint() const
+    {
+        return _blueprint;
+    }
+
     void HomingBulletHardpoint::fire()
     {
         if (cooldown() < 0.0f)
         {
-            auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(*_blueprint, Group::PLAYER);
 
             auto trans = parent()->getTransform() * getTransform();
             bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
@@ -267,16 +314,30 @@ namespace vot
             cooldown(max_cooldown());
         }
     }
+
+    void HomingBulletHardpoint::serialise(boost::property_tree::ptree &output) const
+    {
+        Hardpoint::serialise(output);
+
+        output.add("type", "homing");
+        output.add("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
+    }
+    void HomingBulletHardpoint::deserialise( boost::property_tree::ptree &input )
+    {
+        Hardpoint::deserialise(input);
+
+        _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(input.get<std::string>("blueprint"));
+    }
     // }}}
 
     // BeamHardpoint {{{
-    BeamHardpoint::BeamHardpoint(const Beam &blueprint, Group::Type group) :
+    BeamHardpoint::BeamHardpoint(const Beam *blueprint, Group::Type group) :
         Hardpoint(group),
         _blueprint(blueprint),
         _charge_up_system(nullptr),
         _charge_up(0.0f)
     {
-        _active_beam = GameSystem::beam_manager()->spawn_beam(blueprint, group);
+        _active_beam = GameSystem::beam_manager()->spawn_beam(*blueprint, group);
 
         auto texture = TextureManager::texture("bullet_blue_circle");
         _charge_up_system = GameSystem::particle_manager()->spawn_system(*texture, 10);
@@ -300,6 +361,11 @@ namespace vot
             states.transform *= getTransform();
             target.draw(_beam_glow, states);
         }
+    }
+
+    const Beam *BeamHardpoint::blueprint() const
+    {
+        return _blueprint;
     }
 
     void BeamHardpoint::update(float dt)
@@ -353,6 +419,20 @@ namespace vot
         {
             _charge_up = 0.0f;
         }
+    }
+
+    void BeamHardpoint::serialise(boost::property_tree::ptree &output) const
+    {
+        Hardpoint::serialise(output);
+            
+        output.add("type", "beam");
+        output.add("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
+    }
+    void BeamHardpoint::deserialise( boost::property_tree::ptree &input )
+    {
+        Hardpoint::deserialise(input);
+
+        _blueprint = GameSystem::beam_manager()->find_src_beam(input.get<std::string>("blueprint"));
     }
     // }}}
     
