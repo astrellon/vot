@@ -12,7 +12,6 @@ namespace utils
         public:
             enum Type
             {
-                NIL,
                 NUMBER,
                 STRING,
                 BOOLEAN,
@@ -53,6 +52,7 @@ namespace utils
             void at(const std::string &key, Data *value);
 
             Data *at(const std::string &key) const;
+            bool has(const std::string &key) const;
 
             std::size_t size_map() const;
             // }}}

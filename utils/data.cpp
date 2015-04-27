@@ -158,6 +158,14 @@ namespace utils
         }
         return nullptr;
     }
+    bool Data::has(const std::string &key) const
+    {
+        if (_type == MAP)
+        {
+            return _value.map->find(key) != _value.map->cend();
+        }
+        return false;
+    }
 
     std::size_t Data::size_map() const
     {
