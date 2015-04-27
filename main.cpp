@@ -11,9 +11,16 @@
 #include "vot/options.h"
 #include "vot/ui/manager.h"
 #include "vot/ui/ui_state.h"
+#include "utils/data.h"
 
 int main()
 {
+    utils::Data root(utils::Data::MAP);
+    root.at("x", 5.4);
+    root.at("y", 7.3);
+
+    std::cout << "Root x: " << root.at("x")->number() << ", y: " << root.at("y")->number() << "\n";
+
     // Init {{{
     vot::Options::load();
     
