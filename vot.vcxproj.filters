@@ -113,6 +113,108 @@
     <ClCompile Include="vot\ui\ship_hanger.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
+    <ClCompile Include="vot\ui\ship_hardpoint_widget.cpp">
+      <Filter>vot\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lua_state.cpp">
+      <Filter>vot\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lapi.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lauxlib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lbaselib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lbitlib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lcode.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lcorolib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lctype.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldblib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldebug.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldo.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldump.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lfunc.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lgc.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\linit.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\liolib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\llex.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lmathlib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lmem.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\loadlib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lobject.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lopcodes.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\loslib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lparser.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstate.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstring.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstrlib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltable.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltablib.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltm.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lundump.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lvm.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lzio.c">
+      <Filter>vot\lua\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -126,6 +228,12 @@
     </Filter>
     <Filter Include="vot\levels">
       <UniqueIdentifier>{0374326d-44c6-4605-97dd-9c8308b26a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vot\lua">
+      <UniqueIdentifier>{11f76ed6-7ca1-44f8-a444-6578a501dd61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vot\lua\src">
+      <UniqueIdentifier>{ef851380-36c3-4182-940d-61c1e992bd31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,5 +357,91 @@
     <ClInclude Include="vot\ui\ship_hanger.h">
       <Filter>vot\ui</Filter>
     </ClInclude>
+    <ClInclude Include="vot\ui\ship_hardpoint_widget.h">
+      <Filter>vot\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lua_state.h">
+      <Filter>vot\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lapi.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lauxlib.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lcode.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lctype.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ldebug.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ldo.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lfunc.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lgc.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\llex.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\llimits.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lmem.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lobject.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lopcodes.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lparser.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lstate.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lstring.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ltable.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ltm.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lua.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lua.hpp">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\luaconf.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lualib.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lundump.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lvm.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lzio.h">
+      <Filter>vot\lua\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lua\src\Makefile">
+      <Filter>vot\lua\src</Filter>
+    </None>
   </ItemGroup>
 </Project>
