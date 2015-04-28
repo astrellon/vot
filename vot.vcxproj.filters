@@ -116,9 +116,6 @@
     <ClCompile Include="vot\ui\ship_hardpoint_widget.cpp">
       <Filter>vot\ui</Filter>
     </ClCompile>
-    <ClCompile Include="lua\lua_state.cpp">
-      <Filter>vot\lua</Filter>
-    </ClCompile>
     <ClCompile Include="lua\src\lapi.c">
       <Filter>vot\lua\src</Filter>
     </ClCompile>
@@ -215,6 +212,12 @@
     <ClCompile Include="lua\src\lzio.c">
       <Filter>vot\lua\src</Filter>
     </ClCompile>
+    <ClCompile Include="utils\data.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\lua_serialiser.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -230,10 +233,13 @@
       <UniqueIdentifier>{0374326d-44c6-4605-97dd-9c8308b26a5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="vot\lua">
-      <UniqueIdentifier>{11f76ed6-7ca1-44f8-a444-6578a501dd61}</UniqueIdentifier>
+      <UniqueIdentifier>{64ab29cf-ec96-4587-84dc-b2caa7188cfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="vot\lua\src">
-      <UniqueIdentifier>{ef851380-36c3-4182-940d-61c1e992bd31}</UniqueIdentifier>
+      <UniqueIdentifier>{0dfaa36b-2a61-4fe7-b2b8-8bc2c5829f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{6a106a17-7b0f-4e69-ab33-3505b466b064}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -360,9 +366,6 @@
     <ClInclude Include="vot\ui\ship_hardpoint_widget.h">
       <Filter>vot\ui</Filter>
     </ClInclude>
-    <ClInclude Include="lua\lua_state.h">
-      <Filter>vot\lua</Filter>
-    </ClInclude>
     <ClInclude Include="lua\src\lapi.h">
       <Filter>vot\lua\src</Filter>
     </ClInclude>
@@ -438,10 +441,11 @@
     <ClInclude Include="lua\src\lzio.h">
       <Filter>vot\lua\src</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lua\src\Makefile">
-      <Filter>vot\lua\src</Filter>
-    </None>
+    <ClInclude Include="utils\data.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\lua_serialiser.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

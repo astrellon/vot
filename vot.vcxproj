@@ -39,7 +39,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>./sfml/win/SFML-2.2/include;./;$(IncludePath)</IncludePath>
+    <IncludePath>./;./lua/src;./sfml/win/SFML-2.2/include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Alan\Documents\Programming\boost_1_57_0\boost_1_57_0\stage\lib;./sfml/win/SFML-2.2/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,7 +78,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lua\lua_state.cpp" />
     <ClCompile Include="lua\src\lapi.c" />
     <ClCompile Include="lua\src\lauxlib.c" />
     <ClCompile Include="lua\src\lbaselib.c" />
@@ -112,6 +111,8 @@
     <ClCompile Include="lua\src\lvm.c" />
     <ClCompile Include="lua\src\lzio.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="utils\data.cpp" />
+    <ClCompile Include="utils\lua_serialiser.cpp" />
     <ClCompile Include="vot\background.cpp" />
     <ClCompile Include="vot\beam.cpp" />
     <ClCompile Include="vot\bullet.cpp" />
@@ -152,7 +153,6 @@
     <ClCompile Include="vot\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lua\lua_state.h" />
     <ClInclude Include="lua\src\lapi.h" />
     <ClInclude Include="lua\src\lauxlib.h" />
     <ClInclude Include="lua\src\lcode.h" />
@@ -178,6 +178,8 @@
     <ClInclude Include="lua\src\lundump.h" />
     <ClInclude Include="lua\src\lvm.h" />
     <ClInclude Include="lua\src\lzio.h" />
+    <ClInclude Include="utils\data.h" />
+    <ClInclude Include="utils\lua_serialiser.h" />
     <ClInclude Include="vot\background.h" />
     <ClInclude Include="vot\beam.h" />
     <ClInclude Include="vot\bullet.h" />
@@ -219,9 +221,6 @@
     <ClInclude Include="vot\utils\colour.h" />
     <ClInclude Include="vot\utils\ray.h" />
     <ClInclude Include="vot\utils\utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lua\src\Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
