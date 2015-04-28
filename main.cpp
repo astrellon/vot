@@ -16,8 +16,28 @@
 
 int main()
 {
+    /*
+    auto root = new utils::Data(utils::Data::MAP);
+    root->at("x", 4.5);
+    root->at("y", 2.0);
+    root->at("flag", false);
+
+    auto sub = new utils::Data(utils::Data::MAP);
+    sub->at("name", "Melli");
+    root->at("sub", sub);
+
+    auto sub2 = new utils::Data(utils::Data::ARRAY);
+    sub2->push(6.7);
+    sub2->push(true);
+    sub2->push("hello");
+    root->at("sub2", sub2);
+
+    std::ofstream output("testout.lua");
+    utils::LuaSerialiser::serialise(root, output);
+    */
+
     std::ifstream input("testout.lua");
-    auto deserialised = utils::LuaSerialiser::deserialise(input);
+    utils::LuaSerialiser::deserialise(input);
 
     // Init {{{
     vot::Options::load();

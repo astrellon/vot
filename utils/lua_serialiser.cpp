@@ -7,6 +7,7 @@ namespace utils
     // Serialise {{{
     void LuaSerialiser::serialise(Data *value, std::ostream &output)
     {
+        output << "data = ";
         do_serialise(value, output, 0u);
     }
     void LuaSerialiser::do_serialise(Data *value, std::ostream &output ,std::size_t depth)
@@ -64,7 +65,7 @@ namespace utils
             for (auto iter = value->begin_map(); iter != value->end_map(); ++iter)
             {
                 output_tabs(depth, output);
-                output << '"' << iter->first << "\" = ";
+                output << iter->first << " = ";
                 do_serialise(iter->second.get(), output, depth);
                 if (i < value->size_map() - 1)
                 {
@@ -88,11 +89,12 @@ namespace utils
     }
     // }}}
     
+    // Deserialise {{{
     Data *LuaSerialiser::deserialise(std::istream &input)
     {
-		auto lua = luaL_newstate();
-		// We always want the standard libs as they provide basic table manipulation.
-		luaL_openlibs(lua);
+        auto lua = luaL_newstate();
+        // We always want the standard libs as they provide basic table manipulation.
+        luaL_openlibs(lua);
 
         std::istreambuf_iterator<char> eos;
         std::string s(std::istreambuf_iterator<char>(input), eos);
@@ -103,24 +105,32 @@ namespace utils
         if (!load_result)
         {
             std::cout << "Load error: " << lua_tostring(lua, -1) << "\n";
+            lua_close(lua);
             return nullptr;
         }
 
-        return do_deserialise(lua, -1);
+        Data *result = nullptr;
+        lua_getglobal(lua, "data");
+        if (lua_istable(lua, -1))
+        {
+            result = do_deserialise(lua);
+        }
+        lua_close(lua);
+        return result;
     }
 
-    Data *LuaSerialiser::do_deserialise(lua_State *lua, int n)
+    Data *LuaSerialiser::do_deserialise(lua_State *lua)
     {
         if (lua_istable(lua, -1))
         {
-            auto table_type = lua_table_type(lua, -1);
+            auto table_type = lua_table_type(lua);
             if (table_type == ARRAY)
             {
                 auto array = new Data(Data::ARRAY);
                 lua_pushnil(lua);
                 while (lua_next(lua, -2) != 0)
                 {
-                    array->push(do_deserialise(lua, -1));
+                    array->push(do_deserialise(lua));
                     lua_pop(lua, 1);
                 }
                 return array;
@@ -131,7 +141,7 @@ namespace utils
                 lua_pushnil(lua);
                 while (lua_next(lua, -2) != 0)
                 {
-                    map->at(lua_tostring(lua, -2), do_deserialise(lua, -1));
+                    map->at(lua_tostring(lua, -2), do_deserialise(lua));
                     lua_pop(lua, 1);
                 }
                 return map;
@@ -144,18 +154,18 @@ namespace utils
         }
         else
         {
-            auto type = lua_type(lua, n);
+            auto type = lua_type(lua, -1);
             if (type == LUA_TNUMBER)
             {
-                return new Data(lua_tonumber(lua, n));
+                return new Data(lua_tonumber(lua, -1));
             }
             else if (type == LUA_TSTRING)
             {
-                return new Data(lua_tostring(lua, n));
+                return new Data(lua_tostring(lua, -1));
             }
             else if (type == LUA_TBOOLEAN)
             {
-                return new Data(lua_toboolean(lua, n) > 0);
+                return new Data(lua_toboolean(lua, -1) > 0);
             }
             else if (type == LUA_TNIL)
             {
@@ -165,7 +175,7 @@ namespace utils
         }
     }
 
-    LuaSerialiser::LuaTableType LuaSerialiser::lua_table_type(lua_State *lua, int n)
+    LuaSerialiser::LuaTableType LuaSerialiser::lua_table_type(lua_State *lua)
     {
         auto has_pair = false;
         auto has_ipair = false;
@@ -173,7 +183,7 @@ namespace utils
         lua_pushnil(lua);
         while (lua_next(lua, -2) != 0)
         {
-            auto type = lua_type(lua, -1);
+            auto type = lua_type(lua, -2);
             if (type == LUA_TNUMBER)
             {
                 has_ipair = true;
@@ -201,5 +211,5 @@ namespace utils
         }
         return ARRAY;
     }
-
+    // }}}
 }

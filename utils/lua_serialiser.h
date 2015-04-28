@@ -22,7 +22,7 @@ namespace utils
 
         private:
             static void do_serialise(Data *value, std::ostream &output, std::size_t depth);
-            static Data *do_deserialise(lua_State *lua, int n);
+            static Data *do_deserialise(lua_State *lua);
 
             static void output_tabs(std::size_t num, std::ostream &output);
 
@@ -33,6 +33,6 @@ namespace utils
                 BOTH
             };
 
-            static LuaTableType lua_table_type(lua_State *lua, int n);
+            static LuaTableType lua_table_type(lua_State *lua);
     };
 }
