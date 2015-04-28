@@ -36,6 +36,11 @@ namespace utils
     {
         _value.string = new std::string(value);
     }
+    Data::Data(const char *value) :
+        _type(STRING)
+    {
+        _value.string = new std::string(value);
+    }
 
     Data::~Data()
     {
@@ -83,6 +88,13 @@ namespace utils
     }
 
     void Data::string(const std::string &value)
+    {
+        if (_type == STRING)
+        {
+            _value.string = new std::string(value);
+        }
+    }
+    void Data::string(const char *value)
     {
         if (_type == STRING)
         {

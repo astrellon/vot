@@ -23,6 +23,7 @@ namespace utils
             Data(double value);
             Data(bool value);
             Data(const std::string &value);
+            Data(const char *value);
             ~Data();
 
             Type type() const;
@@ -37,6 +38,7 @@ namespace utils
             bool boolean() const;
 
             void string(const std::string &value);
+            void string(const char *value);
             std::string string() const;
 
             // Map {{{
