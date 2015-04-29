@@ -75,7 +75,7 @@ namespace vot
 
         std::string filename("saves/");
         filename += _name;
-        filename += ".save";
+        filename += ".lua";
 
         ::utils::Data output(::utils::Data::MAP);
         output.at("name", _name);
@@ -90,7 +90,7 @@ namespace vot
     {
         std::string filename("saves/");
         filename += _name;
-        filename += ".save";
+        filename += ".lua";
 
         ::utils::UData input(::utils::LuaSerialiser::deserialise(filename));
 
@@ -119,7 +119,7 @@ namespace vot
         for (boost::filesystem::directory_iterator iter(save_path); iter != end; ++iter)
         {
             if (boost::filesystem::is_regular_file(iter->path()) && 
-                iter->path().extension() == ".save")
+                iter->path().extension() == ".lua")
             {
                 std::cout << "Found save file: " << iter->path().filename() << "\n";
                 auto info = spawn_profile(iter->path().stem().string());
