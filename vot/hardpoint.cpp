@@ -179,11 +179,13 @@ namespace vot
         target.draw(_sprite, states);
     }
 
-    ::utils::Data *Hardpoint::serialise() const
+    void Hardpoint::serialise(::utils::Data *data) const
     {
-        auto result = new ::utils::Data(::utils::Data::MAP);
-        do_serialise(result);
-        return result;
+        data->at("cooldown", cooldown());
+        data->at("max_cooldown", max_cooldown());
+        data->at("max_angle", max_angle());
+        data->at("min_angle", min_angle());
+        data->at("track_ahead", track_ahead());
     }
     void Hardpoint::deserialise(::utils::Data *data)
     {
@@ -193,15 +195,6 @@ namespace vot
         _max_angle = data->at("max_angle")->number();
         _min_angle = data->at("min_angle")->number();
         _track_ahead = data->at("track_ahead")->boolean();
-    }
-
-    void Hardpoint::do_serialise(::utils::Data *data) const
-    {
-        data->at("cooldown", cooldown());
-        data->at("max_cooldown", max_cooldown());
-        data->at("max_angle", max_angle());
-        data->at("min_angle", min_angle());
-        data->at("track_ahead", track_ahead());
     }
     // }}}
 
@@ -273,9 +266,9 @@ namespace vot
         Hardpoint::draw(target, states);
     }
 
-    void PatternBulletHardpoint::do_serialise(::utils::Data *data) const
+    void PatternBulletHardpoint::serialise(::utils::Data *data) const
     {
-        Hardpoint::do_serialise(data);
+        Hardpoint::serialise(data);
             
         data->at("type", "pattern");
         data->at("pattern_type", pattern_type());
@@ -320,9 +313,9 @@ namespace vot
         }
     }
 
-    void HomingBulletHardpoint::do_serialise(::utils::Data *data) const
+    void HomingBulletHardpoint::serialise(::utils::Data *data) const
     {
-        Hardpoint::do_serialise(data);
+        Hardpoint::serialise(data);
 
         data->at("type", "homing");
         data->at("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
@@ -426,9 +419,9 @@ namespace vot
         }
     }
 
-    void BeamHardpoint::do_serialise(::utils::Data *data) const
+    void BeamHardpoint::serialise(::utils::Data *data) const
     {
-        Hardpoint::do_serialise(data);
+        Hardpoint::serialise(data);
             
         data->at("type", "beam");
         data->at("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));

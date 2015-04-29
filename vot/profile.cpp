@@ -92,7 +92,7 @@ namespace vot
         filename += _name;
         filename += ".save";
 
-        std::unique_ptr<::utils::Data> input(::utils::LuaSerialiser::deserialise(filename));
+        ::utils::UData input(::utils::LuaSerialiser::deserialise(filename));
 
         _credits = input->at("credits")->uint32();
         _points = input->at("points")->int32();

@@ -116,4 +116,6 @@ namespace utils
             static DataArray s_empty_array;
 
     };
+
+    typedef std::unique_ptr<Data> UData;
 }
