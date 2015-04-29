@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <stdint.h>
 
 namespace utils
 {
@@ -13,6 +14,8 @@ namespace utils
             enum Type
             {
                 NUMBER,
+                INT32,
+                UINT32,
                 STRING,
                 BOOLEAN,
                 ARRAY,
@@ -21,6 +24,8 @@ namespace utils
 
             Data(Type type);
             Data(double value);
+            Data(uint32_t value);
+            Data(int32_t value);
             Data(bool value);
             Data(const std::string &value);
             Data(const char *value);
@@ -33,6 +38,12 @@ namespace utils
 
             void number(double value);
             double number() const;
+
+            void int32(int32_t value);
+            int32_t int32() const;
+
+            void uint32(uint32_t value);
+            uint32_t uint32() const;
 
             void boolean(bool value);
             bool boolean() const;
@@ -49,6 +60,8 @@ namespace utils
             DataMap::iterator end_map();
 
             void at(const std::string &key, double value);
+            void at(const std::string &key, int32_t value);
+            void at(const std::string &key, uint32_t value);
             void at(const std::string &key, bool value);
             void at(const std::string &key, const std::string &value);
             void at(const std::string &key, Data *value);
@@ -67,10 +80,14 @@ namespace utils
             DataArray::iterator end_array();
 
             void push(double value);
+            void push(int32_t value);
+            void push(uint32_t value);
             void push(bool value);
             void push(const std::string &value);
             void push(Data *value);
             void at(std::size_t index, double value);
+            void at(std::size_t index, int32_t value);
+            void at(std::size_t index, uint32_t value);
             void at(std::size_t index, bool value);
             void at(std::size_t index, const std::string &value);
             void at(std::size_t index, Data *value);
@@ -84,6 +101,8 @@ namespace utils
             union Value
             {
                 double number;
+                int32_t int32;
+                uint32_t uint32;
                 bool boolean;
                 std::string *string;
                 DataMap *map;

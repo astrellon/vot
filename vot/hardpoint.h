@@ -1,10 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <boost/property_tree/json_parser.hpp>
 
 #include "bullet.h"
 #include "beam.h"
+
+#include <utils/data.h>
 
 namespace vot
 {
@@ -52,12 +53,14 @@ namespace vot
             virtual void fire() = 0;
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-            virtual void serialise(boost::property_tree::ptree &output) const;
-            virtual void deserialise(boost::property_tree::ptree &input);
+            ::utils::Data *serialise() const;
+            void deserialise(::utils::Data *data);
 
         protected:
             void cooldown(float value);
             void change_cooldown(float delta);
+
+            virtual void do_serialise(::utils::Data *data) const;
 
         private:
             float _cooldown;
@@ -90,8 +93,10 @@ namespace vot
             virtual void fire();
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-            virtual void serialise(boost::property_tree::ptree &output) const;
-            virtual void deserialise(boost::property_tree::ptree &input);
+            virtual void deserialise(::utils::Data *data);
+
+        protected:
+            virtual void do_serialise(::utils::Data *data) const;
 
         private:
             const PatternBullet *_blueprint;
@@ -110,8 +115,10 @@ namespace vot
 
             const HomingBullet *blueprint() const;
 
-            virtual void serialise(boost::property_tree::ptree &output) const;
-            virtual void deserialise(boost::property_tree::ptree &input);
+            virtual void deserialise(::utils::Data *data);
+
+        protected:
+            virtual void do_serialise(::utils::Data *data) const;
 
         private:
             const HomingBullet *_blueprint;
@@ -131,8 +138,10 @@ namespace vot
 
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
             
-            virtual void serialise(boost::property_tree::ptree &output) const;
-            virtual void deserialise(boost::property_tree::ptree &input);
+            virtual void deserialise(::utils::Data *data);
+        
+        protected:
+            virtual void do_serialise(::utils::Data *data) const;
 
         private:
             const Beam *_blueprint;

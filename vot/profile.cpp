@@ -4,10 +4,12 @@
 #include <iostream>
 
 #include <boost/filesystem.hpp>
-#include <boost/property_tree/json_parser.hpp>
 
 #include "options.h"
 #include "hardpoint.h"
+
+#include <utils/data.h>
+#include <utils/lua_serialiser.h>
 
 namespace vot
 {
@@ -75,28 +77,12 @@ namespace vot
         filename += _name;
         filename += ".save";
 
-        boost::property_tree::ptree output;
-        output.add("name", _name);
-        output.add("credits", _credits);
-        output.add("points", _points);
+        ::utils::Data output(::utils::Data::MAP);
+        output.at("name", _name);
+        output.at("credits", _credits);
+        output.at("points", _points);
 
-        /*
-        boost::property_tree::ptree hardpoints;
-        output.add_child("hardpoints", hardpoints);
-        auto i = 0u;
-        for (auto iter = _hardpoints.begin(); iter != _hardpoints.end(); ++iter)
-        {
-            std::stringstream ss;
-            ss << i;
-
-            i++;
-            boost::property_tree::ptree hardpoint_output;
-            iter->second->serialise(hardpoint_output);
-            hardpoints.add_child(ss.str(), hardpoint_output);
-        }
-        */
-
-        boost::property_tree::write_json(filename, output);
+        ::utils::LuaSerialiser::serialise(&output, filename);
 
         return true;
     }
@@ -106,16 +92,10 @@ namespace vot
         filename += _name;
         filename += ".save";
 
-        boost::property_tree::ptree input;
-        boost::property_tree::read_json(filename, input);
-        auto name = input.get<std::string>("name");
-        auto credits = input.get<uint32_t>("credits", 0u);
-        auto points = input.get<int32_t>("points", 0);
+        std::unique_ptr<::utils::Data> input(::utils::LuaSerialiser::deserialise(filename));
 
-        //auto hardpoints = input.get_child("hardpoints");
-
-        _credits = credits;
-        _points = points;
+        _credits = input->at("credits")->uint32();
+        _points = input->at("points")->int32();
 
         return true;
     }

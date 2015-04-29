@@ -17,7 +17,9 @@ namespace utils
     class LuaSerialiser
     {
         public:
+            static void serialise(Data *value, const std::string &filename);
             static void serialise(Data *value, std::ostream &output);
+            static Data *deserialise(const std::string &filename);
             static Data *deserialise(std::istream &input);
 
         private:

@@ -26,6 +26,16 @@ namespace utils
     {
         _value.number = value;
     }
+    Data::Data(int32_t value) :
+        _type(INT32)
+    {
+        _value.int32 = value;
+    }
+    Data::Data(uint32_t value) :
+        _type(UINT32)
+    {
+        _value.uint32 = value;
+    }
     Data::Data(bool value) :
         _type(BOOLEAN)
     {
@@ -69,10 +79,86 @@ namespace utils
         {
             _value.number = value;
         }
+        else if (_type == UINT32 || _type == INT32)
+        {
+            _type = NUMBER;
+            _value.number = value;
+        }
     }
     double Data::number() const
     {
-        return _value.number;
+        if (_type == NUMBER)
+        {
+            return _value.number;
+        }
+        else if (_type == INT32)
+        {
+            return static_cast<double>(_value.int32);
+        }
+        else if (_type == UINT32)
+        {
+            return static_cast<double>(_value.uint32);
+        }
+        return 0.0f;
+    
+    }
+
+    void Data::int32(int32_t value)
+    {
+        if (_type == INT32)
+        {
+            _value.int32 = value;
+        }
+        else if (_type == UINT32 || _type == NUMBER)
+        {
+            _type = INT32;
+            _value.int32 = value;
+        }
+    }
+    int32_t Data::int32() const
+    {
+        if (_type == INT32)
+        {
+            return _value.int32;
+        }
+        else if (_type == NUMBER)
+        {
+            return static_cast<int32_t>(_value.number);
+        }
+        else if (_type == UINT32)
+        {
+            return static_cast<int32_t>(_value.uint32);
+        }
+        return 0;
+    }
+
+    void Data::uint32(uint32_t value)
+    {
+        if (_type == UINT32)
+        {
+            _value.uint32 = value;
+        }
+        else if (_type == NUMBER || _type == INT32)
+        {
+            _type = UINT32;
+            _value.uint32 = value;
+        }
+    }
+    uint32_t Data::uint32() const
+    {
+        if (_type == UINT32)
+        {
+            return _value.uint32;
+        }
+        else if (_type == NUMBER)
+        {
+            return static_cast<uint32_t>(_value.number);
+        }
+        else if (_type == INT32)
+        {
+            return static_cast<uint32_t>(_value.int32);
+        }
+        return 0u;
     }
 
     void Data::boolean(bool value)
@@ -130,6 +216,20 @@ namespace utils
     }
 
     void Data::at(const std::string &key, double value)
+    {
+        if (_type == MAP)
+        {
+            (*_value.map)[key] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
+    void Data::at(const std::string &key, int32_t value)
+    {
+        if (_type == MAP)
+        {
+            (*_value.map)[key] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
+    void Data::at(const std::string &key, uint32_t value)
     {
         if (_type == MAP)
         {
@@ -211,6 +311,20 @@ namespace utils
             (*_value.array).push_back(std::unique_ptr<Data>(new Data(value)));
         }
     }
+    void Data::push(int32_t value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array).push_back(std::unique_ptr<Data>(new Data(value)));
+        }
+    }
+    void Data::push(uint32_t value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array).push_back(std::unique_ptr<Data>(new Data(value)));
+        }
+    }
     void Data::push(bool value)
     {
         if (_type == ARRAY)
@@ -234,6 +348,20 @@ namespace utils
     }
 
     void Data::at(std::size_t index, double value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array)[index] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
+    void Data::at(std::size_t index, int32_t value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array)[index] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
+    void Data::at(std::size_t index, uint32_t value)
     {
         if (_type == ARRAY)
         {

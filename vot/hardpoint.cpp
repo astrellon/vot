@@ -151,7 +151,7 @@ namespace vot
                 rotate(angles.delta_angle() > 0 ? -rot_speed : rot_speed);
             }
             
-            auto angle = getRotation();
+            //auto angle = getRotation();
             /*
             if (_max_angle > _min_angle)
             {
@@ -179,25 +179,29 @@ namespace vot
         target.draw(_sprite, states);
     }
 
-    void Hardpoint::serialise(boost::property_tree::ptree &output) const
+    ::utils::Data *Hardpoint::serialise() const
     {
-        output.add("cooldown", cooldown());
-        output.add("max_cooldown", max_cooldown());
-
-        output.add("max_angle", max_angle());
-        output.add("min_angle", min_angle());
-        output.add("track_ahead", track_ahead());
-        //output.add("group", group());
+        auto result = new ::utils::Data(::utils::Data::MAP);
+        do_serialise(result);
+        return result;
     }
-    void Hardpoint::deserialise(boost::property_tree::ptree &input)
+    void Hardpoint::deserialise(::utils::Data *data)
     {
-        _cooldown = input.get<float>("cooldown");
-        max_cooldown(input.get<float>("max_cooldown"));
+        _cooldown = data->at("cooldown")->number();
+        _max_cooldown = data->at("maX_cooldown")->number();
 
-        max_angle(input.get<float>("max_angle"));
-        min_angle(input.get<float>("min_angle"));
-        track_ahead(input.get<bool>("track_ahead"));
-        //_group = input.get<Group::Type>("group");
+        _max_angle = data->at("max_angle")->number();
+        _min_angle = data->at("min_angle")->number();
+        _track_ahead = data->at("track_ahead")->boolean();
+    }
+
+    void Hardpoint::do_serialise(::utils::Data *data) const
+    {
+        data->at("cooldown", cooldown());
+        data->at("max_cooldown", max_cooldown());
+        data->at("max_angle", max_angle());
+        data->at("min_angle", min_angle());
+        data->at("track_ahead", track_ahead());
     }
     // }}}
 
@@ -269,20 +273,21 @@ namespace vot
         Hardpoint::draw(target, states);
     }
 
-    void PatternBulletHardpoint::serialise(boost::property_tree::ptree &output) const
+    void PatternBulletHardpoint::do_serialise(::utils::Data *data) const
     {
-        Hardpoint::serialise(output);
+        Hardpoint::do_serialise(data);
             
-        output.add("type", "pattern");
-        output.add("pattern_type", pattern_type());
-        output.add("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
+        data->at("type", "pattern");
+        data->at("pattern_type", pattern_type());
+        data->at("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
     }
-    void PatternBulletHardpoint::deserialise(boost::property_tree::ptree &input)
+    void PatternBulletHardpoint::deserialise(::utils::Data *data)
     {
-        Hardpoint::deserialise(input);
+        Hardpoint::deserialise(data);
 
-        pattern_type(input.get<uint32_t>("pattern_type"));
-        _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(input.get<std::string>("blueprint"));
+        pattern_type(data->at("pattern_type")->uint32());
+        auto blueprint_name = data->at("blueprint")->string();
+        _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint_name);
     }
     // }}}
 
@@ -315,18 +320,18 @@ namespace vot
         }
     }
 
-    void HomingBulletHardpoint::serialise(boost::property_tree::ptree &output) const
+    void HomingBulletHardpoint::do_serialise(::utils::Data *data) const
     {
-        Hardpoint::serialise(output);
+        Hardpoint::do_serialise(data);
 
-        output.add("type", "homing");
-        output.add("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
+        data->at("type", "homing");
+        data->at("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
     }
-    void HomingBulletHardpoint::deserialise( boost::property_tree::ptree &input )
+    void HomingBulletHardpoint::deserialise(::utils::Data *data)
     {
-        Hardpoint::deserialise(input);
+        Hardpoint::deserialise(data);
 
-        _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(input.get<std::string>("blueprint"));
+        _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(data->at("blueprint")->string());
     }
     // }}}
 
@@ -421,18 +426,18 @@ namespace vot
         }
     }
 
-    void BeamHardpoint::serialise(boost::property_tree::ptree &output) const
+    void BeamHardpoint::do_serialise(::utils::Data *data) const
     {
-        Hardpoint::serialise(output);
+        Hardpoint::do_serialise(data);
             
-        output.add("type", "beam");
-        output.add("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
+        data->at("type", "beam");
+        data->at("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
     }
-    void BeamHardpoint::deserialise( boost::property_tree::ptree &input )
+    void BeamHardpoint::deserialise(::utils::Data *data)
     {
-        Hardpoint::deserialise(input);
+        Hardpoint::deserialise(data);
 
-        _blueprint = GameSystem::beam_manager()->find_src_beam(input.get<std::string>("blueprint"));
+        _blueprint = GameSystem::beam_manager()->find_src_beam(data->at("blueprint")->string());
     }
     // }}}
     

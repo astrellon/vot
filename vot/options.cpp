@@ -1,9 +1,11 @@
 #include "options.h"
 
 #include <boost/filesystem.hpp>
-#include <boost/property_tree/json_parser.hpp>
 
 #include "profile.h"
+
+#include <utils/data.h>
+#include <utils/lua_serialiser.h>
 
 namespace vot
 {
@@ -11,26 +13,27 @@ namespace vot
 
     void Options::save()
     {
-        boost::property_tree::ptree data;
+        ::utils::Data data(::utils::Data::MAP);
         auto profile = ProfileManager::current_profile();
         if (profile != nullptr)
         {
-            data.add("profile", profile->name());
+            data.at("profile", profile->name());
         }
 
-        boost::property_tree::write_json("config.json", data);
+        ::utils::LuaSerialiser::serialise(&data, "config.lua");
     }
     void Options::load()
     {
-        boost::property_tree::ptree data;
-
-        if (!boost::filesystem::is_regular_file("config.json"))
+        if (!boost::filesystem::is_regular_file("config.lua"))
         {
             return;
         }
 
-        boost::property_tree::read_json("config.json", data);
-        s_starting_profile = data.get<std::string>("profile", "");
+        std::unique_ptr<::utils::Data> data(::utils::LuaSerialiser::deserialise("config.lua"));
+        if (data->has("profile"))
+        {
+            s_starting_profile = data->at("profile")->string();
+        }
     }
 
     const std::string &Options::starting_profile()

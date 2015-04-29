@@ -2,9 +2,16 @@
 
 #include "data.h"
 
+#include <fstream>
+
 namespace utils
 {
     // Serialise {{{
+    void LuaSerialiser::serialise( utils::Data *value, const std::string &filename )
+    {
+        std::ofstream output(filename);
+        serialise(value, output);
+    }
     void LuaSerialiser::serialise(Data *value, std::ostream &output)
     {
         output << "data = ";
@@ -22,6 +29,16 @@ namespace utils
         if (type == Data::NUMBER)
         {
             output << value->number();
+            return;
+        }
+        else if (type == Data::INT32)
+        {
+            output << value->int32();
+            return;
+        }
+        else if (type == Data::UINT32)
+        {
+            output << value->uint32();
             return;
         }
         else if (type == Data::STRING)
@@ -90,6 +107,11 @@ namespace utils
     // }}}
     
     // Deserialise {{{
+    Data *LuaSerialiser::deserialise(const std::string &filename)
+    {
+        std::ifstream input(filename);
+        return deserialise(input);
+    }
     Data *LuaSerialiser::deserialise(std::istream &input)
     {
         auto lua = luaL_newstate();
