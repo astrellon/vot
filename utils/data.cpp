@@ -250,6 +250,13 @@ namespace utils
             (*_value.map)[key] = std::unique_ptr<Data>(new Data(value));
         }
     }
+    void Data::at(const std::string &key, const char *value)
+    {
+        if (_type == MAP)
+        {
+            (*_value.map)[key] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
     void Data::at(const std::string &key, Data *value)
     {
         if (_type == MAP)
@@ -339,6 +346,13 @@ namespace utils
             (*_value.array).push_back(std::unique_ptr<Data>(new Data(value)));
         }
     }
+    void Data::push(const char *value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array).push_back(std::unique_ptr<Data>(new Data(value)));
+        }
+    }
     void Data::push(Data *value)
     {
         if (_type == ARRAY)
@@ -376,6 +390,13 @@ namespace utils
         }
     }
     void Data::at(std::size_t index, const std::string &value)
+    {
+        if (_type == ARRAY)
+        {
+            (*_value.array)[index] = std::unique_ptr<Data>(new Data(value));
+        }
+    }
+    void Data::at(std::size_t index, const char *value)
     {
         if (_type == ARRAY)
         {

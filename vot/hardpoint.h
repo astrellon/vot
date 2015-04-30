@@ -17,6 +17,7 @@ namespace vot
     {
         public:
             Hardpoint(Group::Type group);
+            Hardpoint(const ::utils::Data *data);
 
             void parent(Character *value);
             Character *parent() const;
@@ -54,7 +55,7 @@ namespace vot
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             virtual void serialise(::utils::Data *data) const;
-            virtual void deserialise(::utils::Data *data);
+            virtual void deserialise(const ::utils::Data *data);
 
         protected:
             void cooldown(float value);
@@ -79,6 +80,7 @@ namespace vot
     {
         public:
             PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group);
+            PatternBulletHardpoint(const ::utils::Data *data);
 
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
@@ -92,7 +94,7 @@ namespace vot
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             virtual void serialise(::utils::Data *data) const;
-            virtual void deserialise(::utils::Data *data);
+            virtual void deserialise(const ::utils::Data *data);
 
         private:
             const PatternBullet *_blueprint;
@@ -106,13 +108,14 @@ namespace vot
     {
         public:
             HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group);
+            HomingBulletHardpoint(const ::utils::Data *data);
 
             virtual void fire();
 
             const HomingBullet *blueprint() const;
 
             virtual void serialise(::utils::Data *data) const;
-            virtual void deserialise(::utils::Data *data);
+            virtual void deserialise(const ::utils::Data *data);
 
         private:
             const HomingBullet *_blueprint;
@@ -124,6 +127,7 @@ namespace vot
     {
         public:
             BeamHardpoint(const Beam *blueprint, Group::Type group);
+            BeamHardpoint(const ::utils::Data *data);
 
             virtual void update(float dt);
             virtual void fire();
@@ -133,7 +137,7 @@ namespace vot
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
             
             virtual void serialise(::utils::Data *data) const;
-            virtual void deserialise(::utils::Data *data);
+            virtual void deserialise(const ::utils::Data *data);
 
         private:
             const Beam *_blueprint;
@@ -144,6 +148,8 @@ namespace vot
 
             ParticleSystem *_charge_up_system;
             float _charge_up;
+
+            void init();
     };
     // }}}
     

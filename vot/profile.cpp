@@ -82,6 +82,15 @@ namespace vot
         output.at("credits", _credits);
         output.at("points", _points);
 
+        auto hardpoints = new ::utils::Data(::utils::Data::MAP);
+        output.at("hardpoints", hardpoints);
+        for (auto iter = _hardpoints.cbegin(); iter != _hardpoints.cend(); ++iter)
+        {
+            auto hardpoint_data = new ::utils::Data(::utils::Data::MAP);
+            iter->second->serialise(hardpoint_data);
+            hardpoints->at(iter->first, hardpoint_data);
+        }
+
         ::utils::LuaSerialiser::serialise(&output, filename);
 
         return true;
@@ -96,6 +105,31 @@ namespace vot
 
         _credits = input->at("credits")->uint32();
         _points = input->at("points")->int32();
+
+        auto hardpoints = input->at("hardpoints");
+        if (hardpoints != nullptr)
+        {
+            for (auto iter = hardpoints->begin_map(); iter != hardpoints->end_map(); ++iter)
+            {
+                Hardpoint *hardpoint = nullptr;
+                auto hardpoint_data = iter->second.get();
+                auto type = hardpoint_data->at("hardpoint_type")->string();
+                if (type == "pattern")
+                {
+                    hardpoint = new PatternBulletHardpoint(hardpoint_data);
+                }
+                else if (type == "homing")
+                {
+                    hardpoint = new HomingBulletHardpoint(hardpoint_data);
+                }
+                else if (type == "beam")
+                {
+                    hardpoint = new BeamHardpoint(hardpoint_data);
+                }
+
+                _hardpoints[iter->first] = hardpoint;
+            }
+        }
 
         return true;
     }

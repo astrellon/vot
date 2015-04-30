@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace vot
 {
     class Group
@@ -11,5 +13,8 @@ namespace vot
                 ENEMY,
                 NATURE
             };
+
+            static std::string type_name(Type type);
+            static Type type_name(const std::string &name);
     };
 }

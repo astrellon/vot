@@ -64,6 +64,7 @@ namespace utils
             void at(const std::string &key, uint32_t value);
             void at(const std::string &key, bool value);
             void at(const std::string &key, const std::string &value);
+            void at(const std::string &key, const char *value);
             void at(const std::string &key, Data *value);
 
             Data *at(const std::string &key) const;
@@ -84,12 +85,14 @@ namespace utils
             void push(uint32_t value);
             void push(bool value);
             void push(const std::string &value);
+            void push(const char *value);
             void push(Data *value);
             void at(std::size_t index, double value);
             void at(std::size_t index, int32_t value);
             void at(std::size_t index, uint32_t value);
             void at(std::size_t index, bool value);
             void at(std::size_t index, const std::string &value);
+            void at(std::size_t index, const char *value);
             void at(std::size_t index, Data *value);
 
             Data *at(std::size_t index) const;

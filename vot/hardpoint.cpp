@@ -19,6 +19,12 @@ namespace vot
     {
 
     }
+    Hardpoint::Hardpoint(const ::utils::Data *data) :
+        _parent(nullptr),
+        _target(nullptr)
+    {
+        deserialise(data);
+    }
 
     void Hardpoint::parent(Character *value)
     {
@@ -186,15 +192,17 @@ namespace vot
         data->at("max_angle", max_angle());
         data->at("min_angle", min_angle());
         data->at("track_ahead", track_ahead());
+        data->at("group", Group::type_name(group()));
     }
-    void Hardpoint::deserialise(::utils::Data *data)
+    void Hardpoint::deserialise(const ::utils::Data *data)
     {
         _cooldown = data->at("cooldown")->number();
-        _max_cooldown = data->at("maX_cooldown")->number();
+        _max_cooldown = data->at("max_cooldown")->number();
 
         _max_angle = data->at("max_angle")->number();
         _min_angle = data->at("min_angle")->number();
         _track_ahead = data->at("track_ahead")->boolean();
+        _group = Group::type_name(data->at("group")->string());
     }
     // }}}
 
@@ -206,6 +214,11 @@ namespace vot
         _fire_bullet(false)
     {
         track_ahead(true);
+    }
+    PatternBulletHardpoint::PatternBulletHardpoint(const ::utils::Data *data) :
+        Hardpoint(data)
+    {
+        deserialise(data);
     }
 
     void PatternBulletHardpoint::pattern_type(uint32_t type)
@@ -270,14 +283,12 @@ namespace vot
     {
         Hardpoint::serialise(data);
             
-        data->at("type", "pattern");
+        data->at("hardpoint_type", "pattern");
         data->at("pattern_type", pattern_type());
         data->at("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
     }
-    void PatternBulletHardpoint::deserialise(::utils::Data *data)
+    void PatternBulletHardpoint::deserialise(const ::utils::Data *data)
     {
-        Hardpoint::deserialise(data);
-
         pattern_type(data->at("pattern_type")->uint32());
         auto blueprint_name = data->at("blueprint")->string();
         _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint_name);
@@ -289,7 +300,11 @@ namespace vot
         Hardpoint(group),
         _blueprint(blueprint)
     {
-
+    }
+    HomingBulletHardpoint::HomingBulletHardpoint(const ::utils::Data *data) :
+        Hardpoint(data)
+    {
+        deserialise(data);
     }
 
     const HomingBullet *HomingBulletHardpoint::blueprint() const
@@ -317,13 +332,11 @@ namespace vot
     {
         Hardpoint::serialise(data);
 
-        data->at("type", "homing");
+        data->at("hardpoint_type", "homing");
         data->at("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
     }
-    void HomingBulletHardpoint::deserialise(::utils::Data *data)
+    void HomingBulletHardpoint::deserialise(const ::utils::Data *data)
     {
-        Hardpoint::deserialise(data);
-
         _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(data->at("blueprint")->string());
     }
     // }}}
@@ -335,18 +348,13 @@ namespace vot
         _charge_up_system(nullptr),
         _charge_up(0.0f)
     {
-        _active_beam = GameSystem::beam_manager()->spawn_beam(*blueprint, group);
-
-        auto texture = TextureManager::texture("bullet_blue_circle");
-        _charge_up_system = GameSystem::particle_manager()->spawn_system(*texture, 10);
-        _charge_up_system->system_type(1u);
-        _charge_up_system->auto_remove(false);
-
-        texture = TextureManager::texture("beam_glow");
-        auto size = texture->getSize();
-        _beam_glow.setTexture(*texture);
-        _beam_glow.setOrigin(size.x * 0.5f, size.y * 0.5f);
-        _beam_glow.setPosition(8, 0);
+        init();
+    }
+    BeamHardpoint::BeamHardpoint(const ::utils::Data *data) :
+        Hardpoint(data)
+    {
+        deserialise(data);
+        init();
     }
 
     void BeamHardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -423,14 +431,29 @@ namespace vot
     {
         Hardpoint::serialise(data);
             
-        data->at("type", "beam");
+        data->at("hardpoint_type", "beam");
         data->at("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
     }
-    void BeamHardpoint::deserialise(::utils::Data *data)
+    void BeamHardpoint::deserialise(const ::utils::Data *data)
     {
-        Hardpoint::deserialise(data);
-
         _blueprint = GameSystem::beam_manager()->find_src_beam(data->at("blueprint")->string());
+    }
+
+    void BeamHardpoint::init()
+    {
+        _active_beam = GameSystem::beam_manager()->spawn_beam(*_blueprint, group());
+
+        auto texture = TextureManager::texture("bullet_blue_circle");
+        _charge_up_system = GameSystem::particle_manager()->spawn_system(*texture, 10);
+        _charge_up_system->system_type(1u);
+        _charge_up_system->auto_remove(false);
+
+        texture = TextureManager::texture("beam_glow");
+        auto size = texture->getSize();
+        _beam_glow.setTexture(*texture);
+        _beam_glow.setOrigin(size.x * 0.5f, size.y * 0.5f);
+        _beam_glow.setPosition(8, 0);
+    
     }
     // }}}
     
