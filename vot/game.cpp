@@ -20,6 +20,7 @@ namespace vot
         player->location(sf::Vector2f(0.0f, 100.0f));
         player->init();
 
+        // Load ship layout from profile.
         ProfileManager::current_profile()->apply_to_player(player);
 
         this->player(player);
@@ -390,11 +391,13 @@ namespace vot
         auto explosion = GameSystem::sound_manager()->spawn_sound("explosion2", Sound::SoundEffects);
         explosion->play();
 
+        /*
         auto rand = utils::Utils::randf();
 
         auto type = rand > 0.66f ? "bullet" : (rand < 0.33f ? "beam" : "homing");
         auto powerup = GameSystem::powerup_manager()->spawn_powerup(type);
         powerup->location(enemy->location());
+        */
 
         GameSystem::enemy_manager()->remove_enemy(enemy);
     }
