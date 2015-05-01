@@ -52,9 +52,9 @@ namespace vot
             s_player_camera.setCenter(0, 0);
 
             auto placements = s_player_render->hardpoint_placements();
-            for (auto i = 0u; i < placements->size(); i++)
+            for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
             {
-                auto placement = placements->at(i).get();
+                auto placement = iter->second.get();
                 auto widget = new ShipHardpointWidget(placement);
                 widget->local_view(&s_player_camera);
                 s_helper.add_component(widget, false);
@@ -146,7 +146,13 @@ namespace vot
 
         void ShipHanger::apply_player_to_renderer()
         {
+            s_player_render->clear_hardpoints();
 
+            auto hardpoints = ProfileManager::current_profile()->hardpoints();
+            for (auto iter = hardpoints->cbegin(); iter != hardpoints->cend(); ++iter)
+            {
+                s_player_render->add_hardpoint_to_placement(iter->first, iter->second->clone());
+            }
         }
         void ShipHanger::apply_renderer_to_player()
         {

@@ -25,6 +25,16 @@ namespace vot
     {
         deserialise(data);
     }
+    Hardpoint::Hardpoint(const Hardpoint &clone) :
+        _cooldown(clone._cooldown),
+        _max_cooldown(clone._max_cooldown),
+        _group(clone._group),
+        _max_angle(clone._max_angle),
+        _min_angle(clone._min_angle),
+        _track_ahead(clone._track_ahead)
+    {
+        texture(clone._sprite.getTexture());
+    }
 
     void Hardpoint::parent(Character *value)
     {
@@ -193,6 +203,7 @@ namespace vot
         data->at("min_angle", min_angle());
         data->at("track_ahead", track_ahead());
         data->at("group", Group::type_name(group()));
+        data->at("texture", TextureManager::texture_name(_sprite.getTexture()));
     }
     void Hardpoint::deserialise(const ::utils::Data *data)
     {
@@ -203,6 +214,9 @@ namespace vot
         _min_angle = data->at("min_angle")->number();
         _track_ahead = data->at("track_ahead")->boolean();
         _group = Group::type_name(data->at("group")->string());
+
+        auto texture = data->at("texture")->string();
+        _sprite.setTexture(*TextureManager::texture(texture));
     }
     // }}}
 
@@ -219,6 +233,18 @@ namespace vot
         Hardpoint(data)
     {
         deserialise(data);
+    }
+    PatternBulletHardpoint::PatternBulletHardpoint(const PatternBulletHardpoint &clone) :
+        Hardpoint(clone),
+        _blueprint(clone._blueprint),
+        _pattern_type(clone._pattern_type)
+    {
+        
+    }
+
+    Hardpoint *PatternBulletHardpoint::clone() const
+    {
+        return new PatternBulletHardpoint(*this);
     }
 
     void PatternBulletHardpoint::pattern_type(uint32_t type)
@@ -300,11 +326,23 @@ namespace vot
         Hardpoint(group),
         _blueprint(blueprint)
     {
+
     }
     HomingBulletHardpoint::HomingBulletHardpoint(const ::utils::Data *data) :
         Hardpoint(data)
     {
         deserialise(data);
+    }
+    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBulletHardpoint &clone) :
+        Hardpoint(clone),
+        _blueprint(clone._blueprint)
+    {
+
+    }
+
+    Hardpoint *HomingBulletHardpoint::clone() const
+    {
+        return new HomingBulletHardpoint(*this);
     }
 
     const HomingBullet *HomingBulletHardpoint::blueprint() const
@@ -355,6 +393,17 @@ namespace vot
     {
         deserialise(data);
         init();
+    }
+    BeamHardpoint::BeamHardpoint(const BeamHardpoint &clone) :
+        Hardpoint(clone),
+        _blueprint(clone._blueprint)
+    {
+        init();
+    }
+
+    Hardpoint *BeamHardpoint::clone() const
+    {
+        return new BeamHardpoint(*this);
     }
 
     void BeamHardpoint::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -458,20 +507,31 @@ namespace vot
     // }}}
     
     // HardpointPlacement {{{
-    HardpointPlacement::HardpointPlacement() :
+    HardpointPlacement::HardpointPlacement(const std::string &name) :
         _hardpoint(nullptr),
         _min_angle(0.0f),
-        _max_angle(360.0f)
+        _max_angle(360.0f),
+        _name(name)
     {
 
     }
-    HardpointPlacement::HardpointPlacement(float x, float y, float min, float max) :
+    HardpointPlacement::HardpointPlacement(const std::string &name, float x, float y, float min, float max) :
         _hardpoint(nullptr),
         _position(x, y),
         _min_angle(min),
-        _max_angle(max)
+        _max_angle(max),
+        _name(name)
     {
 
+    }
+    HardpointPlacement::HardpointPlacement(const HardpointPlacement &clone) :
+        _hardpoint(nullptr),
+        _position(clone._position),
+        _min_angle(clone._min_angle),
+        _max_angle(clone._max_angle),
+        _name(clone._name)
+    {
+    
     }
 
     void HardpointPlacement::setup(float x, float y, float min, float max)
@@ -519,6 +579,11 @@ namespace vot
     float HardpointPlacement::min_angle() const
     {
         return _min_angle;
+    }
+
+    std::string HardpointPlacement::name() const
+    {
+        return _name;
     }
     // }}}
 }

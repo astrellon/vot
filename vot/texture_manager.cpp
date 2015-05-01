@@ -56,6 +56,18 @@ namespace vot
         return find->second.get();
     }
 
+    std::string TextureManager::texture_name(const sf::Texture *texture)
+    {
+        for (auto iter = s_textures.cbegin(); iter != s_textures.cend(); ++iter)
+        {
+            if (iter->second.get() == texture)
+            {
+                return iter->first;
+            }
+        }
+        return std::string();
+    }
+
     uint32_t TextureManager::num_textures()
     {
         return s_num_textures;

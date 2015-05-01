@@ -272,6 +272,22 @@ namespace vot
         point->parent(this);
         _hardpoints.push_back(std::unique_ptr<Hardpoint>(point));
     }
+    void Character::remove_hardpoint(Hardpoint *point)
+    {
+        point->parent(nullptr);
+        for (auto iter = _hardpoints.cbegin(); iter != _hardpoints.cend(); ++iter)
+        {
+            if (iter->get() == point)
+            {
+                _hardpoints.erase(iter);
+                return;
+            }
+        }
+    }
+    void Character::clear_hardpoints()
+    {
+        _hardpoints.clear();
+    }
 
     const Character::ThrusterList *Character::thrusters() const
     {

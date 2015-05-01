@@ -24,11 +24,11 @@ namespace vot
 
     void Player::init()
     {
-        add_hardpoint_placement(new HardpointPlacement(0, 8, 225, 315));
-        add_hardpoint_placement(new HardpointPlacement(-16, 4, 180, 300));
-        add_hardpoint_placement(new HardpointPlacement(16, 4, 240, 0));
-        add_hardpoint_placement(new HardpointPlacement(20, 10, 270, 45));
-        add_hardpoint_placement(new HardpointPlacement(-20, 10, 75, 270));
+        add_hardpoint_placement(new HardpointPlacement("middle", 0, 8, 225, 315));
+        add_hardpoint_placement(new HardpointPlacement("left1", -16, 4, 180, 300));
+        add_hardpoint_placement(new HardpointPlacement("right1", 16, 4, 240, 0));
+        add_hardpoint_placement(new HardpointPlacement("left2", -20, 10, 75, 270));
+        add_hardpoint_placement(new HardpointPlacement("right2", 20, 10, 270, 45));
 
         create_new_hardpoint(Powerup::BULLET);
         
@@ -213,12 +213,11 @@ namespace vot
     void Player::create_new_hardpoint(Powerup::Type type)
     {
         HardpointPlacement *empty_placement = nullptr;
-        for (auto i = 0u; i < _hardpoint_placements.size(); i++)
+        for (auto iter = _hardpoint_placements.begin(); iter != _hardpoint_placements.end(); ++iter)
         {
-            auto placement = _hardpoint_placements[i].get();
-            if (placement->hardpoint() == nullptr)
+            if (iter->second->hardpoint() == nullptr)
             {
-                empty_placement = placement;
+                empty_placement = iter->second.get();
                 break;
             }
         }
@@ -267,8 +266,37 @@ namespace vot
 
     void Player::add_hardpoint_placement(HardpointPlacement *placement)
     {
-        _hardpoint_placements.push_back(std::unique_ptr<HardpointPlacement>(placement));
+        _hardpoint_placements[placement->name()] = std::unique_ptr<HardpointPlacement>(placement); 
     }
+    void Player::add_hardpoint_to_placement( const std::string &name, vot::Hardpoint *point )
+    {
+        auto find = _hardpoint_placements.find(name);
+        if (find != _hardpoint_placements.end())
+        {
+            add_hardpoint(point);
+            find->second->hardpoint(point);
+        }
+    }
+    void Player::add_hardpoint_to_placement(HardpointPlacement *placement, Hardpoint *point)
+    {
+        add_hardpoint(point);
+        placement->hardpoint(point);
+    }
+    void Player::clear_hardpoints()
+    {
+        for (auto iter = _hardpoint_placements.begin(); iter != _hardpoint_placements.end(); ++iter)
+        {
+            iter->second->hardpoint(nullptr);
+        }
+        Character::clear_hardpoints();
+    }
+    void Player::clear_hardpoint_placements()
+    {
+        clear_hardpoints();
+
+        _hardpoint_placements.clear();
+    }
+
     void Player::add_thruster_placement(float x, float y, float rotation, float size)
     {
         auto thruster = new Thruster();

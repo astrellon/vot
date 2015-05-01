@@ -20,6 +20,8 @@ namespace vot
             static bool load_texture(const std::string &name, const std::string &filename);
             static const sf::Texture *texture(const std::string &name);
 
+            static std::string texture_name(const sf::Texture *texture);
+
             static uint32_t num_textures();
             static uint32_t count_textures();
             static uint32_t texture_load_attempt();

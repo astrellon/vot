@@ -36,8 +36,12 @@ namespace vot
 
             void add_powerup(const Powerup &powerup);
 
-            typedef std::vector<std::unique_ptr<HardpointPlacement> > HardpointPlacements; 
+            typedef std::map<std::string, std::unique_ptr<HardpointPlacement> > HardpointPlacements; 
             void add_hardpoint_placement(HardpointPlacement *placement);
+            void add_hardpoint_to_placement(const std::string &name, Hardpoint *point);
+            void add_hardpoint_to_placement(HardpointPlacement *placement, Hardpoint *point);
+            virtual void clear_hardpoints();
+            void clear_hardpoint_placements();
             void add_thruster_placement(float x, float y, float rotation, float size);
 
             const HardpointPlacements *hardpoint_placements() const;

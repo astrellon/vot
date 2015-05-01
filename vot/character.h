@@ -51,6 +51,8 @@ namespace vot
             const HardpointList *hardpoints() const;
             
             void add_hardpoint(Hardpoint *point);
+            void remove_hardpoint(Hardpoint *point);
+            virtual void clear_hardpoints();
 
             typedef std::vector<std::unique_ptr<Thruster> > ThrusterList;
             const ThrusterList *thrusters() const;

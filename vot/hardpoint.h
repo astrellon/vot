@@ -18,6 +18,9 @@ namespace vot
         public:
             Hardpoint(Group::Type group);
             Hardpoint(const ::utils::Data *data);
+            Hardpoint(const Hardpoint &clone);
+
+            virtual Hardpoint *clone() const = 0;
 
             void parent(Character *value);
             Character *parent() const;
@@ -62,12 +65,12 @@ namespace vot
             void change_cooldown(float delta);
 
         private:
+            sf::Sprite _sprite;
             float _cooldown;
             float _max_cooldown;
             Character *_parent;
             Character *_target;
             Group::Type _group;
-            sf::Sprite _sprite;
 
             float _max_angle;
             float _min_angle;
@@ -81,6 +84,9 @@ namespace vot
         public:
             PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group);
             PatternBulletHardpoint(const ::utils::Data *data);
+            PatternBulletHardpoint(const PatternBulletHardpoint &clone);
+
+            virtual Hardpoint *clone() const;
 
             void pattern_type(uint32_t type);
             uint32_t pattern_type() const;
@@ -109,6 +115,9 @@ namespace vot
         public:
             HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group);
             HomingBulletHardpoint(const ::utils::Data *data);
+            HomingBulletHardpoint(const HomingBulletHardpoint &clone);
+
+            virtual Hardpoint *clone() const;
 
             virtual void fire();
 
@@ -128,6 +137,9 @@ namespace vot
         public:
             BeamHardpoint(const Beam *blueprint, Group::Type group);
             BeamHardpoint(const ::utils::Data *data);
+            BeamHardpoint(const BeamHardpoint &clone);
+
+            virtual Hardpoint *clone() const;
 
             virtual void update(float dt);
             virtual void fire();
@@ -157,8 +169,9 @@ namespace vot
     class HardpointPlacement
     {
         public:
-            HardpointPlacement();
-            HardpointPlacement(float x, float y, float min, float max);
+            HardpointPlacement(const std::string &name);
+            HardpointPlacement(const std::string &name, float x, float y, float min, float max);
+            HardpointPlacement(const HardpointPlacement &clone);
 
             void setup(float x, float y, float min, float max);
 
@@ -174,11 +187,15 @@ namespace vot
             void min_angle(float value);
             float min_angle() const;
 
+            std::string name() const;
+
         private:
             Hardpoint *_hardpoint;
             sf::Vector2f _position;
             float _min_angle;
             float _max_angle;
+
+            std::string _name;
     };
     // }}}
 }
