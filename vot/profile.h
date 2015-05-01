@@ -9,6 +9,7 @@
 namespace vot
 {
     class Hardpoint;
+    class Player;
 
     class Profile
     {
@@ -29,6 +30,10 @@ namespace vot
 
             void hardpoint(const std::string &placement_name, Hardpoint *hardpoint);
             Hardpoint *hardpoint(const std::string &placement_name) const;
+            void clear_hardpoints();
+
+            void apply_to_player(Player *player) const;
+            void apply_from_player(const Player *player);
 
             bool save();
             bool load();

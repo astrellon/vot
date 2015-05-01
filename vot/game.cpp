@@ -20,6 +20,8 @@ namespace vot
         player->location(sf::Vector2f(0.0f, 100.0f));
         player->init();
 
+        ProfileManager::current_profile()->apply_to_player(player);
+
         this->player(player);
     
         auto window_size = GameSystem::window()->getSize();

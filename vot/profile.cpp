@@ -7,6 +7,7 @@
 
 #include "options.h"
 #include "hardpoint.h"
+#include "player.h"
 
 #include <utils/data.h>
 #include <utils/lua_serialiser.h>
@@ -66,6 +67,35 @@ namespace vot
         }
 
         return find->second;
+    }
+    void Profile::clear_hardpoints()
+    {
+        _hardpoints.clear();
+    }
+
+    void Profile::apply_to_player(Player *player) const
+    {
+        player->clear_hardpoints();
+
+        auto hardpoints = ProfileManager::current_profile()->hardpoints();
+        for (auto iter = hardpoints->cbegin(); iter != hardpoints->cend(); ++iter)
+        {
+            player->add_hardpoint_to_placement(iter->first, iter->second->clone());
+        }
+    }
+    void Profile::apply_from_player(const Player *player)
+    {
+        auto profile = ProfileManager::current_profile();
+        profile->clear_hardpoints();
+
+        auto placements = player->hardpoint_placements();
+        for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
+        {
+            if (iter->second->hardpoint() != nullptr)
+            {
+                profile->hardpoint(iter->first, iter->second->hardpoint()->clone());
+            }
+        }
     }
 
     bool Profile::save()

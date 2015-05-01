@@ -111,7 +111,11 @@ namespace vot
                 // If visible set current player data onto the player renderer.
                 if (value)
                 {
-                    apply_player_to_renderer();
+                    ProfileManager::current_profile()->apply_to_player(s_player_render);
+                }
+                else
+                {
+                    ProfileManager::current_profile()->apply_from_player(s_player_render);
                 }
             }
         }
@@ -142,21 +146,6 @@ namespace vot
             auto half_width = width * 0.5f;
             auto half_height = height * 0.5f;
             s_player_camera.setSize(sf::Vector2f(half_width, half_height));
-        }
-
-        void ShipHanger::apply_player_to_renderer()
-        {
-            s_player_render->clear_hardpoints();
-
-            auto hardpoints = ProfileManager::current_profile()->hardpoints();
-            for (auto iter = hardpoints->cbegin(); iter != hardpoints->cend(); ++iter)
-            {
-                s_player_render->add_hardpoint_to_placement(iter->first, iter->second->clone());
-            }
-        }
-        void ShipHanger::apply_renderer_to_player()
-        {
-
         }
     }
 }
