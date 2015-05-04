@@ -7,12 +7,11 @@
 namespace vot
 {
     // Hardpoint {{{
-    Hardpoint::Hardpoint(Group::Type group) :
+    Hardpoint::Hardpoint() :
         _cooldown(0.0f),
         _max_cooldown(0.2f),
         _parent(nullptr),
         _target(nullptr),
-        _group(group),
         _max_angle(360.0f),
         _min_angle(0.0f),
         _track_ahead(false)
@@ -28,7 +27,6 @@ namespace vot
     Hardpoint::Hardpoint(const Hardpoint &clone) :
         _cooldown(clone._cooldown),
         _max_cooldown(clone._max_cooldown),
-        _group(clone._group),
         _max_angle(clone._max_angle),
         _min_angle(clone._min_angle),
         _track_ahead(clone._track_ahead)
@@ -129,15 +127,19 @@ namespace vot
         return _cooldown;
     }
 
+    Group::Type Hardpoint::group() const
+    {
+        if (_parent == nullptr)
+        {
+            return Group::NATURE;
+        }
+        return _parent->group();
+    }
+
     float Hardpoint::projectile_speed() const
     {
         // Real fast!
         return 1000000.0f;
-    }
-
-    Group::Type Hardpoint::group() const
-    {
-        return _group;
     }
 
     void Hardpoint::update(float dt)
@@ -197,32 +199,56 @@ namespace vot
 
     void Hardpoint::serialise(::utils::Data *data) const
     {
-        data->at("cooldown", cooldown());
+        if (cooldown() > 0.0f)
+        {
+            data->at("cooldown", cooldown());
+        }
         data->at("max_cooldown", max_cooldown());
         data->at("max_angle", max_angle());
         data->at("min_angle", min_angle());
         data->at("track_ahead", track_ahead());
-        data->at("group", Group::type_name(group()));
         data->at("texture", TextureManager::texture_name(_sprite.getTexture()));
     }
     void Hardpoint::deserialise(const ::utils::Data *data)
     {
-        _cooldown = data->at("cooldown")->number();
+        auto cooldown = data->at("cooldown"); 
+        if (cooldown != nullptr)
+        {
+            _cooldown = cooldown->number();
+        }
         _max_cooldown = data->at("max_cooldown")->number();
 
         _max_angle = data->at("max_angle")->number();
         _min_angle = data->at("min_angle")->number();
         _track_ahead = data->at("track_ahead")->boolean();
-        _group = Group::type_name(data->at("group")->string());
 
         auto texture = data->at("texture")->string();
         _sprite.setTexture(*TextureManager::texture(texture));
     }
+
+    Hardpoint *Hardpoint::create_from_data(const ::utils::Data *data)
+    {
+        auto type = data->at("hardpoint_type")->string();
+        if (type == "pattern")
+        {
+            return new PatternBulletHardpoint(data);
+        }
+        else if (type == "homing")
+        {
+            return new HomingBulletHardpoint(data);
+        }
+        else if (type == "beam")
+        {
+            return new BeamHardpoint(data);
+        }
+
+        return nullptr;
+    }
     // }}}
 
     // PatternBulletHardpoint {{{
-    PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group) :
-        Hardpoint(group),
+    PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet *blueprint) :
+        Hardpoint(),
         _blueprint(blueprint),
         _pattern_type(0u),
         _fire_bullet(false)
@@ -283,7 +309,7 @@ namespace vot
             system->setRotation(global_rotation);
             system->init();
 
-            auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet(*_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_pattern_bullet(*_blueprint, group());
             bullet->pattern_type(_pattern_type);
 
             bullet->init_transform(trans);
@@ -322,8 +348,8 @@ namespace vot
     // }}}
 
     // HomingBulletHardpoint {{{
-    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group) :
-        Hardpoint(group),
+    HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet *blueprint) :
+        Hardpoint(),
         _blueprint(blueprint)
     {
 
@@ -354,7 +380,7 @@ namespace vot
     {
         if (cooldown() < 0.0f)
         {
-            auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(*_blueprint, Group::PLAYER);
+            auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(*_blueprint, group());
 
             auto trans = parent()->getTransform() * getTransform();
             bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
@@ -380,8 +406,8 @@ namespace vot
     // }}}
 
     // BeamHardpoint {{{
-    BeamHardpoint::BeamHardpoint(const Beam *blueprint, Group::Type group) :
-        Hardpoint(group),
+    BeamHardpoint::BeamHardpoint(const Beam *blueprint) :
+        Hardpoint(),
         _blueprint(blueprint),
         _charge_up_system(nullptr),
         _charge_up(0.0f)

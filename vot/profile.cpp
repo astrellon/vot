@@ -50,13 +50,34 @@ namespace vot
         return _name;
     }
 
+    const Profile::HardpointList *Profile::inventory() const
+    {
+        return &_inventory;
+    }
+
+    void Profile::add_to_inventory(Hardpoint *point)
+    {
+        _inventory.push_back(std::unique_ptr<Hardpoint>(point));
+    }
+    void Profile::remove_from_inventory(Hardpoint *point)
+    {
+        for (auto iter = _inventory.begin(); iter != _inventory.end(); ++iter)
+        {
+            if (iter->get() == point)
+            {
+                _inventory.erase(iter);
+                break;
+            }
+        }
+    }
+
     const Profile::HardpointMap *Profile::hardpoints() const
     {
         return &_hardpoints;
     }
     void Profile::hardpoint(const std::string &placement_name, Hardpoint *hardpoint)
     {
-        _hardpoints[placement_name] = hardpoint;
+        _hardpoints[placement_name] = std::unique_ptr<Hardpoint>(hardpoint);
     }
     Hardpoint *Profile::hardpoint(const std::string &placement_name) const
     {
@@ -66,7 +87,7 @@ namespace vot
             return nullptr;
         }
 
-        return find->second;
+        return find->second.get();
     }
     void Profile::clear_hardpoints()
     {
@@ -121,6 +142,15 @@ namespace vot
             hardpoints->at(iter->first, hardpoint_data);
         }
 
+        auto inventory = new ::utils::Data(::utils::Data::ARRAY);
+        output.at("inventory", inventory);
+        for (auto iter = _inventory.cbegin(); iter != _inventory.cend(); ++iter)
+        {
+            auto inventory_data = new ::utils::Data(::utils::Data::MAP);
+            iter->get()->serialise(inventory_data);
+            inventory->push(inventory_data);
+        }
+
         ::utils::LuaSerialiser::serialise(&output, filename);
 
         return true;
@@ -141,23 +171,18 @@ namespace vot
         {
             for (auto iter = hardpoints->begin_map(); iter != hardpoints->end_map(); ++iter)
             {
-                Hardpoint *hardpoint = nullptr;
-                auto hardpoint_data = iter->second.get();
-                auto type = hardpoint_data->at("hardpoint_type")->string();
-                if (type == "pattern")
-                {
-                    hardpoint = new PatternBulletHardpoint(hardpoint_data);
-                }
-                else if (type == "homing")
-                {
-                    hardpoint = new HomingBulletHardpoint(hardpoint_data);
-                }
-                else if (type == "beam")
-                {
-                    hardpoint = new BeamHardpoint(hardpoint_data);
-                }
+                auto hardpoint = Hardpoint::create_from_data(iter->second.get());
+                _hardpoints[iter->first] = std::unique_ptr<Hardpoint>(hardpoint);
+            }
+        }
 
-                _hardpoints[iter->first] = hardpoint;
+        auto inventory = input->at("inventory");
+        if (inventory != nullptr)
+        {
+            for (auto iter = inventory->begin_array(); iter != inventory->end_array(); ++iter)
+            {
+                auto hardpoint = Hardpoint::create_from_data(iter->get());
+                _inventory.push_back(std::unique_ptr<Hardpoint>(hardpoint));
             }
         }
 

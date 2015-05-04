@@ -16,7 +16,7 @@ namespace vot
     class Hardpoint : public sf::Drawable, public sf::Transformable
     {
         public:
-            Hardpoint(Group::Type group);
+            Hardpoint();
             Hardpoint(const ::utils::Data *data);
             Hardpoint(const Hardpoint &clone);
 
@@ -50,15 +50,17 @@ namespace vot
             void max_cooldown(float value);
             float max_cooldown() const;
             float cooldown() const;
-            
-            Group::Type group() const;
 
+            Group::Type group() const;
+            
             virtual void update(float dt);
             virtual void fire() = 0;
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
             virtual void serialise(::utils::Data *data) const;
             virtual void deserialise(const ::utils::Data *data);
+
+            static Hardpoint *create_from_data(const ::utils::Data *data);
 
         protected:
             void cooldown(float value);
@@ -70,7 +72,6 @@ namespace vot
             float _max_cooldown;
             Character *_parent;
             Character *_target;
-            Group::Type _group;
 
             float _max_angle;
             float _min_angle;
@@ -82,7 +83,7 @@ namespace vot
     class PatternBulletHardpoint : public Hardpoint
     {
         public:
-            PatternBulletHardpoint(const PatternBullet *blueprint, Group::Type group);
+            PatternBulletHardpoint(const PatternBullet *blueprint);
             PatternBulletHardpoint(const ::utils::Data *data);
             PatternBulletHardpoint(const PatternBulletHardpoint &clone);
 
@@ -113,7 +114,7 @@ namespace vot
     class HomingBulletHardpoint : public Hardpoint
     {
         public:
-            HomingBulletHardpoint(const HomingBullet *blueprint, Group::Type group);
+            HomingBulletHardpoint(const HomingBullet *blueprint);
             HomingBulletHardpoint(const ::utils::Data *data);
             HomingBulletHardpoint(const HomingBulletHardpoint &clone);
 
@@ -135,7 +136,7 @@ namespace vot
     class BeamHardpoint : public Hardpoint
     {
         public:
-            BeamHardpoint(const Beam *blueprint, Group::Type group);
+            BeamHardpoint(const Beam *blueprint);
             BeamHardpoint(const ::utils::Data *data);
             BeamHardpoint(const BeamHardpoint &clone);
 

@@ -25,7 +25,14 @@ namespace vot
 
             const std::string &name() const;
 
-            typedef std::map<std::string, Hardpoint *> HardpointMap;
+            typedef std::vector<std::unique_ptr<Hardpoint> > HardpointList;
+            const HardpointList *inventory() const;
+
+            void add_to_inventory(Hardpoint *point);
+            void remove_from_inventory(Hardpoint *point);
+            void clear_inventory();
+            
+            typedef std::map<std::string, std::unique_ptr<Hardpoint> > HardpointMap;
             const HardpointMap *hardpoints() const;
 
             void hardpoint(const std::string &placement_name, Hardpoint *hardpoint);
@@ -44,7 +51,7 @@ namespace vot
             std::string _name;
 
             HardpointMap _hardpoints;
-
+            HardpointList _inventory;
     };
 
     class ProfileManager

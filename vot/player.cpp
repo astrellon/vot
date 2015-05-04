@@ -19,7 +19,7 @@ namespace vot
         _target(nullptr),
         _powerup_hitbox(20.0f)
     {
-
+        group(Group::PLAYER);
     }
 
     void Player::init()
@@ -230,7 +230,7 @@ namespace vot
         if (type == Powerup::BULLET)
         {
             auto pattern_bullet = GameSystem::bullet_manager()->find_src_pattern_bullet("player_bullet_small");
-            auto pattern_turret = new PatternBulletHardpoint(pattern_bullet, Group::PLAYER);
+            auto pattern_turret = new PatternBulletHardpoint(pattern_bullet);
             auto bullet_turret_texture = TextureManager::texture("bullet_turret");
             pattern_turret->texture(bullet_turret_texture);
             pattern_turret->target(_target);
@@ -241,7 +241,7 @@ namespace vot
         if (type == Powerup::BEAM)
         {
             auto beam_blueprint = GameSystem::beam_manager()->find_src_beam("beam1");
-            auto beam_turret = new BeamHardpoint(beam_blueprint, Group::PLAYER);
+            auto beam_turret = new BeamHardpoint(beam_blueprint);
 
             auto beam_turret_texture = TextureManager::texture("beam_turret");
             beam_turret->texture(beam_turret_texture);
@@ -253,7 +253,7 @@ namespace vot
         if (type == Powerup::HOMING)
         {
             auto homing_blueprint = GameSystem::bullet_manager()->find_src_homing_bullet("homing_blue");
-            auto homing_turret = new HomingBulletHardpoint(homing_blueprint, Group::PLAYER);
+            auto homing_turret = new HomingBulletHardpoint(homing_blueprint);
 
             auto bullet_turret_texture = TextureManager::texture("bullet_turret");
             homing_turret->texture(bullet_turret_texture);

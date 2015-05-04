@@ -20,7 +20,8 @@ namespace vot
         _rot_speed(360.0f),
         _max_rot_speed(180.0f),
         _translate_assist(true),
-        _rotation_assist(true)
+        _rotation_assist(true),
+        _group(Group::ENEMY)
     {
         auto size = texture.getSize();
         _sprite.setOrigin(size.x * 0.5f, size.y * 0.5f);
@@ -41,7 +42,8 @@ namespace vot
         _rot_speed(clone._rot_speed),
         _max_rot_speed(clone._max_rot_speed),
         _translate_assist(clone._translate_assist),
-        _rotation_assist(clone._rotation_assist)
+        _rotation_assist(clone._rotation_assist),
+        _group(clone._group)
     {
 
     }
@@ -415,5 +417,14 @@ namespace vot
     bool Character::rotation_assist() const
     {
         return _rotation_assist;
+    }
+
+    void Character::group(Group::Type value)
+    {
+        _group = value;
+    }
+    Group::Type Character::group() const
+    {
+        return _group;
     }
 }

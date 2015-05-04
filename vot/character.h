@@ -8,6 +8,7 @@
 #include "utils/circle.h"
 #include "hardpoint.h"
 #include "thruster.h"
+#include "common.h"
 
 namespace vot
 {
@@ -93,6 +94,9 @@ namespace vot
             void rotation_assist(bool assist);
             bool rotation_assist() const;
 
+            void group(Group::Type value);
+            Group::Type group() const;
+
         private:
             sf::Sprite _sprite;
             utils::Circle _hitbox;
@@ -118,5 +122,7 @@ namespace vot
             
             bool _translate_assist;
             bool _rotation_assist;
+
+            Group::Type _group;
     };
 }
