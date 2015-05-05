@@ -6,6 +6,7 @@
 #include "powerup.h"
 #include "beam.h"
 #include "hardpoint.h"
+#include "hardpoint_placement.h"
 #include "thruster.h"
 
 #include "utils/circle.h"

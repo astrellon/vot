@@ -19,7 +19,8 @@ namespace utils
                 STRING,
                 BOOLEAN,
                 ARRAY,
-                MAP
+                MAP,
+                NIL
             };
 
             Data(Type type);
@@ -47,6 +48,8 @@ namespace utils
 
             void boolean(bool value);
             bool boolean() const;
+
+            bool is_nil() const;
 
             void string(const std::string &value);
             void string(const char *value);
@@ -99,6 +102,8 @@ namespace utils
 
             std::size_t size_array() const;
             // }}}
+            
+            static Data *Nil();
 
         private:
             union Value
@@ -117,6 +122,7 @@ namespace utils
 
             static DataMap s_empty_map;
             static DataArray s_empty_array;
+            static Data s_nil;
 
     };
 

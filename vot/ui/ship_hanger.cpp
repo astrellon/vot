@@ -147,5 +147,13 @@ namespace vot
             auto half_height = height * 0.5f;
             s_player_camera.setSize(sf::Vector2f(half_width, half_height));
         }
+
+        void ShipHanger::create_inventory_buttons()
+        {
+            auto inventory = ProfileManager::current_profile()->inventory();
+            for (auto iter = inventory->cbegin(); iter != inventory->cend(); ++iter)
+            {
+            }
+        }
     }
 }

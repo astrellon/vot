@@ -12,6 +12,7 @@ namespace vot
         _max_cooldown(0.2f),
         _parent(nullptr),
         _target(nullptr),
+        _name("Hardpoint"),
         _max_angle(360.0f),
         _min_angle(0.0f),
         _track_ahead(false)
@@ -50,6 +51,15 @@ namespace vot
     Character *Hardpoint::target() const
     {
         return _target;
+    }
+
+    void Hardpoint::name(const std::string &value)
+    {
+        _name = value;
+    }
+    std::string Hardpoint::name() const
+    {
+        return _name;
     }
 
     void Hardpoint::texture(const sf::Texture *value)
@@ -207,20 +217,19 @@ namespace vot
         data->at("max_angle", max_angle());
         data->at("min_angle", min_angle());
         data->at("track_ahead", track_ahead());
+        data->at("name", name());
         data->at("texture", TextureManager::texture_name(_sprite.getTexture()));
     }
     void Hardpoint::deserialise(const ::utils::Data *data)
     {
-        auto cooldown = data->at("cooldown"); 
-        if (cooldown != nullptr)
-        {
-            _cooldown = cooldown->number();
-        }
+        _cooldown = data->at("cooldown")->number();
         _max_cooldown = data->at("max_cooldown")->number();
 
         _max_angle = data->at("max_angle")->number();
         _min_angle = data->at("min_angle")->number();
         _track_ahead = data->at("track_ahead")->boolean();
+
+        _name = data->at("name")->string();
 
         auto texture = data->at("texture")->string();
         _sprite.setTexture(*TextureManager::texture(texture));
@@ -532,84 +541,51 @@ namespace vot
     }
     // }}}
     
-    // HardpointPlacement {{{
-    HardpointPlacement::HardpointPlacement(const std::string &name) :
-        _hardpoint(nullptr),
-        _min_angle(0.0f),
-        _max_angle(360.0f),
-        _name(name)
-    {
+    // HardpointManager {{{
+    HardpointManager::PatternMap HardpointManager::s_src_pattern_hardpoints;
 
-    }
-    HardpointPlacement::HardpointPlacement(const std::string &name, float x, float y, float min, float max) :
-        _hardpoint(nullptr),
-        _position(x, y),
-        _min_angle(min),
-        _max_angle(max),
-        _name(name)
+    PatternBulletHardpoint *HardpointManager::spawn_pattern_hardpoint(const std::string &name)
     {
-
-    }
-    HardpointPlacement::HardpointPlacement(const HardpointPlacement &clone) :
-        _hardpoint(nullptr),
-        _position(clone._position),
-        _min_angle(clone._min_angle),
-        _max_angle(clone._max_angle),
-        _name(clone._name)
-    {
-    
-    }
-
-    void HardpointPlacement::setup(float x, float y, float min, float max)
-    {
-        position(sf::Vector2f(x, y));
-        min_angle(min);
-        max_angle(max);
-    }
-    void HardpointPlacement::hardpoint(Hardpoint *hardpoint)
-    {
-        _hardpoint = hardpoint;
-        if (hardpoint != nullptr)
+        auto find = _src_pattern_hadpoint.find(name);
+        if (find == _src_pattern_hadpoint.end())
         {
-            auto average = (_min_angle + _max_angle) * 0.5f;
-            hardpoint->setup(_position.x, _position.y, average, _min_angle, _max_angle);
+            return nullptr;
         }
+
+        return find->second.get();
     }
-    Hardpoint *HardpointPlacement::hardpoint() const
+    HomingBulletHardpoint *HardpointManager::spawn_homing_hardpoint(const std::string &name)
     {
-        return _hardpoint;
+        auto find = _src_homing_hadpoint.find(name);
+        if (find == _src_homing_hadpoint.end())
+        {
+            return nullptr;
+        }
+
+        return find->second.get();
+    }
+    BeamHardpoint *HardpointManager::spawn_beam_hardpoint(const std::string &name)
+    {
+        auto find = _src_beam_hadpoint.find(name);
+        if (find == _src_beam_hadpoint.end())
+        {
+            return nullptr;
+        }
+
+        return find->second.get();
     }
 
-    void HardpointPlacement::position(const sf::Vector2f &position)
+    void HardpointManager::add_src_pattern_hardpoint(const std::string &name, PatternBulletHardpoint *point)
     {
-        _position = position;
+        _src_pattern_hadpoint[name] = std::unique_ptr<PatternBulletHardpoint>(point);
     }
-    sf::Vector2f HardpointPlacement::position() const
+    void HardpointManager::add_src_homing_hardpoint(const std::string &name, HomingBulletHardpoint *point)
     {
-        return _position;
+        _src_homing_hadpoint[name] = std::unique_ptr<HomingBulletHardpoint>(point);
     }
-    
-    void HardpointPlacement::max_angle(float value)
+    void HardpointManager::add_src_beam_hardpoint(const std::string &name, BeamHardpoint *point)
     {
-        _max_angle = value;
-    }
-    float HardpointPlacement::max_angle() const
-    {
-        return _max_angle;
-    }
-    
-    void HardpointPlacement::min_angle(float value)
-    {
-        _min_angle = value;
-    }
-    float HardpointPlacement::min_angle() const
-    {
-        return _min_angle;
-    }
-
-    std::string HardpointPlacement::name() const
-    {
-        return _name;
+        _src_beam_hadpoint[name] = std::unique_ptr<BeamHardpoint>(point);
     }
     // }}}
 }

@@ -36,6 +36,8 @@ namespace vot
 
                 static void apply_player_to_renderer();
                 static void apply_renderer_to_player();
+
+                static void create_inventory_buttons();
         };
     }
 }

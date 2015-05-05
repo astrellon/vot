@@ -42,6 +42,9 @@ namespace vot
             void track_ahead(bool value);
             bool track_ahead() const;
 
+            void name(const std::string &value);
+            std::string name() const;
+
             virtual float projectile_speed() const;
 
             // Sets up the x,y position, initial rotation, and min and max angle restrictions.
@@ -72,6 +75,7 @@ namespace vot
             float _max_cooldown;
             Character *_parent;
             Character *_target;
+            std::string _name;
 
             float _max_angle;
             float _min_angle;
@@ -166,37 +170,28 @@ namespace vot
     };
     // }}}
     
-    // HardpointPlacement {{{
-    class HardpointPlacement
+    // HardpointManager {{{
+    class HardpointManager
     {
         public:
-            HardpointPlacement(const std::string &name);
-            HardpointPlacement(const std::string &name, float x, float y, float min, float max);
-            HardpointPlacement(const HardpointPlacement &clone);
+            static PatternBulletHardpoint *spawn_pattern_hardpoint(const std::string &name, const std::string &blueprint);
+            static HomingBulletHardpoint *spawn_homing_hardpoint(const std::string &name, const std::string &blueprint);
+            static BeamHardpoint *spawn_beam_hardpoint(const std::string &name, const std::string &blueprint);
 
-            void setup(float x, float y, float min, float max);
-
-            void hardpoint(Hardpoint *point);
-            Hardpoint *hardpoint() const;
-
-            void position(const sf::Vector2f &position);
-            sf::Vector2f position() const;
-
-            void max_angle(float value);
-            float max_angle() const;
-            
-            void min_angle(float value);
-            float min_angle() const;
-
-            std::string name() const;
+            static void add_src_pattern_hardpoint(const std::string &name, PatternBulletHardpoint *point);
+            static void add_src_homing_hardpoint(const std::string &name, HomingBulletHardpoint *point);
+            static void add_src_beam_hardpoint(const std::string &name, BeamHardpoint *point);
 
         private:
-            Hardpoint *_hardpoint;
-            sf::Vector2f _position;
-            float _min_angle;
-            float _max_angle;
+            typedef std::map<std::string, std::unique_ptr<PatternBulletHardpoint> > PatternMap; 
+            PatternMap s_src_pattern_hardpoints;;
 
-            std::string _name;
+            typedef std::map<std::string, std::unique_ptr<HomingBulletHardpoint> > HomingMap;
+            HomingMap s_src_homing_hadpoint;
+            
+            typedef std::map<std::string, std::unique_ptr<BeamHardpoint> > BeamMap;
+            BeamMap s_src_beam_hadpoint;
     };
     // }}}
+    
 }

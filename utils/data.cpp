@@ -4,6 +4,12 @@ namespace utils
 {
     Data::DataMap Data::s_empty_map;
     Data::DataArray Data::s_empty_array;
+    Data Data::s_nil(Data::NIL);
+
+    Data *Data::Nil()
+    {
+        return &s_nil;
+    }
 
     Data::Data(Data::Type type) :
         _type(type)
@@ -99,8 +105,7 @@ namespace utils
         {
             return static_cast<double>(_value.uint32);
         }
-        return 0.0f;
-    
+        return 0.0;
     }
 
     void Data::int32(int32_t value)
@@ -170,7 +175,16 @@ namespace utils
     }
     bool Data::boolean() const
     {
-        return _value.boolean;
+        if (_type == BOOLEAN)
+        {
+            return _value.boolean;
+        }
+        return false;
+    }
+
+    bool Data::is_nil() const
+    {
+        return _type == NIL;
     }
 
     void Data::string(const std::string &value)
@@ -275,7 +289,7 @@ namespace utils
                 return find->second.get();
             }
         }
-        return nullptr;
+        return &s_nil;
     }
     bool Data::has(const std::string &key) const
     {
@@ -283,7 +297,7 @@ namespace utils
         {
             return _value.map->find(key) != _value.map->cend();
         }
-        return false;
+        return false;;
     }
 
     std::size_t Data::size_map() const
@@ -417,7 +431,7 @@ namespace utils
         {
             (*_value.array)[index].get();
         }
-        return nullptr;
+        return &s_nil;
     }
 
     std::size_t Data::size_array() const

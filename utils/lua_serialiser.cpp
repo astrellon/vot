@@ -51,6 +51,11 @@ namespace utils
             output << (value->boolean() ? "true" : "false");
             return;
         }
+        else if (type == Data::NIL)
+        {
+            output << "nil";
+            return;
+        }
         else if (type == Data::ARRAY)
         {
             output << "{\n";
@@ -189,11 +194,7 @@ namespace utils
             {
                 return new Data(lua_toboolean(lua, -1) > 0);
             }
-            else if (type == LUA_TNIL)
-            {
-                return nullptr;
-            }
-            return nullptr;
+            return Data::Nil();
         }
     }
 

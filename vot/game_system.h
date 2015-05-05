@@ -10,6 +10,7 @@
 #include "beam.h"
 #include "game.h"
 #include "sound.h"
+#include "hardpoint.h"
 
 namespace vot
 {
@@ -27,6 +28,7 @@ namespace vot
             static PowerupManager *powerup_manager();
             static BeamManager *beam_manager();
             static SoundManager *sound_manager();
+            static HardpointManager *hardpoint_manager();
 
             static void update(float dt);
             static void draw(sf::RenderTarget &target, sf::RenderStates states);
@@ -64,6 +66,7 @@ namespace vot
             static PowerupManager s_powerup_manager; 
             static BeamManager s_beam_manager;
             static SoundManager s_sound_manager;
+            static HardpointManager s_hardpoint_manager;
 
             static sf::View s_hud_camera;
             static std::unique_ptr<Game> s_game;
@@ -78,6 +81,7 @@ namespace vot
             static void create_default_enemies();
             static void create_default_powerups();
             static void create_default_beams();
+            static void create_default_hardpoints();
             
             static void on_resize(uint32_t width, uint32_t height);
             static void key_pressed(sf::Keyboard::Key key);
