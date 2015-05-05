@@ -124,6 +124,7 @@
     <ClCompile Include="vot\game_hud.cpp" />
     <ClCompile Include="vot\game_system.cpp" />
     <ClCompile Include="vot\hardpoint.cpp" />
+    <ClCompile Include="vot\hardpoint_placement.cpp" />
     <ClCompile Include="vot\levels\level.cpp" />
     <ClCompile Include="vot\levels\level1.cpp" />
     <ClCompile Include="vot\levels\level2.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="vot\game_hud.h" />
     <ClInclude Include="vot\game_system.h" />
     <ClInclude Include="vot\hardpoint.h" />
+    <ClInclude Include="vot\hardpoint_placement.h" />
     <ClInclude Include="vot\icontroller.h" />
     <ClInclude Include="vot\levels\level.h" />
     <ClInclude Include="vot\levels\level1.h" />

@@ -256,6 +256,14 @@ namespace vot
     // }}}
 
     // PatternBulletHardpoint {{{
+    PatternBulletHardpoint::PatternBulletHardpoint() :
+        Hardpoint(),
+        _blueprint(nullptr),
+        _pattern_type(0u),
+        _fire_bullet(false)
+    {
+        track_ahead(true);
+    }
     PatternBulletHardpoint::PatternBulletHardpoint(const PatternBullet *blueprint) :
         Hardpoint(),
         _blueprint(blueprint),
@@ -296,6 +304,10 @@ namespace vot
         return _blueprint->speed();
     }
 
+    void PatternBulletHardpoint::blueprint(PatternBullet *value)
+    {
+        _blueprint = value;
+    }
     const PatternBullet *PatternBulletHardpoint::blueprint() const
     {
         return _blueprint;
@@ -343,20 +355,32 @@ namespace vot
     void PatternBulletHardpoint::serialise(::utils::Data *data) const
     {
         Hardpoint::serialise(data);
-            
+
         data->at("hardpoint_type", "pattern");
         data->at("pattern_type", pattern_type());
-        data->at("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
+        if (blueprint() != nullptr)
+        {
+            data->at("blueprint", GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint()));
+        }
     }
     void PatternBulletHardpoint::deserialise(const ::utils::Data *data)
     {
         pattern_type(data->at("pattern_type")->uint32());
-        auto blueprint_name = data->at("blueprint")->string();
-        _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint_name);
+        if (data->has("blueprint"))
+        {
+            auto blueprint_name = data->at("blueprint")->string();
+            _blueprint = GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint_name);
+        }
     }
     // }}}
 
     // HomingBulletHardpoint {{{
+    HomingBulletHardpoint::HomingBulletHardpoint() :
+        Hardpoint(),
+        _blueprint(nullptr)
+    {
+
+    }
     HomingBulletHardpoint::HomingBulletHardpoint(const HomingBullet *blueprint) :
         Hardpoint(),
         _blueprint(blueprint)
@@ -380,6 +404,10 @@ namespace vot
         return new HomingBulletHardpoint(*this);
     }
 
+    void HomingBulletHardpoint::blueprint(HomingBullet *value)
+    {
+        _blueprint = value;
+    }
     const HomingBullet *HomingBulletHardpoint::blueprint() const
     {
         return _blueprint;
@@ -406,15 +434,29 @@ namespace vot
         Hardpoint::serialise(data);
 
         data->at("hardpoint_type", "homing");
-        data->at("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
+        if (blueprint() != nullptr)
+        {
+            data->at("blueprint", GameSystem::bullet_manager()->find_src_homing_bullet(blueprint()));
+        }
     }
     void HomingBulletHardpoint::deserialise(const ::utils::Data *data)
     {
-        _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(data->at("blueprint")->string());
+        if (data->has("blueprint"))
+        {
+            _blueprint = GameSystem::bullet_manager()->find_src_homing_bullet(data->at("blueprint")->string());
+        }
     }
     // }}}
 
     // BeamHardpoint {{{
+    BeamHardpoint::BeamHardpoint() :
+        Hardpoint(),
+        _blueprint(nullptr),
+        _charge_up_system(nullptr),
+        _charge_up(0.0f)
+    {
+        init();
+    }
     BeamHardpoint::BeamHardpoint(const Beam *blueprint) :
         Hardpoint(),
         _blueprint(blueprint),
@@ -453,6 +495,10 @@ namespace vot
         }
     }
 
+    void BeamHardpoint::blueprint(Beam *value)
+    {
+        _blueprint = value;
+    }
     const Beam *BeamHardpoint::blueprint() const
     {
         return _blueprint;
@@ -516,11 +562,17 @@ namespace vot
         Hardpoint::serialise(data);
             
         data->at("hardpoint_type", "beam");
-        data->at("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
+        if (blueprint() != nullptr)
+        {
+            data->at("blueprint", GameSystem::beam_manager()->find_src_beam(blueprint()));
+        }
     }
     void BeamHardpoint::deserialise(const ::utils::Data *data)
     {
-        _blueprint = GameSystem::beam_manager()->find_src_beam(data->at("blueprint")->string());
+        if (data->has("blueprint"))
+        {
+            _blueprint = GameSystem::beam_manager()->find_src_beam(data->at("blueprint")->string());
+        }
     }
 
     void BeamHardpoint::init()
@@ -543,49 +595,57 @@ namespace vot
     
     // HardpointManager {{{
     HardpointManager::PatternMap HardpointManager::s_src_pattern_hardpoints;
+    HardpointManager::HomingMap HardpointManager::s_src_homing_hardpoints;
+    HardpointManager::BeamMap HardpointManager::s_src_beam_hardpoints;
 
-    PatternBulletHardpoint *HardpointManager::spawn_pattern_hardpoint(const std::string &name)
+    PatternBulletHardpoint *HardpointManager::spawn_pattern_hardpoint(const std::string &name, const std::string &blueprint)
     {
-        auto find = _src_pattern_hadpoint.find(name);
-        if (find == _src_pattern_hadpoint.end())
+        auto find = s_src_pattern_hardpoints.find(name);
+        if (find == s_src_pattern_hardpoints.end())
         {
             return nullptr;
         }
 
-        return find->second.get();
+        auto new_point = new PatternBulletHardpoint(*find->second.get());
+        new_point->blueprint(GameSystem::bullet_manager()->find_src_pattern_bullet(blueprint));
+        return new_point;
     }
-    HomingBulletHardpoint *HardpointManager::spawn_homing_hardpoint(const std::string &name)
+    HomingBulletHardpoint *HardpointManager::spawn_homing_hardpoint(const std::string &name, const std::string &blueprint)
     {
-        auto find = _src_homing_hadpoint.find(name);
-        if (find == _src_homing_hadpoint.end())
+        auto find = s_src_homing_hardpoints.find(name);
+        if (find == s_src_homing_hardpoints.end())
         {
             return nullptr;
         }
 
-        return find->second.get();
+        auto new_point = new HomingBulletHardpoint(*find->second.get());
+        new_point->blueprint(GameSystem::bullet_manager()->find_src_homing_bullet(blueprint));
+        return new_point;
     }
-    BeamHardpoint *HardpointManager::spawn_beam_hardpoint(const std::string &name)
+    BeamHardpoint *HardpointManager::spawn_beam_hardpoint(const std::string &name, const std::string &blueprint)
     {
-        auto find = _src_beam_hadpoint.find(name);
-        if (find == _src_beam_hadpoint.end())
+        auto find = s_src_beam_hardpoints.find(name);
+        if (find == s_src_beam_hardpoints.end())
         {
             return nullptr;
         }
 
-        return find->second.get();
+        auto new_point = new BeamHardpoint(*find->second.get());
+        new_point->blueprint(GameSystem::beam_manager()->find_src_beam(blueprint));
+        return new_point;
     }
 
     void HardpointManager::add_src_pattern_hardpoint(const std::string &name, PatternBulletHardpoint *point)
     {
-        _src_pattern_hadpoint[name] = std::unique_ptr<PatternBulletHardpoint>(point);
+        s_src_pattern_hardpoints[name] = std::unique_ptr<PatternBulletHardpoint>(point);
     }
     void HardpointManager::add_src_homing_hardpoint(const std::string &name, HomingBulletHardpoint *point)
     {
-        _src_homing_hadpoint[name] = std::unique_ptr<HomingBulletHardpoint>(point);
+        s_src_homing_hardpoints[name] = std::unique_ptr<HomingBulletHardpoint>(point);
     }
     void HardpointManager::add_src_beam_hardpoint(const std::string &name, BeamHardpoint *point)
     {
-        _src_beam_hadpoint[name] = std::unique_ptr<BeamHardpoint>(point);
+        s_src_beam_hardpoints[name] = std::unique_ptr<BeamHardpoint>(point);
     }
     // }}}
 }

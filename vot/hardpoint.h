@@ -87,6 +87,7 @@ namespace vot
     class PatternBulletHardpoint : public Hardpoint
     {
         public:
+            PatternBulletHardpoint();
             PatternBulletHardpoint(const PatternBullet *blueprint);
             PatternBulletHardpoint(const ::utils::Data *data);
             PatternBulletHardpoint(const PatternBulletHardpoint &clone);
@@ -98,6 +99,7 @@ namespace vot
 
             virtual float projectile_speed() const;
 
+            void blueprint(PatternBullet *value);
             const PatternBullet *blueprint() const;
 
             virtual void update(float dt);
@@ -118,6 +120,7 @@ namespace vot
     class HomingBulletHardpoint : public Hardpoint
     {
         public:
+            HomingBulletHardpoint();
             HomingBulletHardpoint(const HomingBullet *blueprint);
             HomingBulletHardpoint(const ::utils::Data *data);
             HomingBulletHardpoint(const HomingBulletHardpoint &clone);
@@ -126,6 +129,7 @@ namespace vot
 
             virtual void fire();
 
+            void blueprint(HomingBullet *value);
             const HomingBullet *blueprint() const;
 
             virtual void serialise(::utils::Data *data) const;
@@ -140,6 +144,7 @@ namespace vot
     class BeamHardpoint : public Hardpoint
     {
         public:
+            BeamHardpoint();
             BeamHardpoint(const Beam *blueprint);
             BeamHardpoint(const ::utils::Data *data);
             BeamHardpoint(const BeamHardpoint &clone);
@@ -149,6 +154,7 @@ namespace vot
             virtual void update(float dt);
             virtual void fire();
 
+            void blueprint(Beam *value);
             const Beam *blueprint() const;
 
             virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
@@ -181,16 +187,15 @@ namespace vot
             static void add_src_pattern_hardpoint(const std::string &name, PatternBulletHardpoint *point);
             static void add_src_homing_hardpoint(const std::string &name, HomingBulletHardpoint *point);
             static void add_src_beam_hardpoint(const std::string &name, BeamHardpoint *point);
+            
+            typedef std::map<std::string, std::unique_ptr<PatternBulletHardpoint> > PatternMap; 
+            typedef std::map<std::string, std::unique_ptr<HomingBulletHardpoint> > HomingMap;
+            typedef std::map<std::string, std::unique_ptr<BeamHardpoint> > BeamMap;
 
         private:
-            typedef std::map<std::string, std::unique_ptr<PatternBulletHardpoint> > PatternMap; 
-            PatternMap s_src_pattern_hardpoints;;
-
-            typedef std::map<std::string, std::unique_ptr<HomingBulletHardpoint> > HomingMap;
-            HomingMap s_src_homing_hadpoint;
-            
-            typedef std::map<std::string, std::unique_ptr<BeamHardpoint> > BeamMap;
-            BeamMap s_src_beam_hadpoint;
+            static PatternMap s_src_pattern_hardpoints;
+            static HomingMap s_src_homing_hardpoints;
+            static BeamMap s_src_beam_hardpoints;
     };
     // }}}
     

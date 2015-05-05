@@ -46,6 +46,7 @@ namespace vot
         create_default_enemies();
         create_default_powerups();
         create_default_beams();
+        create_default_hardpoints();
 
         if (!s_sound_manager.init())
         {
@@ -190,6 +191,15 @@ namespace vot
         beam->dps(2.0f);
 
         s_beam_manager.add_src_beam("beam1", beam);
+    }
+
+    HardpointManager *GameSystem::hardpoint_manager()
+    {
+        return &s_hardpoint_manager;
+    }
+    void GameSystem::create_default_hardpoints()
+    {
+        auto pattern_point = new PatternBulletHardpoint();
     }
 
     SoundManager *GameSystem::sound_manager()

@@ -218,6 +218,9 @@
     <ClCompile Include="utils\lua_serialiser.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="vot\hardpoint_placement.cpp">
+      <Filter>vot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vot">
@@ -446,6 +449,9 @@
     </ClInclude>
     <ClInclude Include="utils\lua_serialiser.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="vot\hardpoint_placement.h">
+      <Filter>vot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
