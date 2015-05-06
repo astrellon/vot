@@ -28,6 +28,7 @@ namespace vot
     Hardpoint::Hardpoint(const Hardpoint &clone) :
         _cooldown(clone._cooldown),
         _max_cooldown(clone._max_cooldown),
+        _name(clone._name),
         _max_angle(clone._max_angle),
         _min_angle(clone._min_angle),
         _track_ahead(clone._track_ahead)

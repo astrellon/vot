@@ -38,6 +38,8 @@ namespace vot
                 static void apply_renderer_to_player();
 
                 static void create_inventory_buttons();
+
+                static std::vector<Button *> s_inventory_buttons;
         };
     }
 }

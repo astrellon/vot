@@ -57,13 +57,13 @@ namespace vot
 
     void Profile::add_to_inventory(Hardpoint *point)
     {
-        _inventory.push_back(std::unique_ptr<Hardpoint>(point));
+        _inventory.push_back(point);
     }
     void Profile::remove_from_inventory(Hardpoint *point)
     {
         for (auto iter = _inventory.begin(); iter != _inventory.end(); ++iter)
         {
-            if (iter->get() == point)
+            if (*iter == point)
             {
                 _inventory.erase(iter);
                 break;
@@ -77,7 +77,7 @@ namespace vot
     }
     void Profile::hardpoint(const std::string &placement_name, Hardpoint *hardpoint)
     {
-        _hardpoints[placement_name] = std::unique_ptr<Hardpoint>(hardpoint);
+        _hardpoints[placement_name] = hardpoint;
     }
     Hardpoint *Profile::hardpoint(const std::string &placement_name) const
     {
@@ -87,7 +87,7 @@ namespace vot
             return nullptr;
         }
 
-        return find->second.get();
+        return find->second;
     }
     void Profile::clear_hardpoints()
     {
@@ -147,7 +147,7 @@ namespace vot
         for (auto iter = _inventory.cbegin(); iter != _inventory.cend(); ++iter)
         {
             auto inventory_data = new ::utils::Data(::utils::Data::MAP);
-            iter->get()->serialise(inventory_data);
+            (*iter)->serialise(inventory_data);
             inventory->push(inventory_data);
         }
 
@@ -172,7 +172,7 @@ namespace vot
             for (auto iter = hardpoints->begin_map(); iter != hardpoints->end_map(); ++iter)
             {
                 auto hardpoint = Hardpoint::create_from_data(iter->second.get());
-                _hardpoints[iter->first] = std::unique_ptr<Hardpoint>(hardpoint);
+                _hardpoints[iter->first] = hardpoint;
             }
         }
 
@@ -182,7 +182,7 @@ namespace vot
             for (auto iter = inventory->begin_array(); iter != inventory->end_array(); ++iter)
             {
                 auto hardpoint = Hardpoint::create_from_data(iter->get());
-                _inventory.push_back(std::unique_ptr<Hardpoint>(hardpoint));
+                _inventory.push_back(hardpoint);
             }
         }
 

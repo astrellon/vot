@@ -25,14 +25,14 @@ namespace vot
 
             const std::string &name() const;
 
-            typedef std::vector<std::unique_ptr<Hardpoint> > HardpointList;
+            typedef std::vector<Hardpoint *> HardpointList;
             const HardpointList *inventory() const;
 
             void add_to_inventory(Hardpoint *point);
             void remove_from_inventory(Hardpoint *point);
             void clear_inventory();
             
-            typedef std::map<std::string, std::unique_ptr<Hardpoint> > HardpointMap;
+            typedef std::map<std::string, Hardpoint *> HardpointMap;
             const HardpointMap *hardpoints() const;
 
             void hardpoint(const std::string &placement_name, Hardpoint *hardpoint);
