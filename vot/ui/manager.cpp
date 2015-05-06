@@ -236,9 +236,9 @@ namespace vot
             const auto window = GameSystem::window();
             auto global = window->mapPixelToCoords(sf::Vector2i(x, y));
             
-            for (auto i = 0u; i < s_components.size(); i++)
+            for (auto iter = s_components.rbegin(); iter != s_components.rend(); ++iter)
             {
-                auto comp = s_components[i].get();
+                auto comp = iter->get();
                 if (comp->enabled())
                 {
                     if (comp->local_view() != nullptr)

@@ -88,6 +88,8 @@ namespace vot
                 });
             }
 
+            create_inventory_buttons();
+
             s_helper.calc_nearby_components();
 
             return true;
@@ -151,8 +153,13 @@ namespace vot
         void ShipHanger::create_inventory_buttons()
         {
             auto inventory = ProfileManager::current_profile()->inventory();
+            auto i = 0.0f;
             for (auto iter = inventory->cbegin(); iter != inventory->cend(); ++iter)
             {
+                auto btn = new Button(iter->get()->name());
+                btn->setPosition(50.0f, 50.0f + i);
+                i += 60.0f;
+                s_helper.add_component(btn, false);
             }
         }
     }

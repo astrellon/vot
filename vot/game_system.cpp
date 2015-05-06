@@ -20,6 +20,7 @@ namespace vot
     PowerupManager GameSystem::s_powerup_manager;
     BeamManager GameSystem::s_beam_manager;
     SoundManager GameSystem::s_sound_manager;
+    HardpointManager GameSystem::s_hardpoint_manager;
 
     sf::View GameSystem::s_hud_camera;
     std::unique_ptr<Game> GameSystem::s_game;
