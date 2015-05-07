@@ -48,6 +48,9 @@ namespace vot
             void name(const std::string &value);
             std::string name() const;
 
+            void cost(uint32_t value);
+            uint32_t cost() const;
+
             virtual float projectile_speed() const;
 
             // Sets up the x,y position, initial rotation, and min and max angle restrictions.
@@ -79,6 +82,7 @@ namespace vot
             HardpointPlacement *_parent;
             Character *_target;
             std::string _name;
+            uint32_t _cost;
 
             float _max_angle;
             float _min_angle;

@@ -13,6 +13,7 @@ namespace vot
         _parent(nullptr),
         _target(nullptr),
         _name("Hardpoint"),
+        _cost(100u),
         _max_angle(360.0f),
         _min_angle(0.0f),
         _track_ahead(false)
@@ -28,7 +29,10 @@ namespace vot
     Hardpoint::Hardpoint(const Hardpoint &clone) :
         _cooldown(clone._cooldown),
         _max_cooldown(clone._max_cooldown),
+        _parent(nullptr),
+        _target(nullptr),
         _name(clone._name),
+        _cost(clone._cost),
         _max_angle(clone._max_angle),
         _min_angle(clone._min_angle),
         _track_ahead(clone._track_ahead)
@@ -143,6 +147,15 @@ namespace vot
         return _cooldown;
     }
 
+    void Hardpoint::cost(uint32_t value)
+    {
+        _cost = value;
+    }
+    uint32_t Hardpoint::cost() const
+    {
+        return _cost;
+    }
+
     Group::Type Hardpoint::group() const
     {
         if (_parent == nullptr)
@@ -224,6 +237,7 @@ namespace vot
         data->at("min_angle", min_angle());
         data->at("track_ahead", track_ahead());
         data->at("name", name());
+        data->at("cost", cost());
         data->at("texture", TextureManager::texture_name(_sprite.getTexture()));
     }
     void Hardpoint::deserialise(const ::utils::Data *data)
@@ -236,6 +250,7 @@ namespace vot
         _track_ahead = data->at("track_ahead")->boolean();
 
         _name = data->at("name")->string();
+        _cost = data->at("cost")->uint32();
 
         auto texture = data->at("texture")->string();
         _sprite.setTexture(*TextureManager::texture(texture));

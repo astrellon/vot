@@ -22,8 +22,6 @@ namespace vot
         sf::View ShipHanger::s_player_camera;
         Hardpoint *ShipHanger::s_held_hardpoint = nullptr;
 
-        std::vector<Button *> ShipHanger::s_inventory_buttons;
-
         bool ShipHanger::init()
         {
             auto back = new Button("Back");
@@ -90,8 +88,6 @@ namespace vot
                 });
             }
 
-            create_inventory_buttons();
-
             s_helper.calc_nearby_components();
 
             return true;
@@ -150,37 +146,6 @@ namespace vot
             auto half_width = width * 0.5f;
             auto half_height = height * 0.5f;
             s_player_camera.setSize(sf::Vector2f(half_width, half_height));
-        }
-
-        void ShipHanger::create_inventory_buttons()
-        {
-            for (auto i = 0u; i < s_inventory_buttons.size(); i++)
-            {
-                s_helper.remove_component(s_inventory_buttons[i]);
-            }
-            s_inventory_buttons.clear();
-
-            auto inventory = ProfileManager::current_profile()->inventory();
-            auto i = 0.0f;
-            for (auto iter = inventory->cbegin(); iter != inventory->cend(); ++iter)
-            {
-                auto btn = new Button((*iter)->name());
-                btn->setPosition(50.0f, 50.0f + i);
-                i += 60.0f;
-                s_helper.add_component(btn, false);
-
-                btn->on_click([iter] (int32_t x, int32_t y, sf::Mouse::Button btn)
-                {
-                    std::cout << "Clicked on inventory button: " << (*iter)->name() << "\n";
-                    if (s_held_hardpoint == nullptr)
-                    {
-                        s_held_hardpoint = *iter;
-                        ProfileManager::current_profile()->remove_from_inventory(*iter);
-                    }
-
-                    return true;
-                });
-            }
         }
     }
 }

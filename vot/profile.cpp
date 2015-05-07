@@ -50,27 +50,6 @@ namespace vot
         return _name;
     }
 
-    const Profile::HardpointList *Profile::inventory() const
-    {
-        return &_inventory;
-    }
-
-    void Profile::add_to_inventory(Hardpoint *point)
-    {
-        _inventory.push_back(point);
-    }
-    void Profile::remove_from_inventory(Hardpoint *point)
-    {
-        for (auto iter = _inventory.begin(); iter != _inventory.end(); ++iter)
-        {
-            if (*iter == point)
-            {
-                _inventory.erase(iter);
-                break;
-            }
-        }
-    }
-
     const Profile::HardpointMap *Profile::hardpoints() const
     {
         return &_hardpoints;
@@ -142,15 +121,6 @@ namespace vot
             hardpoints->at(iter->first, hardpoint_data);
         }
 
-        auto inventory = new ::utils::Data(::utils::Data::ARRAY);
-        output.at("inventory", inventory);
-        for (auto iter = _inventory.cbegin(); iter != _inventory.cend(); ++iter)
-        {
-            auto inventory_data = new ::utils::Data(::utils::Data::MAP);
-            (*iter)->serialise(inventory_data);
-            inventory->push(inventory_data);
-        }
-
         ::utils::LuaSerialiser::serialise(&output, filename);
 
         return true;
@@ -173,16 +143,6 @@ namespace vot
             {
                 auto hardpoint = Hardpoint::create_from_data(iter->second.get());
                 _hardpoints[iter->first] = hardpoint;
-            }
-        }
-
-        auto inventory = input->at("inventory");
-        if (inventory != nullptr)
-        {
-            for (auto iter = inventory->begin_array(); iter != inventory->end_array(); ++iter)
-            {
-                auto hardpoint = Hardpoint::create_from_data(iter->get());
-                _inventory.push_back(hardpoint);
             }
         }
 
