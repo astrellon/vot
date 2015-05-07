@@ -9,6 +9,7 @@
 
 namespace vot
 {
+    class HardpointPlacement;
     class Character;
     class ParticleSystem;
 
@@ -22,8 +23,10 @@ namespace vot
 
             virtual Hardpoint *clone() const = 0;
 
-            void parent(Character *value);
-            Character *parent() const;
+            void parent(HardpointPlacement *value);
+            HardpointPlacement *parent() const;
+
+            Character *parent_char() const;
 
             void target(Character *value);
             Character *target() const;
@@ -73,7 +76,7 @@ namespace vot
             sf::Sprite _sprite;
             float _cooldown;
             float _max_cooldown;
-            Character *_parent;
+            HardpointPlacement *_parent;
             Character *_target;
             std::string _name;
 

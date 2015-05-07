@@ -36,13 +36,18 @@ namespace vot
         texture(clone._sprite.getTexture());
     }
 
-    void Hardpoint::parent(Character *value)
+    void Hardpoint::parent(HardpointPlacement *value)
     {
         _parent = value;
     }
-    Character *Hardpoint::parent() const
+    HardpointPlacement *Hardpoint::parent() const
     {
         return _parent;
+    }
+
+    Character *Hardpoint::parent_char() const
+    {
+        return _parent->parent();
     }
 
     void Hardpoint::target(Character *value)
@@ -144,7 +149,7 @@ namespace vot
         {
             return Group::NATURE;
         }
-        return _parent->group();
+        return _parent->parent()->group();
     }
 
     float Hardpoint::projectile_speed() const
@@ -160,11 +165,11 @@ namespace vot
         if (_target != nullptr)
         {
             auto rot_speed = 90.0f * dt;
-            auto parent_trans = _parent->getInverseTransform();
+            auto parent_trans = _parent->parent()->getInverseTransform();
             auto target_position = _target->getPosition();
             if (track_ahead())
             {
-                auto distance = utils::Utils::vector_length(_parent->getPosition() - _target->getPosition());
+                auto distance = utils::Utils::vector_length(_parent->parent()->getPosition() - _target->getPosition());
                 auto projectile_time = distance / projectile_speed();
                 target_position = _target->getPosition() + _target->velocity() * projectile_time * 4.0f + 0.5f * _target->acceleration() * projectile_time * projectile_time;
             }
@@ -324,9 +329,9 @@ namespace vot
             auto system = GameSystem::particle_manager()->spawn_system(*texture, 3);
             system->speed_factor(1.75f);
 
-            auto trans = parent()->getTransform() * getTransform();
+            auto trans = parent_char()->getTransform() * getTransform();
             auto global_position = trans.transformPoint(sf::Vector2f(8, 0));
-            auto global_rotation = getRotation() + parent()->getRotation();
+            auto global_rotation = getRotation() + parent_char()->getRotation();
             system->setPosition(global_position);
             system->setRotation(global_rotation);
             system->init();
@@ -420,8 +425,8 @@ namespace vot
         {
             auto bullet = GameSystem::bullet_manager()->spawn_homing_bullet(*_blueprint, group());
 
-            auto trans = parent()->getTransform() * getTransform();
-            bullet->setup(trans.transformPoint(sf::Vector2f()), parent()->getRotation() + getRotation());
+            auto trans = parent_char()->getTransform() * getTransform();
+            bullet->setup(trans.transformPoint(sf::Vector2f()), parent_char()->getRotation() + getRotation());
             
             auto sound = GameSystem::sound_manager()->spawn_sound("laser2", Sound::SoundEffects);
             sound->play();
@@ -516,9 +521,9 @@ namespace vot
         
         _active_beam->is_active(_fire_beam && _charge_up >= 1.0f);
 
-        auto trans = parent()->getTransform() * getTransform();
+        auto trans = parent_char()->getTransform() * getTransform();
         auto global_position = trans.transformPoint(sf::Vector2f(8, 0));
-        auto global_rotation = getRotation() + parent()->getRotation();
+        auto global_rotation = getRotation() + parent_char()->getRotation();
         _charge_up_system->setPosition(global_position);
         _charge_up_system->setRotation(global_rotation);
         

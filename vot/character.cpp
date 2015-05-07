@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include "utils/utils.h"
+#include "hardpoint.h"
+
 namespace vot
 {
     Character::Character(const sf::Texture &texture) :
@@ -53,7 +56,6 @@ namespace vot
         // Transform move vector by the sprites rotation matrix.
         auto local_direction = utils::Utils::transform_direction(getTransform(), vector);
         move(local_direction);
-        //_hitbox.location(getPosition());
     }
     void Character::location(const sf::Vector2f &vector)
     {
@@ -85,11 +87,13 @@ namespace vot
 
     void Character::update(float dt)
     {
-        // Update hardpoints {{{
-        for (auto i = 0u; i < _hardpoints.size(); i++)
+        // Update placements {{{
+        for (auto iter = _placements.begin(); iter != _placements.end(); ++iter)
         {
-            auto hardpoint = _hardpoints[i].get(); 
-            hardpoint->update(dt);
+            if (iter->second.get()->hardpoint() != nullptr)
+            {
+                iter->second.get()->hardpoint()->update(dt);
+            }
         }
         // }}}
 
@@ -199,9 +203,12 @@ namespace vot
         target.draw(line, state);
         */
 
-        for (auto i = 0u; i < _hardpoints.size(); i++)
+        for (auto iter = _placements.cbegin(); iter != _placements.cend(); ++iter)
         {
-            target.draw(*_hardpoints[i].get(), states);
+            if (iter->second.get()->hardpoint() != nullptr)
+            {
+                target.draw(*iter->second.get()->hardpoint(), states);
+            }
         }
     }
 
@@ -265,30 +272,46 @@ namespace vot
         return _sprite;
     }
     
-    const Character::HardpointList *Character::hardpoints() const
+    const Character::HardpointPlacementMap *Character::placements() const
     {
-        return &_hardpoints;
+        return &_placements;
     }
-    void Character::add_hardpoint(Hardpoint *point)
+    void Character::add_placement(HardpointPlacement *point)
     {
         point->parent(this);
-        _hardpoints.push_back(std::unique_ptr<Hardpoint>(point));
+        _placements[point->name()] = std::unique_ptr<HardpointPlacement>(point);
     }
-    void Character::remove_hardpoint(Hardpoint *point)
+    void Character::remove_placement(HardpointPlacement *point)
     {
         point->parent(nullptr);
-        for (auto iter = _hardpoints.cbegin(); iter != _hardpoints.cend(); ++iter)
+        for (auto iter = _placements.cbegin(); iter != _placements.cend(); ++iter)
         {
-            if (iter->get() == point)
+            if (iter->second.get() == point)
             {
-                _hardpoints.erase(iter);
+                _placements.erase(iter);
                 return;
             }
         }
     }
-    void Character::clear_hardpoints()
+    void Character::clear_placements()
     {
-        _hardpoints.clear();
+        _placements.clear();
+    }
+    void Character::clear_placement_hardpoints()
+    {
+        for (auto iter = _placements.begin(); iter != _placements.end(); ++iter)
+        {
+            iter->second.get()->hardpoint(nullptr);
+        }
+    }
+    
+    void Character::add_hardpoint_to_placement( const std::string &name, vot::Hardpoint *point )
+    {
+        auto find = _placements.find(name);
+        if (find != _placements.end())
+        {
+            find->second->hardpoint(point);
+        }
     }
 
     const Character::ThrusterList *Character::thrusters() const

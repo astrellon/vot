@@ -24,11 +24,11 @@ namespace vot
 
     void Player::init()
     {
-        add_hardpoint_placement(new HardpointPlacement("middle", 0, 8, 225, 315));
-        add_hardpoint_placement(new HardpointPlacement("left1", -16, 4, 180, 300));
-        add_hardpoint_placement(new HardpointPlacement("right1", 16, 4, 240, 0));
-        add_hardpoint_placement(new HardpointPlacement("left2", -20, 10, 75, 270));
-        add_hardpoint_placement(new HardpointPlacement("right2", 20, 10, 270, 45));
+        add_placement(new HardpointPlacement("middle", 0, 8, 225, 315));
+        add_placement(new HardpointPlacement("left1", -16, 4, 180, 300));
+        add_placement(new HardpointPlacement("right1", 16, 4, 240, 0));
+        add_placement(new HardpointPlacement("left2", -20, 10, 75, 270));
+        add_placement(new HardpointPlacement("right2", 20, 10, 270, 45));
 
         create_new_hardpoint(Powerup::BULLET);
         
@@ -120,10 +120,13 @@ namespace vot
         
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            auto points = hardpoints();
-            for (auto i = 0u; i < points->size(); i++)
+            auto points = placements();
+            for (auto iter = points->begin(); iter != points->end(); ++iter)
             {
-                points->at(i)->fire();
+                if (iter->second.get()->hardpoint() != nullptr)
+                {
+                    iter->second.get()->hardpoint()->fire();
+                }
             }
         }
 
@@ -181,10 +184,13 @@ namespace vot
     {
         _target = value;
 
-        auto points = hardpoints();
-        for (auto i = 0u; i < points->size(); i++)
+        auto points = placements();
+        for (auto iter = points->begin(); iter != points->end(); ++iter)
         {
-            points->at(i)->target(value);
+            if (iter->second.get()->hardpoint() != nullptr)
+            {
+                iter->second.get()->hardpoint()->target(value);
+            }
         }
     }
     Enemy *Player::target() const
@@ -213,7 +219,8 @@ namespace vot
     void Player::create_new_hardpoint(Powerup::Type type)
     {
         HardpointPlacement *empty_placement = nullptr;
-        for (auto iter = _hardpoint_placements.begin(); iter != _hardpoint_placements.end(); ++iter)
+        auto p = placements();
+        for (auto iter = p->begin(); iter != p->end(); ++iter)
         {
             if (iter->second->hardpoint() == nullptr)
             {
@@ -236,7 +243,6 @@ namespace vot
             pattern_turret->target(_target);
 
             empty_placement->hardpoint(pattern_turret);
-            add_hardpoint(pattern_turret);
         }
         if (type == Powerup::BEAM)
         {
@@ -248,7 +254,6 @@ namespace vot
             beam_turret->target(_target);
             
             empty_placement->hardpoint(beam_turret);
-            add_hardpoint(beam_turret);
         }
         if (type == Powerup::HOMING)
         {
@@ -260,41 +265,7 @@ namespace vot
             homing_turret->target(_target);
 
             empty_placement->hardpoint(homing_turret);
-            add_hardpoint(homing_turret);
         }
-    }
-
-    void Player::add_hardpoint_placement(HardpointPlacement *placement)
-    {
-        _hardpoint_placements[placement->name()] = std::unique_ptr<HardpointPlacement>(placement); 
-    }
-    void Player::add_hardpoint_to_placement( const std::string &name, vot::Hardpoint *point )
-    {
-        auto find = _hardpoint_placements.find(name);
-        if (find != _hardpoint_placements.end())
-        {
-            add_hardpoint(point);
-            find->second->hardpoint(point);
-        }
-    }
-    void Player::add_hardpoint_to_placement(HardpointPlacement *placement, Hardpoint *point)
-    {
-        add_hardpoint(point);
-        placement->hardpoint(point);
-    }
-    void Player::clear_hardpoints()
-    {
-        for (auto iter = _hardpoint_placements.begin(); iter != _hardpoint_placements.end(); ++iter)
-        {
-            iter->second->hardpoint(nullptr);
-        }
-        Character::clear_hardpoints();
-    }
-    void Player::clear_hardpoint_placements()
-    {
-        clear_hardpoints();
-
-        _hardpoint_placements.clear();
     }
 
     void Player::add_thruster_placement(float x, float y, float rotation, float size)
@@ -304,11 +275,6 @@ namespace vot
         thruster->setRotation(rotation);
         thruster->thrust_size(size);
         add_thruster(thruster);
-    }
-
-    const Player::HardpointPlacements *Player::hardpoint_placements() const
-    {
-        return &_hardpoint_placements;
     }
 
     void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const

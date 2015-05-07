@@ -4,9 +4,10 @@
 #include <stdint.h>
 #include <vector>
 #include <memory>
+#include <string>
 
 #include "utils/circle.h"
-#include "hardpoint.h"
+#include "hardpoint_placement.h"
 #include "thruster.h"
 #include "common.h"
 
@@ -48,12 +49,16 @@ namespace vot
             sf::Sprite &sprite();
             const sf::Sprite &sprite() const;
 
-            typedef std::vector<std::unique_ptr<Hardpoint> > HardpointList; 
-            const HardpointList *hardpoints() const;
+            typedef std::map<std::string, std::unique_ptr<HardpointPlacement> > HardpointPlacementMap; 
+            const HardpointPlacementMap *placements() const;
             
-            void add_hardpoint(Hardpoint *point);
-            void remove_hardpoint(Hardpoint *point);
-            virtual void clear_hardpoints();
+            void add_placement(HardpointPlacement *point);
+            void remove_placement(HardpointPlacement *point);
+            void clear_placements();
+            void clear_placement_hardpoints();
+            
+            void add_hardpoint_to_placement(const std::string &name, Hardpoint *point);
+            void add_hardpoint_to_placement(HardpointPlacement *placement, Hardpoint *point);
 
             typedef std::vector<std::unique_ptr<Thruster> > ThrusterList;
             const ThrusterList *thrusters() const;
@@ -105,7 +110,7 @@ namespace vot
             bool _is_dead;
             uint16_t _id;
 
-            HardpointList _hardpoints;
+            HardpointPlacementMap _placements;
             ThrusterList _thrusters;
 
             sf::Vector2f _acceleration;

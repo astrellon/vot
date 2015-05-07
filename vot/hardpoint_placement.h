@@ -5,6 +5,7 @@
 
 namespace vot
 {
+    class Character;
     class Hardpoint;
 
     // HardpointPlacement {{{
@@ -16,6 +17,9 @@ namespace vot
             HardpointPlacement(const HardpointPlacement &clone);
 
             void setup(float x, float y, float min, float max);
+
+            void parent(Character *parent);
+            Character *parent() const;
 
             void hardpoint(Hardpoint *point);
             Hardpoint *hardpoint() const;
@@ -32,6 +36,7 @@ namespace vot
             std::string name() const;
 
         private:
+            Character *_parent;
             Hardpoint *_hardpoint;
             sf::Vector2f _position;
             float _min_angle;

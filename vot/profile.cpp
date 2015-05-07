@@ -96,7 +96,7 @@ namespace vot
 
     void Profile::apply_to_player(Player *player) const
     {
-        player->clear_hardpoints();
+        player->clear_placement_hardpoints();
 
         auto hardpoints = ProfileManager::current_profile()->hardpoints();
         for (auto iter = hardpoints->cbegin(); iter != hardpoints->cend(); ++iter)
@@ -109,7 +109,7 @@ namespace vot
         auto profile = ProfileManager::current_profile();
         profile->clear_hardpoints();
 
-        auto placements = player->hardpoint_placements();
+        auto placements = player->placements();
         for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
         {
             if (iter->second->hardpoint() != nullptr)

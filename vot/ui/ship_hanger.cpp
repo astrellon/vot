@@ -53,7 +53,7 @@ namespace vot
 
             s_player_camera.setCenter(0, 0);
 
-            auto placements = s_player_render->hardpoint_placements();
+            auto placements = s_player_render->placements();
             for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
             {
                 auto placement = iter->second.get();

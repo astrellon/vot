@@ -1,11 +1,13 @@
 #include "hardpoint_placement.h"
 
+#include "character.h"
 #include "hardpoint.h"
 
 namespace vot
 {
     // HardpointPlacement {{{
     HardpointPlacement::HardpointPlacement(const std::string &name) :
+        _parent(nullptr),
         _hardpoint(nullptr),
         _min_angle(0.0f),
         _max_angle(360.0f),
@@ -14,6 +16,7 @@ namespace vot
 
     }
     HardpointPlacement::HardpointPlacement(const std::string &name, float x, float y, float min, float max) :
+        _parent(nullptr),
         _hardpoint(nullptr),
         _position(x, y),
         _min_angle(min),
@@ -23,6 +26,7 @@ namespace vot
 
     }
     HardpointPlacement::HardpointPlacement(const HardpointPlacement &clone) :
+        _parent(nullptr),
         _hardpoint(nullptr),
         _position(clone._position),
         _min_angle(clone._min_angle),
@@ -38,11 +42,26 @@ namespace vot
         min_angle(min);
         max_angle(max);
     }
+
+    void HardpointPlacement::parent(Character *parent)
+    {
+        _parent = parent;
+    }
+    Character *HardpointPlacement::parent() const
+    {
+        return _parent;
+    }
+
     void HardpointPlacement::hardpoint(Hardpoint *hardpoint)
     {
+        if (_hardpoint != nullptr)
+        {
+            _hardpoint->parent(nullptr);
+        }
         _hardpoint = hardpoint;
         if (hardpoint != nullptr)
         {
+            hardpoint->parent(this);
             auto average = (_min_angle + _max_angle) * 0.5f;
             hardpoint->setup(_position.x, _position.y, average, _min_angle, _max_angle);
         }
