@@ -147,6 +147,7 @@ namespace vot
             if (event.type == sf::Event::MouseMoved)
             {
                 check_hover(event.mouseMove.x, event.mouseMove.y);
+                ShipHanger::on_mouse_move(event.mouseMove.x, event.mouseMove.y);
             }
             else if (event.type == sf::Event::MouseButtonPressed)
             {

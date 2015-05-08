@@ -21,6 +21,7 @@ namespace vot
         MenuHelper ShipHanger::s_helper;
         sf::View ShipHanger::s_player_camera;
         Hardpoint *ShipHanger::s_held_hardpoint = nullptr;
+        float ShipHanger::s_scale = 0.5f;
 
         bool ShipHanger::init()
         {
@@ -46,7 +47,7 @@ namespace vot
 
             auto player_texture = TextureManager::texture("player");
             s_player_render = new Player(*player_texture);
-            s_player_render->sprite().setScale(0.5f, 0.5f);
+            s_player_render->sprite().setScale(s_scale, s_scale);
             s_player_render->init();
 
             s_player_camera.setCenter(0, 0);
@@ -61,7 +62,7 @@ namespace vot
                 
                 auto pos = placement->position();
                 auto size = widget->size();
-                widget->setPosition(pos.x - (size.x * 0.5f), pos.y - (size.y * 0.5f));
+                widget->setPosition(pos.x - (size.x * s_scale), pos.y - (size.y * s_scale));
                 widget->on_click([placement, pos] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
                     if (s_held_hardpoint != nullptr)
@@ -81,6 +82,7 @@ namespace vot
                     else
                     {
                         s_held_hardpoint = placement->hardpoint();
+                        //s_held_hardpoint->setPosition(0, -50);
                         placement->hardpoint(nullptr);
                     }
                     std::cout << "Clicked on placement " << pos.x << ", " << pos.y << "\n";
@@ -137,15 +139,36 @@ namespace vot
 
                 target.draw(*s_player_render, states);
             }
+
+            if (s_held_hardpoint != nullptr)
+            {
+                target.draw(*s_held_hardpoint, states);
+            }
         }
 
         void ShipHanger::on_resize( uint32_t width, uint32_t height )
         {
             s_helper.on_resize(width, height);
 
-            auto half_width = width * 0.5f;
-            auto half_height = height * 0.5f;
+            auto half_width = width * s_scale;
+            auto half_height = height * s_scale;
             s_player_camera.setSize(sf::Vector2f(half_width, half_height));
+        }
+        void ShipHanger::on_mouse_move(int32_t x, int32_t y)
+        {
+            if (!s_helper.visible())
+            {
+                return;
+            }
+
+            if (s_held_hardpoint != nullptr)
+            {
+                auto window = sf::Vector2i(GameSystem::window_size());
+                auto pos = sf::Vector2i(x, y);
+                pos.x = pos.x * s_scale - window.x * s_scale * 0.5f;
+                pos.y = pos.y * s_scale - window.y * s_scale * 0.5f;
+                s_held_hardpoint->setPosition(pos.x, pos.y);
+            }
         }
     }
 }
