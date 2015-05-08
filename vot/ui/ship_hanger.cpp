@@ -82,10 +82,8 @@ namespace vot
                     else
                     {
                         s_held_hardpoint = placement->hardpoint();
-                        //s_held_hardpoint->setPosition(0, -50);
                         placement->hardpoint(nullptr);
                     }
-                    std::cout << "Clicked on placement " << pos.x << ", " << pos.y << "\n";
                     return true;
                 });
             }

@@ -18,7 +18,6 @@ namespace vot
                 };
 
                 static bool init();
-                static void deinit();
 
                 static void state(StateValue state);
                 static StateValue state();

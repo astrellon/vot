@@ -26,10 +26,6 @@ namespace vot
             
             return true;
         }
-        void ProfileWidget::deinit()
-        {
-
-        }
 
         void ProfileWidget::visible(bool value)
         {

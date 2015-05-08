@@ -58,10 +58,6 @@ namespace vot
         }
         void Manager::deinit()
         {
-            LevelSelect::deinit();
-            ProfileSelect::deinit();
-            MainMenu::deinit();
-            ProfileWidget::deinit();
             ShipHanger::deinit();
             
             s_has_focus = nullptr;

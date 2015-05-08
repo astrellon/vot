@@ -17,7 +17,6 @@ namespace vot
         {
             public:
                 static bool init();
-                static void deinit();
 
                 static void visible(bool value);
                 static bool visible();

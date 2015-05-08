@@ -63,11 +63,6 @@ namespace vot
             return true;
         }
 
-        void MainMenu::deinit()
-        {
-
-        }
-
         void MainMenu::visible(bool value)
         {
             s_helper.visible(value);

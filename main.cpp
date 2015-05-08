@@ -114,7 +114,6 @@ int main()
     // }}}
 
     // Deinit {{{
-    vot::ui::State::deinit();
     vot::LevelManager::deinit();
     vot::ProfileManager::deinit();
     vot::GameSystem::deinit();

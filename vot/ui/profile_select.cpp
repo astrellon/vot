@@ -80,10 +80,6 @@ namespace vot
 
             return true;
         }
-        void ProfileSelect::deinit()
-        {
-
-        }
 
         void ProfileSelect::visible(bool value)
         {

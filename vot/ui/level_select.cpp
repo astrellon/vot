@@ -52,11 +52,6 @@ namespace vot
             return true;
         }
 
-        void LevelSelect::deinit()
-        {
-
-        }
-
         void LevelSelect::visible(bool value)
         {
             s_helper.visible(value);

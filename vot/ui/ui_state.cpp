@@ -18,9 +18,6 @@ namespace vot
 
             return true; 
         }
-        void State::deinit()
-        {
-        }
 
         void State::state(State::StateValue state)
         {
