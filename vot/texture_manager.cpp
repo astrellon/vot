@@ -58,11 +58,11 @@ namespace vot
 
     std::string TextureManager::texture_name(const sf::Texture *texture)
     {
-        for (auto iter = s_textures.cbegin(); iter != s_textures.cend(); ++iter)
+        for (const auto &iter : s_textures)
         {
-            if (iter->second.get() == texture)
+            if (iter.second.get() == texture)
             {
-                return iter->first;
+                return iter.first;
             }
         }
         return std::string();

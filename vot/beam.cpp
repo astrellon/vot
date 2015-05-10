@@ -194,11 +194,11 @@ namespace vot
 
     std::string BeamManager::find_src_beam(const Beam *beam) const
     {
-        for (auto iter = _src_beams.begin(); iter != _src_beams.end(); ++iter)
+        for (const auto &iter : _src_beams)
         {
-            if (iter->second.get() == beam)
+            if (iter.second.get() == beam)
             {
-                return iter->first;
+                return iter.first;
             }
         }
         return std::string();

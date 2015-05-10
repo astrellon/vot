@@ -77,10 +77,9 @@ namespace vot
     {
         player->clear_placement_hardpoints();
 
-        auto hardpoints = ProfileManager::current_profile()->hardpoints();
-        for (auto iter = hardpoints->cbegin(); iter != hardpoints->cend(); ++iter)
+        for (const auto &iter : *ProfileManager::current_profile()->hardpoints())
         {
-            player->add_hardpoint_to_placement(iter->first, iter->second->clone());
+            player->add_hardpoint_to_placement(iter.first, iter.second->clone());
         }
     }
     void Profile::apply_from_player(const Player *player)
@@ -88,12 +87,11 @@ namespace vot
         auto profile = ProfileManager::current_profile();
         profile->clear_hardpoints();
 
-        auto placements = player->placements();
-        for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
+        for (const auto &iter : *player->placements())
         {
-            if (iter->second->hardpoint() != nullptr)
+            if (iter.second->hardpoint() != nullptr)
             {
-                profile->hardpoint(iter->first, iter->second->hardpoint()->clone());
+                profile->hardpoint(iter.first, iter.second->hardpoint()->clone());
             }
         }
     }
@@ -114,11 +112,11 @@ namespace vot
 
         auto hardpoints = new ::utils::Data(::utils::Data::MAP);
         output.at("hardpoints", hardpoints);
-        for (auto iter = _hardpoints.cbegin(); iter != _hardpoints.cend(); ++iter)
+        for (const auto &iter : _hardpoints)
         {
             auto hardpoint_data = new ::utils::Data(::utils::Data::MAP);
-            iter->second->serialise(hardpoint_data);
-            hardpoints->at(iter->first, hardpoint_data);
+            iter.second->serialise(hardpoint_data);
+            hardpoints->at(iter.first, hardpoint_data);
         }
 
         ::utils::LuaSerialiser::serialise(&output, filename);

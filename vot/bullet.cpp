@@ -464,11 +464,11 @@ namespace vot
     
     std::string BulletManager::find_src_pattern_bullet(const PatternBullet *bullet) const
     {
-        for (auto iter = _src_pattern_bullets.begin(); iter != _src_pattern_bullets.end(); ++iter)
+        for (const auto &iter : _src_pattern_bullets)
         {
-            if (iter->second.get() == bullet)
+            if (iter.second.get() == bullet)
             {
-                return iter->first;
+                return iter.first;
             }
         }
         return std::string();
@@ -476,11 +476,11 @@ namespace vot
 
     std::string BulletManager::find_src_homing_bullet(const HomingBullet *bullet) const
     {
-        for (auto iter = _src_homing_bullets.begin(); iter != _src_homing_bullets.end(); ++iter)
+        for (const auto &iter : _src_homing_bullets)
         {
-            if (iter->second.get() == bullet)
+            if (iter.second.get() == bullet)
             {
-                return iter->first;
+                return iter.first;
             }
         }
         return std::string();

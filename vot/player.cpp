@@ -121,11 +121,11 @@ namespace vot
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             auto points = placements();
-            for (auto iter = points->begin(); iter != points->end(); ++iter)
+            for (auto &iter : *points)
             {
-                if (iter->second.get()->hardpoint() != nullptr)
+                if (iter.second.get()->hardpoint() != nullptr)
                 {
-                    iter->second.get()->hardpoint()->fire();
+                    iter.second.get()->hardpoint()->fire();
                 }
             }
         }
@@ -185,11 +185,11 @@ namespace vot
         _target = value;
 
         auto points = placements();
-        for (auto iter = points->begin(); iter != points->end(); ++iter)
+        for (auto &iter : *points)
         {
-            if (iter->second.get()->hardpoint() != nullptr)
+            if (iter.second.get()->hardpoint() != nullptr)
             {
-                iter->second.get()->hardpoint()->target(value);
+                iter.second.get()->hardpoint()->target(value);
             }
         }
     }
@@ -219,12 +219,11 @@ namespace vot
     void Player::create_new_hardpoint(Powerup::Type type)
     {
         HardpointPlacement *empty_placement = nullptr;
-        auto p = placements();
-        for (auto iter = p->begin(); iter != p->end(); ++iter)
+        for (auto &iter : *placements())
         {
-            if (iter->second->hardpoint() == nullptr)
+            if (iter.second->hardpoint() == nullptr)
             {
-                empty_placement = iter->second.get();
+                empty_placement = iter.second.get();
                 break;
             }
         }

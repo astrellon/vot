@@ -52,10 +52,9 @@ namespace vot
 
             s_player_camera.setCenter(0, 0);
 
-            auto placements = s_player_render->placements();
-            for (auto iter = placements->cbegin(); iter != placements->cend(); ++iter)
+            for (const auto &iter : *s_player_render->placements())
             {
-                auto placement = iter->second.get();
+                auto placement = iter.second.get();
                 auto widget = new ShipHardpointWidget(placement);
                 widget->local_view(&s_player_camera);
                 s_helper.add_component(widget, false);
@@ -63,7 +62,7 @@ namespace vot
                 auto pos = placement->position();
                 auto size = widget->size();
                 widget->setPosition(pos.x - (size.x * s_scale), pos.y - (size.y * s_scale));
-                widget->on_click([placement, pos] (int32_t x, int32_t y, sf::Mouse::Button btn)
+                widget->on_click([&] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
                     if (s_held_hardpoint != nullptr)
                     {

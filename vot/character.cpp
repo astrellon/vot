@@ -88,11 +88,11 @@ namespace vot
     void Character::update(float dt)
     {
         // Update placements {{{
-        for (auto iter = _placements.begin(); iter != _placements.end(); ++iter)
+        for (auto &iter : _placements)
         {
-            if (iter->second.get()->hardpoint() != nullptr)
+            if (iter.second.get()->hardpoint() != nullptr)
             {
-                iter->second.get()->hardpoint()->update(dt);
+                iter.second.get()->hardpoint()->update(dt);
             }
         }
         // }}}
@@ -203,11 +203,11 @@ namespace vot
         target.draw(line, state);
         */
 
-        for (auto iter = _placements.cbegin(); iter != _placements.cend(); ++iter)
+        for (const auto &iter : _placements)
         {
-            if (iter->second.get()->hardpoint() != nullptr)
+            if (iter.second.get()->hardpoint() != nullptr)
             {
-                target.draw(*iter->second.get()->hardpoint(), states);
+                target.draw(*iter.second.get()->hardpoint(), states);
             }
         }
     }
@@ -299,9 +299,9 @@ namespace vot
     }
     void Character::clear_placement_hardpoints()
     {
-        for (auto iter = _placements.begin(); iter != _placements.end(); ++iter)
+        for (auto &iter : _placements)
         {
-            iter->second.get()->hardpoint(nullptr);
+            iter.second.get()->hardpoint(nullptr);
         }
     }
     

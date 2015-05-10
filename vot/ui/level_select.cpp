@@ -28,18 +28,17 @@ namespace vot
                 return true;
             });
 
-            auto levels = LevelManager::levels();
             auto i = 0u;
-            for (auto iter = levels->begin(); iter != levels->end(); ++iter)
+            for (const auto &iter : *LevelManager::levels())
             {
-                auto btn = new Button(iter->second->name());
+                auto btn = new Button(iter.second->name());
                 btn->setPosition(300, 260 + (60* i));
                 s_helper.add_component(btn);
                 i++;
 
-                btn->on_click([iter] (int32_t x, int32_t y, sf::Mouse::Button btn)
+                btn->on_click([&] (int32_t x, int32_t y, sf::Mouse::Button btn)
                 {
-                    GameSystem::start_game(iter->first);
+                    GameSystem::start_game(iter.first);
                 
                     return true;
                 });
